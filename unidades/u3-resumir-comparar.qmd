@@ -1,6 +1,6 @@
 ---
 title: "Unidad 3 · Resumir y comparar"
-subtitle: "Sesiones 9 a 20 · Programa 2.1–2.6, 3.2.3, 3.3"
+subtitle: "Sesiones 10 a 19 · Programa 2.1 a 2.6, 3.2.3, 3.3"
 lang: es
 ---
 
@@ -10,9 +10,8 @@ Resumir muchos números en pocos números, sabiendo exactamente qué se pierde e
 camino. Y después comparar esos resúmenes entre grupos, que es donde el análisis
 empieza a servir para decidir algo.
 
-Es la unidad más larga —doce sesiones, casi el 40% del curso— y es deliberado:
-aquí se construye el vocabulario que usa todo lo demás, incluida la materia
-siguiente.
+Es la unidad más larga, diez sesiones y un tercio del curso. Aquí se construye el
+vocabulario que usa todo lo demás, incluida la materia siguiente.
 
 Toda esta unidad se apoya en la anterior. Cada estadístico se dibuja sobre el
 histograma que ya sabes construir: la media como una línea vertical, los cuartiles
@@ -22,18 +21,17 @@ como la caja del diagrama, el sesgo como la asimetría que ya viste a ojo.
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 9 | Cuartiles: la fórmula contra `quantile()` | 2.1 |
-| 10 | Deciles y percentiles; leer la frecuencia acumulada | 2.1 |
-| 11 | Diagrama de caja: detectar no es eliminar | 3.2.3 |
+| 10 | Cuantiles: cuartiles, deciles y percentiles | 2.1 |
+| 11 | Diagrama de caja: detectar y decidir qué hacer | 3.2.3 |
 | 12 | Centro I: moda y mediana sobre el histograma | 2.2.1 |
 | 13 | Centro II: media aritmética y ponderada | 2.2.2 |
 | 14 | Centro III: media geométrica | 2.2.3 |
+| | *Evaluación del parcial 1* | |
 | 15 | Dispersión I: rango, rango intercuartil, varianza y desviación estándar | 2.3.1, 2.3.2 |
 | 16 | Dispersión II: coeficiente de variación | 2.3.3 |
 | 17 | Medidas de forma: sesgo y curtosis | 2.4 |
 | 18 | Teorema de Chebyshev y regla empírica | 2.5 |
-| 19 | Comparar distribuciones entre grupos | 2.6, 3.3 |
-| 20 | Cuando el grupo cambia la conclusión: paradoja de Simpson | — |
+| 19 | Comparar grupos y la paradoja de Simpson | 2.6, 3.3 |
 
 ## Al terminar deberías poder
 
@@ -55,8 +53,8 @@ compuestos con la aritmética **sobreestima siempre**, y con series largas la
 brecha es material.
 
 **El ponderador cambia el resultado, y casi siempre existe.** Las encuestas
-mexicanas —[ENIGH](../datos/catalogo.qmd#enigh-ingreso),
-[ENOE](../datos/catalogo.qmd#enoe)— traen factores de expansión. Ignorarlos
+mexicanas, como [ENIGH](../datos/catalogo.qmd#enigh-ingreso) y
+[ENOE](../datos/catalogo.qmd#enoe), traen factores de expansión. Ignorarlos
 produce un número que describe a la muestra pero no al país. Se enseña con
 factores reales, no con calificaciones inventadas.
 
@@ -64,17 +62,16 @@ factores reales, no con calificaciones inventadas.
 implicar decisiones opuestas. La media sola es el estadístico más citado y más
 engañoso del vocabulario profesional.
 
-**Detectar un atípico no autoriza a eliminarlo.** La regla de 1.5 veces el rango
-intercuartil es una **convención de dibujo**, no una prueba de que el dato esté
-mal. Un valor extremo puede ser un error de captura, o puede ser el cliente más
-importante de la empresa. Quitarlo sin justificar es el fraude más común del
-análisis aplicado.
+**Detectar un atípico abre una decisión, no la cierra.** La regla de 1.5 veces el
+rango intercuartil es una **convención de dibujo**. Un valor extremo puede ser un
+error de captura o el cliente más importante de la empresa, y distinguirlos exige
+mirar el caso. Quitarlo sin justificar es el fraude más común del análisis
+aplicado.
 
-**Chebyshev vale siempre; la regla empírica casi nunca en negocios.** El
-68-95-99.7 exige normalidad aproximada. Ingresos, precios y ventas son
-asimétricos, y aplicarles la regla empírica da resultados absurdos con toda
-confianza. La cota de Chebyshev es más floja pero no supone nada, y por eso
-existe.
+**Chebyshev aplica siempre; la regla empírica exige normalidad aproximada.** El
+68-95-99.7 sobre ingresos, precios o ventas, que son asimétricos, da resultados
+absurdos con toda confianza. La cota de Chebyshev es más floja y vale sin
+supuestos, que es la razón de su existencia.
 
 **Una relación puede invertirse al mirar una tercera variable.** Es la paradoja de
 Simpson, y se demuestra entera con porcentajes. Es la puerta al pensamiento
@@ -83,25 +80,25 @@ del curso para la sección *lo que este número no dice*.
 
 ## Los cuatro momentos de fricción
 
-Están puestos a propósito.
+Cuatro puntos donde el resultado esperado y el observado dejan de coincidir.
 
-**Sesión 9 — el cuartil que no coincide.** Calculas $Q_1$ con la fórmula de
+**Sesión 10. El cuartil que no coincide.** Calculas $Q_1$ con la fórmula de
 posición $\frac{n+1}{4}$ y luego con `quantile()`. Dan números distintos. Ninguno
 está mal: hay al menos nueve definiciones de cuantil, y R usa una por omisión,
 Excel otra y el libro de texto una tercera. Es la primera vez que se hace evidente
 que **el software toma decisiones metodológicas por ti**, y es la lección más
 transferible del semestre.
 
-**Sesión 13 — el ponderador que mueve el país.** Se calcula el ingreso promedio de
+**Sesión 13. El ponderador que mueve el país.** Se calcula el ingreso promedio de
 ENIGH con y sin factor de expansión. Los dos números son correctos; responden
 preguntas distintas y solo uno describe a México.
 
-**Sesión 15 — por qué $n-1$.** La respuesta corta —"grados de libertad"— no
-explica nada. Se ve por simulación: se genera una población conocida, se extraen
+**Sesión 15. Por qué $n-1$.** La respuesta corta, "grados de libertad", deja la
+idea sin explicar. Se ve por simulación: se genera una población conocida, se extraen
 miles de muestras y se observa que dividir entre $n$ subestima sistemáticamente.
 El sesgo se **ve**.
 
-**Sesión 17 — la media que no representa a nadie.** Con una serie suficientemente
+**Sesión 17. La media que no representa a nadie.** Con una serie suficientemente
 asimétrica del catálogo, la media cae donde casi no hay observaciones. Es el
 momento de entender que "promedio" y "típico" no son sinónimos.
 
@@ -109,8 +106,8 @@ momento de entender que "promedio" y "típico" no son sinónimos.
 Un promedio y una desviación estándar describen bien una distribución
 aproximadamente simétrica y sin colas pesadas.
 
-Sobre ingresos, precios de vivienda o ventas por cliente —todas asimétricas— ese
-par de números puede describir una realidad que no existe. Reportarlos sin haber
+Sobre ingresos, precios de vivienda o ventas por cliente, que son asimétricas,
+ese par de números puede describir una realidad que no existe. Reportarlos sin haber
 visto la distribución es exactamente el error que la unidad 2 previene.
 :::
 
@@ -123,10 +120,10 @@ respuesta más probable es una media aritmética. Para rendimientos compuestos l
 correcta es la geométrica, y la diferencia siempre va en la misma dirección:
 sobreestima.
 
-El error no es de aritmética: es de **elección de método**, y ocurre porque el
-modelo no sabe que tus números son rendimientos compuestos. Tú sí. Sesión 14.
+El error es de **elección de método**, y ocurre porque el modelo no sabe que tus
+números son rendimientos compuestos. Tú sí. Sesión 14.
 
 Segundo error frecuente: describir la curtosis como "qué tan picuda es la
-distribución". Es la definición que está en medio internet y es incorrecta —la
+distribución". Es la definición que está en medio internet y es incorrecta: la
 curtosis es sensible a las **colas**, no al pico. Sesión 17.
 :::

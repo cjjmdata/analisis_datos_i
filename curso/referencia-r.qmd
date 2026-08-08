@@ -5,20 +5,17 @@ lang: es
 ---
 
 ::: {.a-mano}
-Esta página **no se ve en clase**. Es tu manual de consulta.
+Manual de consulta. Cada herramienta de R se enseña en la sesión donde hace falta
+para responder una pregunta estadística; aquí queda todo junto para cuando
+necesites recordar algo o quieras ir más allá.
 
-Cada herramienta de R se enseña en la sesión donde hace falta para responder una
-pregunta estadística. Aquí queda todo junto para cuando necesites recordar algo,
-o para cuando quieras ir más allá de lo que vimos.
-
-Si algo de aquí no aparece en ninguna sesión, es porque **no lo necesitas para
-este curso**. Está por si te da curiosidad.
+Lo que aparece aquí y no en ninguna sesión está por si te da curiosidad.
 :::
 
 ## Markdown en cuatro minutos
 
-Markdown da formato a texto plano. Es lo que usan las celdas de texto de Colab y
-lo que vas a usar en tu portafolio. Con esto te alcanza para todo el semestre:
+Markdown da formato a texto plano. Lo usan las celdas de texto de Colab y tu
+portafolio. Con esto te alcanza para todo el semestre:
 
 ```markdown
 # Título          ## Subtítulo          ### Sub-subtítulo
@@ -46,8 +43,8 @@ precio <- 180        # se lee "precio recibe 180"
 precio               # imprime lo que guardaste
 ```
 
-Usa siempre `<-`. R también acepta `=` y `->`, pero mezclarlos hace el código
-ilegible. Un solo estilo.
+Usa siempre `<-`. R acepta también `=` y `->`; mantener un solo estilo hace el
+código legible.
 
 ::: {.callout-important}
 R distingue mayúsculas de minúsculas: `Precio` y `precio` son objetos distintos.
@@ -66,8 +63,8 @@ estaturas * 100       # opera sobre TODOS a la vez
 estaturas[2]          # el segundo elemento
 ```
 
-La última idea —**R opera sobre el vector completo sin que tengas que repetir
-nada**— es la que hace innecesarios los ciclos que usan otros lenguajes.
+La idea, **R opera sobre el vector completo sin que tengas que repetir
+nada**, es la que sustituye a los ciclos que usan otros lenguajes.
 
 ### Tablas de datos
 
@@ -115,12 +112,10 @@ mean(precio, na.rm = TRUE) # calcular ignorando faltantes
 ```
 
 ::: {.no-dice}
-`na.rm = TRUE` no arregla el problema: lo esconde.
-
-Calcula el promedio de los que sí respondieron, que responde una pregunta
-distinta a la que hiciste. Si los que no respondieron su ingreso son
-sistemáticamente los que ganan más, ese promedio está sesgado y ningún argumento
-de la función lo corrige. Sesión 6.
+`na.rm = TRUE` calcula el promedio de quienes sí respondieron, que responde una
+pregunta distinta a la que hiciste. Si quienes no respondieron su ingreso son
+sistemáticamente los que ganan más, ese promedio queda sesgado y ningún argumento
+de la función lo corrige. Sesión 7.
 :::
 
 ### Instalar y cargar paquetes
@@ -134,8 +129,8 @@ En Colab casi todo ya está instalado; solo hace falta `library()`.
 
 ### Escribir tu propia función
 
-Solo la vas a necesitar una vez en el curso (sesión 17, para el coeficiente de
-sesgo), pero está aquí por si la quieres antes:
+La vas a necesitar en la sesión 17, para el coeficiente de sesgo. Está aquí por
+si la quieres antes:
 
 ```r
 coeficiente_variacion <- function(x) {
@@ -160,8 +155,8 @@ Todos son de base R: no necesitan ningún paquete.
 | Media ponderada | `weighted.mean(x, w)` | 13 |
 | Producto (para media geométrica) | `prod(x)` | 14 |
 | Varianza, desviación estándar | `var(x)`, `sd(x)` | 15 |
-| Tabla de frecuencias | `table(x)`, `count(datos, var)` | 4 |
-| Proporciones | `prop.table(table(x))` | 4 |
+| Tabla de frecuencias | `table(x)`, `count(datos, var)` | 5 |
+| Proporciones | `prop.table(table(x))` | 5 |
 
 ## Gráficas, de un vistazo
 
@@ -180,28 +175,26 @@ ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
 | Variable numérica | `geom_histogram()` | 8 |
 | Polígono de frecuencias | `geom_freqpoly()` | 9 |
 | Frecuencia acumulada | `stat_ecdf()` | 9 |
-| Diagrama de caja | `geom_boxplot()` | 12 |
-| Línea vertical (una media, un corte) | `geom_vline()` | 13 |
-| Separar por grupos | `facet_wrap(~ grupo)` | 20 |
+| Diagrama de caja | `geom_boxplot()` | 11 |
+| Línea vertical (una media, un corte) | `geom_vline()` | 12 |
+| Separar por grupos | `facet_wrap(~ grupo)` | 19 |
 
 ## Lo que este curso NO usa
 
-Aparece en casi todos los manuales de R. Si lo encuentras, no te está faltando
-nada: **no lo necesitas aquí**.
+Aparece en casi todos los manuales de R. Este curso resuelve sus problemas sin
+ello.
 
 | Tema | Por qué no |
 |---|---|
 | Matrices | No hacen falta para estadística descriptiva ni probabilidad a este nivel |
 | Listas | Estructura de programación, no de análisis |
-| Ciclos `for` | R opera sobre vectores completos. Escribir ciclos enseña el idioma equivocado |
+| Ciclos `for` | R opera sobre vectores completos, que es el idioma del lenguaje |
 | Condicionales `if / else` | Se usan para programar, no para analizar |
 | `apply`, `sapply`, `lapply` | Mismo caso |
 | Operadores `->` y `=` para asignar | Usa `<-` y ya |
 
-Si en algún momento te topas con que **sí** los necesitas para tu portafolio,
-búscalos en [R for Data Science](https://r4ds.hadley.nz/) o pregúntame. Pero no
-inviertas tiempo en aprenderlos "por si acaso": no es donde está el valor de esta
-materia.
+Si tu portafolio llega a necesitarlos, búscalos en
+[R for Data Science](https://r4ds.hadley.nz/) o pregúntame.
 
 ## Cuando algo falle
 

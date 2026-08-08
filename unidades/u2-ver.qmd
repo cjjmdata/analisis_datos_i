@@ -1,6 +1,6 @@
 ---
 title: "Unidad 2 · Ver los datos"
-subtitle: "Sesiones 4 a 8 · Programa 3.1, 3.2.1, 3.2.2"
+subtitle: "Sesiones 5 a 9 · Programa 3.1, 3.2.1, 3.2.2"
 lang: es
 ---
 
@@ -9,20 +9,19 @@ lang: es
 Mostrar una distribución completa antes de resumirla en un número. Una tabla de
 frecuencias y un histograma dicen cosas que ninguna media puede decir.
 
-Esta unidad va **antes** que los estadísticos descriptivos, contra el orden del
-documento oficial. La razón: cuando llegues a la media, la vas a poder dibujar
-como una línea vertical sobre una distribución que ya sabes construir. Al revés,
-la media es un número sin referente.
+Esta unidad va **antes** que los estadísticos descriptivos. Cuando llegues a la
+media vas a poder dibujarla como una línea vertical sobre una distribución que ya
+sabes construir.
 
 ## Sesiones
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 4 | Tablas de distribución de frecuencias | 3.1 |
-| 5 | Variables categóricas: barras (y por qué no pastel) | 3.2.1 |
-| 6 | Datos faltantes: lo que no está también informa | — |
-| 7 | Histograma: la forma de una variable numérica | 3.2.2 |
-| 8 | El ancho del intervalo, polígono y frecuencia acumulada | 3.2.2 |
+| 5 | Tablas de distribución de frecuencias | 3.1 |
+| 6 | Variables categóricas: la gráfica de barras | 3.2.1 |
+| 7 | Datos faltantes: lo que falta también informa | agregado |
+| 8 | Histograma: la forma de una variable numérica | 3.2.2 |
+| 9 | El ancho del intervalo, polígono y frecuencia acumulada | 3.2.2 |
 
 ## Al terminar deberías poder
 
@@ -39,15 +38,14 @@ la media es un número sin referente.
 **El ancho del intervalo es una decisión tuya, y cambia la historia.** El mismo
 dato con intervalos distintos produce histogramas que sugieren conclusiones
 distintas. No hay un ancho "correcto": hay anchos defendibles y la obligación de
-defender el tuyo. Existen reglas —Freedman-Diaconis, entre otras— que dan un punto
-de partida razonable, no una respuesta.
+defender el tuyo. Hay reglas, como Freedman-Diaconis, que dan un punto de partida
+razonable.
 
 **La escala de medición determina la gráfica.** Un histograma sobre una variable
 nominal no significa nada, aunque R lo dibuje. Es la aplicación directa de la
-sesión 3.
+sesión 4.
 
-**Lo que falta también es información.** Un `NA` no es un cero ni un valor
-neutro. Una tabla de frecuencias que los ignora en silencio produce porcentajes
+**Lo que falta también es información.** Un `NA` representa ausencia, no un cero. Una tabla de frecuencias que los ignora en silencio produce porcentajes
 que no suman lo que deberían, y un promedio sobre los casos completos responde una
 pregunta distinta a la que hiciste. Lo importante casi nunca es cuántos faltan,
 sino **por qué faltan**: si los que no contestaron su ingreso son
@@ -59,16 +57,16 @@ manipulación. La regla no es mecánica, y por eso hay que entenderla.
 
 ## Sobre la gráfica de pastel
 
-El programa oficial la incluye. En este curso se explica **qué es y por qué
-evitarla**, pero no se enseña a producirla.
+El programa oficial la incluye. El curso enseña a **leerla y a decidir cuándo
+conviene otra opción**.
 
-No es preferencia estética. Cleveland y McGill (1984) midieron
-experimentalmente con qué precisión las personas juzgan distintos elementos
-gráficos, y encontraron un orden claro: **la posición sobre una escala común se
-juzga con mucha mayor exactitud que el ángulo o el área.** Un pastel codifica en
-ángulo y área justamente lo que unas barras codifican en longitud.
+Cleveland y McGill (1984) midieron experimentalmente con qué precisión las
+personas juzgan distintos elementos gráficos, y encontraron un orden claro: **la
+posición sobre una escala común se juzga con mucha mayor exactitud que el ángulo
+o el área.** Un pastel codifica en ángulo y área justamente lo que unas barras
+codifican en longitud.
 
-Con más de dos o tres categorías, unas barras ganan siempre. Ésta es la primera
+Con más de dos o tres categorías, unas barras comunican mejor. Es la primera
 sesión de lectura crítica de gráficas del curso.
 
 ::: {.aside}
@@ -90,17 +88,17 @@ carreras del grupo al mismo tiempo.
 | Finanzas y Contaduría Pública | Costos, márgenes y exposición cambiaria |
 | Negocios Internacionales | Destinos de exportación y concentración de mercado |
 
-Los equipos son mixtos a propósito: cada perfil ve una parte del problema que los
-demás no ven.
+Los equipos son mixtos: cada perfil ve una parte del problema que los demás no
+ven.
 
 ::: {.ia-nota}
 Generar una gráfica es hoy la parte trivial: cualquier modelo produce código de
 `ggplot2` correcto a partir de una descripción en español.
 
-Lo que no hace es decidir si esa gráfica corresponde a tu variable, si el ancho de
-intervalo que eligió es defendible, o si el resultado induce a error. No lo hace
-porque no sabe qué decisión vas a tomar ni quién va a ver la gráfica.
+Decidir si esa gráfica corresponde a tu variable, si el ancho de intervalo es
+defendible o si el resultado induce a error depende de qué decisión vas a tomar y
+quién va a ver la gráfica, que es información que tú tienes.
 
-En esta unidad se invierte el ejercicio: se parte de gráficas ya hechas —algunas
-correctas, algunas no— y el trabajo es auditarlas.
+En esta unidad se invierte el ejercicio: se parte de gráficas ya hechas, algunas
+correctas y otras no, y el trabajo es auditarlas.
 :::

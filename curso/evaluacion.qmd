@@ -12,16 +12,15 @@ evalúa y cómo se juzga. Si algo aquí contradice a Brightspace, manda Brightsp
 
 ## Estructura
 
-El programa oficial establece dos momentos de evaluación, cada uno con un peso
-de entre 40% y 60% de la calificación final.
-
 | Momento | Cubre | Cuándo |
 |---|---|---|
-| Evaluación parcial | Bloques 1 a 3 | Semana 9 |
-| Evaluación final | Bloques 4 y 5 | Periodo de exámenes |
+| Parcial 1 | Sesiones 1 a 14 | Semana 8, en clase |
+| Parcial 2 | Sesiones 15 a 24 | Semana 13, en clase |
+| Evaluación final | Sesiones 25 a 30 | Periodo de exámenes |
 
-Cada momento se integra con tres componentes: examen, portafolio y trabajo de
-sesión.
+Los dos parciales ocupan una sesión de clase cada uno, que ya está contemplada en
+el calendario. Cada momento se integra con tres componentes: examen, portafolio y
+trabajo de sesión.
 
 ## Los tres componentes
 
@@ -31,9 +30,9 @@ Resolución de problemas. Incluye cálculo, pero el cálculo por sí solo no
 aprueba: cada reactivo numérico viene acompañado de una pregunta de
 interpretación o de límites.
 
-Un reactivo típico no pregunta *"calcula el coeficiente de variación"*. Pregunta
-*"aquí están dos series con sus estadísticos; ¿cuál es más dispersa, y qué
-tendría que ser cierto para que esa comparación sea válida?"*.
+Un reactivo típico pregunta *"aquí están dos series con sus estadísticos; ¿cuál
+es más dispersa, y qué tendría que ser cierto para que esa comparación sea
+válida?"*.
 
 ### Portafolio
 
@@ -51,32 +50,31 @@ el trabajo en equipo del caso de negocio.
 
 Estos aplican a cualquier entregable del curso.
 
-**Un número sin unidades no es una respuesta.** `1.68` no significa nada.
-`1.68 metros` sí. Los coeficientes adimensionales —como el de variación— se
+**Un número lleva sus unidades.** `1.68` por sí solo no dice nada.
+`1.68 metros` sí. Los coeficientes adimensionales, como el de variación, se
 declaran explícitamente como adimensionales, que es distinto de olvidar las
 unidades.
 
-**El cálculo correcto sobre la variable equivocada vale cero.** Sacar la media
-de una variable nominal está mal aunque la aritmética sea impecable. La sesión 3
-existe para esto.
+**El cálculo se juzga junto con la variable sobre la que se aplica.** La media de
+una variable nominal está mal aunque la aritmética sea impecable. Es el tema de
+la sesión 4.
 
-**Si el código no corre, no se califica.** No parcialmente: no se califica. Un
-análisis que no se puede reproducir no es un análisis.
+**El código tiene que correr para que el trabajo se califique.** Un análisis que
+no se puede reproducir no se puede verificar.
 
-**Los límites son parte de la respuesta, no un adorno.** Un entregable que
-concluye sin declarar qué no se puede concluir está incompleto.
+**Los límites son parte de la respuesta.** Un entregable que concluye sin decir
+qué queda fuera del alcance de los datos está incompleto.
 
-**Resultados sin verificar son tu responsabilidad.** Vengan de donde vengan,
-incluida la IA. Ver [Postura sobre IA](postura-ia.qmd).
+**Respondes por los resultados que entregas**, vengan de donde vengan, incluida
+la IA. Ver [Postura sobre IA](postura-ia.qmd).
 
 ## Sobre la práctica manual
 
 El programa oficial pide explícitamente "práctica manual" en varios puntos, y
 este curso la toma en serio, pero no como se suele entender.
 
-No se evalúa que puedas hacer aritmética sin computadora. Se evalúa que puedas
-**traducir una fórmula a operaciones y verificar que la función enlatada hace lo
-que crees que hace**. En el examen eso se ve así:
+Se evalúa que puedas **traducir una fórmula a operaciones y verificar que la
+función enlatada hace lo que crees que hace**. En el examen eso se ve así:
 
 > Aquí está una fórmula y aquí está un resultado de R. ¿Coinciden? Si no, ¿por
 > qué?

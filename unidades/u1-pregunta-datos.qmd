@@ -1,26 +1,26 @@
 ---
 title: "Unidad 1 · La pregunta y los datos"
-subtitle: "Sesiones 1 a 3 · Programa 1.1–1.3"
+subtitle: "Sesiones 1 a 4 · Programa 1.1 a 1.3"
 lang: es
 ---
 
 ## De qué se trata
 
 Antes de calcular nada hay que decidir tres cosas: **qué queremos saber**,
-**sobre quién**, y **qué tipo de dato tenemos entre manos**. La unidad es corta y
+**sobre quién** y **qué tipo de dato tenemos entre manos**. La unidad es corta y
 decide la calidad de todo lo que sigue.
 
-La mayoría de los errores graves en análisis de datos no son de aritmética. Son
-de haber calculado algo que no se podía calcular, sobre un grupo que no era el
-que interesaba.
+Los errores graves en análisis de datos suelen venir de haber calculado algo que
+no correspondía, sobre un grupo que no era el que interesaba.
 
 ## Sesiones
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 1 | [¿Qué es la estadística? Tu primer análisis](../slides/u1/s01_que_es_la_estadistica.qmd) | 1.1 |
-| 2 | Población y muestra | 1.2 |
-| 3 | Variables, escalas y la rutina de las cuatro preguntas | 1.3 |
+| 1 | [Presentación del curso: ¿qué es la estadística?](../slides/u1/s01_que_es_la_estadistica.qmd) | 1.1 |
+| 2 | Tu primer análisis: el cuaderno y los datos | 1.1 |
+| 3 | Población y muestra | 1.2 |
+| 4 | Variables, escalas y la rutina de las cuatro preguntas | 1.3 |
 
 ## Al terminar deberías poder
 
@@ -36,19 +36,18 @@ que interesaba.
 
 ## Las ideas que hay que entender de verdad
 
-**La escala de medición manda sobre el cálculo.** Es la idea central de la unidad
-y la que más se usa después. R te va a dejar calcular la media de un código postal
-sin protestar. La máquina no sabe qué representan tus números; tú sí. En cuanto
-una variable está codificada como número, todas las operaciones quedan
-técnicamente disponibles y casi ninguna es válida.
+**La escala de medición manda sobre el cálculo.** Es la idea de la unidad que más
+se usa después. R calcula la media de un código postal sin protestar: la máquina
+no sabe qué representan tus números, y tú sí. En cuanto una variable está
+codificada como número, todas las operaciones quedan técnicamente disponibles y
+casi ninguna es válida.
 
 **Una muestra bien tomada sabe del todo; una muestra grande mal tomada no.**
-Contraintuitivo y demostrable. El mecanismo de selección importa mucho más que el
-tamaño, y es la razón por la que un ejercicio con 30 alumnos puede enseñar más que
-un archivo de un millón de filas recogido por conveniencia.
+El mecanismo de selección importa mucho más que el tamaño, y por eso un ejercicio
+con 30 alumnos puede enseñar más que un archivo de un millón de filas recogido
+por conveniencia.
 
-**Un censo no es "una muestra grande".** Son objetos distintos con problemas
-distintos. Los [Censos Económicos](../datos/catalogo.qmd#censos-economicos) sirven
+**Un censo y una muestra son objetos distintos, con problemas distintos.** Los [Censos Económicos](../datos/catalogo.qmd#censos-economicos) sirven
 para ver la diferencia con datos mexicanos reales.
 
 ## Los datos de la unidad
@@ -57,18 +56,18 @@ En la sesión 1 el grupo se auto-encuesta. Ustedes son la población, y ese conj
 de datos acompaña las tres primeras unidades.
 
 Se captura **sin nombre, sin correo y sin marca de tiempo individual**. La
-anonimización ocurre en el momento de la captura, no después, y es también
-contenido: un dato personal que ya se recogió identificable no se puede
-desidentificar de verdad.
+anonimización ocurre en el momento de la captura, y es también contenido del
+curso: un dato personal que ya se recogió identificable no se puede desidentificar
+después.
 
 ::: {.ia-nota}
 Un modelo de lenguaje clasifica bien las escalas de medición en un examen. Falla
 cuando el dato viene de una fuente real y la clasificación depende de **cómo se
-levantó**, no de cómo se ve.
+levantó**, más que de cómo se ve.
 
 Ejemplo del catálogo: el índice de Google Trends parece una variable de razón
-—va de 0 a 100 y tiene cero— pero es un índice normalizado **relativo al periodo
+(va de 0 a 100 y tiene cero) pero es un índice normalizado **relativo al periodo
 consultado**. Decir que "el interés se duplicó" porque pasó de 40 a 80 es
-incorrecto, y ningún modelo te lo advierte si no le dijiste de dónde salió el
+incorrecto, y el modelo solo puede advertirlo si le dijiste de dónde salió el
 número.
 :::

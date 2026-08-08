@@ -108,7 +108,13 @@ $presentation-slide-text-align: left;
   line-height: 1.35;
 
   p { margin: 0.25em 0; }
+}
 
+// Rótulos solo donde aportan contenido. `.friccion` va sin rótulo: la pregunta
+// habla por sí sola. Ver playbook §3.2.
+.reveal .a-mano,
+.reveal .no-dice,
+.reveal .ia-nota {
   &::before {
     display: block;
     font-weight: 700;
@@ -128,7 +134,6 @@ $presentation-slide-text-align: left;
 .reveal .friccion {
   background-color: rgba(224, 168, 144, 0.18);
   border-left-color: $salmon-500;
-  &::before { content: "Detente y responde"; color: $salmon-700; }
 }
 
 .reveal .no-dice {

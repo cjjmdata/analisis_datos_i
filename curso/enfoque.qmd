@@ -4,8 +4,8 @@ subtitle: "Por qué la clase está diseñada así"
 lang: es
 ---
 
-Esta página explica **por qué** el curso está armado como está. No es
-indispensable para aprobar; sí ayuda a entender qué se te pide y por qué.
+Esta página explica **por qué** el curso está armado como está. Ayuda a entender
+qué se te pide.
 
 El diseño descansa en tres marcos: **diseño inverso**, las recomendaciones
 **GAISE** de la American Statistical Association, y cinco **principios de
@@ -19,10 +19,8 @@ Primero se decide a dónde hay que llegar; después se decide cómo llegar.
 2. Determinar la **evidencia aceptable**: cómo se va a saber que lo logró.
 3. Planear la **instrucción**: recién entonces, qué se enseña y en qué orden.
 
-Suena obvio y casi nadie lo hace. Lo común es empezar por el temario y esperar
-que al final salga un analista. Aquí es al revés: el
-[portafolio](../portafolio/index.qmd) es el resultado deseado, y el temario se
-recorre como la lista de bloques necesarios para construirlo.
+Aquí el [portafolio](../portafolio/index.qmd) es el resultado deseado, y el
+temario se recorre como la lista de bloques necesarios para construirlo.
 
 ::: {.aside}
 Wiggins, G. y McTighe, J. (2005). *Understanding by Design*. ASCD.
@@ -74,7 +72,7 @@ explicar el papel de la **aleatoriedad**; **6)** tener experiencia con modelos;
 conciencia de los problemas **éticos** de la práctica estadística.
 
 Este curso cubre a fondo del 1 al 5, más el 8 y el 9. El 6 lo toca al final con
-distribuciones. **El 7, la inferencia, es el objeto de Análisis de Datos II** —
+distribuciones. **El 7, la inferencia, es el objeto de Análisis de Datos II**, y
 por eso probabilidad ocupa la segunda mitad del semestre: es el puente.
 
 ## Marco 3 · Cinco principios de diseño
@@ -84,13 +82,11 @@ que nunca han programado.
 
 ### 🍒 Cuidar el primer día
 
-El primer día **no se instala nada**. Se abre un enlace y se corre código en 30
-segundos. Ver [Cómo trabajamos](computo.qmd).
+El primer día se abre un enlace y se corre código en 30 segundos. Ver
+[Cómo trabajamos](computo.qmd).
 
-Una clase que empieza con "instalen R, luego RStudio, luego estos ocho paquetes"
-pierde a la mitad del grupo antes de haber enseñado nada, y les enseña que esto
-es difícil y frágil. La primera experiencia debe ser: *escribí algo y pasó algo
-interesante*.
+La primera experiencia con la herramienta es escribir algo y ver que pasa algo
+interesante.
 
 ### 🍰 Empezar por el pastel
 
@@ -100,31 +96,29 @@ vas: la lista de ingredientes, o la foto del pastel terminado?
 Cada bloque abre con el **resultado**: un análisis real, funcionando, sobre datos
 que importan. Después se desarma para ver de qué está hecho. No al revés.
 
-Esto tiene una consecuencia incómoda que conviene decir: en la primera sesión
-vas a correr código que **todavía no entiendes**. Es intencional. Vas a entenderlo
-en las siguientes semanas, línea por línea.
+En las primeras sesiones vas a correr código completo antes de conocer cada una
+de sus partes. Las vas a desarmar en las siguientes semanas, línea por línea.
 
 ### 🍼 Saltarse los pasos de bebé
 
-Un ejemplo trivial no motiva a nadie. Es más fácil interesarse en cocinar un
-platillo completo que en picar cebolla perfectamente.
+Es más fácil interesarse en cocinar un platillo completo que en picar cebolla
+perfectamente.
 
-Pero hay un riesgo obvio: pasar del ejemplo trivial al ejemplo completo sin nada
-en medio —el meme de *"cómo dibujar un búho: paso 1, dos círculos; paso 2, el
-resto del búho"*—. Por eso el código se presenta **por capas**, agregando una
+El riesgo está en pasar del ejemplo trivial al ejemplo completo sin nada en
+medio, como el meme de *"cómo dibujar un búho: paso 1, dos círculos; paso 2, el
+resto del búho"*. Por eso el código se presenta **por capas**, agregando una
 línea a la vez y viendo qué cambia en el resultado.
 
 ### 🥦 Esconder las verduras
 
-Nadie se emociona con "hoy vemos tablas de frecuencia". Sí se emociona con "hoy
-averiguamos si la tienda de la esquina te está cobrando de más, con datos de
-Profeco". La técnica aburrida pero necesaria entra **al servicio** de algo que
-alguien quiere saber.
+La técnica entra al servicio de algo que alguien quiere saber: en vez de "hoy
+vemos tablas de frecuencia", "hoy averiguamos si la tienda de la esquina te está
+cobrando de más, con datos de Profeco".
 
 ### 🌲 Aprovechar el ecosistema
 
 Herramientas reales, no herramientas de juguete que solo existen en cursos
-introductorios. Lo que aprendas aquí —R, Quarto, tablas, gráficas— se usa en la
+introductorios. Lo que aprendas aquí (R, Quarto, tablas, gráficas) se usa en la
 industria y te sirve el semestre que entra en Análisis de Datos II.
 
 ## Cómo se construye el código de clase
@@ -144,8 +138,8 @@ hace cada pieza en vez de recibir quince líneas de golpe.
 
 ## La rutina de las cuatro preguntas
 
-Es el hábito que más se va a repetir. **Ante cualquier conjunto de datos —el
-tuyo, el mío, o uno que te enseñe un consultor— antes de calcular nada:**
+Es el hábito que más se va a repetir. **Ante cualquier conjunto de datos, sea el
+tuyo, el mío o uno que te enseñe un consultor, antes de calcular nada:**
 
 1. **¿Cuáles son las unidades de observación?** ¿Cada renglón es una persona, un
    hogar, una transacción, un día, un país?
@@ -156,9 +150,8 @@ tuyo, el mío, o uno que te enseñe un consultor— antes de calcular nada:**
 4. **¿Es un estudio observacional o un experimento?**
 
 Las cuatro se contestan **antes** de tocar el teclado. Las preguntas 3 y 4
-determinan qué se puede concluir, y en este curso muchas veces la respuesta
-honesta será *"con estos datos, no mucho"*. Aprender a decir eso es contenido, no
-resignación.
+determinan qué se puede concluir, y muchas veces la respuesta honesta será *"con
+estos datos, no mucho"*. Aprender a decir eso es contenido del curso.
 
 ::: {.a-mano}
 Adaptadas de las recomendaciones de evaluación de GAISE (Rossman, 2021). Van a
@@ -192,33 +185,32 @@ del peso de 10 gatos?
 :::
 
 La primera separa *dispersión* de *cantidad de datos*. La segunda separa *tamaño
-de muestra* de *variabilidad de la población* — y ninguna de las dos cantidades
+de muestra* de *variabilidad de la población*, y ninguna de las dos cantidades
 depende de cuántos midas. La tercera separa **puntos porcentuales** de **cambio
 porcentual**: de 60 a 75 son 15 puntos porcentuales y **25 por ciento** de
 aumento. Confundirlos es el error más común del periodismo de datos.
 
-Si puedes responderlas, entendiste. Si necesitas la fórmula, todavía no.
+Se responden razonando sobre qué mide cada cantidad.
 
 ## Simular antes de derivar
 
 Donde sea posible, la secuencia es: **simular** el fenómeno → **reconocer** el
 patrón → **derivar** la fórmula que lo explica.
 
-La fórmula llega como confirmación de algo que ya viste, no como afirmación que
-tienes que creer. Es la recomendación 5 de GAISE, y es la razón de usar R en
-lugar de una hoja de cálculo: simular diez mil veces algo cuesta una línea.
+La fórmula llega como confirmación de algo que ya viste. Es la recomendación 5
+de GAISE, y la razón de usar R en lugar de una hoja de cálculo: simular diez mil
+veces algo cuesta una línea.
 
 ## Ética
 
-Noveno objetivo de GAISE, y no es un apéndice. Aparece en tres lugares
-concretos:
+Noveno objetivo de GAISE. Aparece en tres lugares concretos:
 
-- **La encuesta del grupo** se levanta anónima desde la captura, y se explica por
-  qué desidentificar después no es lo mismo.
+- **La encuesta del grupo** se levanta anónima desde la captura, y se explica
+  por qué desidentificar después es distinto.
 - **La gráfica que engaña** sin mentir: ejes truncados, escalas manipuladas,
   categorías agrupadas convenientemente. Bloque 3.
-- **La [postura sobre IA](postura-ia.qmd)**: entregar resultados que no
-  verificaste es un problema ético, no solo técnico.
+- **La [postura sobre IA](postura-ia.qmd)**: entregar resultados sin verificar
+  es un problema ético, además de técnico.
 
 ## Referencias
 

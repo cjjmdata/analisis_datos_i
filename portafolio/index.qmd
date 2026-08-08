@@ -19,9 +19,8 @@ datos que te importan, en el lenguaje de tu carrera.
 Tres razones, y vale la pena que las entiendas porque explican cómo se califica.
 
 **Porque los grupos son mixtos.** En este salón hay gente de Mercadotecnia, de
-Administración, de Finanzas y de Negocios Internacionales. Un caso único
-diseñado para uno de esos perfiles aburre a los otros tres. Un caso genérico no
-le sirve a nadie.
+Administración, de Finanzas y de Negocios Internacionales. Un caso diseñado para
+un perfil le habla a la cuarta parte del salón.
 
 **Porque la técnica se entiende cuando la transfieres.** Calcular un coeficiente
 de variación sobre los datos del profesor demuestra que sabes teclear. Calcularlo
@@ -31,8 +30,7 @@ sentido para *esa* serie, demuestra otra cosa.
 **Porque la mezcla es el mejor material de discusión que tenemos.** Cuando
 lleguemos a asimetría, alguien va a traer una serie de rendimientos accionarios
 casi simétrica y alguien más una de exportaciones por destino brutalmente
-sesgada. Esa comparación, hecha con datos que los propios alumnos trajeron, vale
-más que cualquier ejemplo que yo prepare.
+sesgada. Esa comparación se hace con datos que ustedes trajeron.
 
 ## Cómo se arma
 
@@ -42,7 +40,7 @@ lo anterior.
 | Después del bloque | Agregas |
 |---|---|
 | 1 · Definición y clasificación | Ficha de la fuente. Unidad de observación. Escala de medición de cada variable |
-| 2 · Estadísticos descriptivos | Posición, tendencia central, dispersión y forma de tu serie — cada una interpretada, no solo calculada |
+| 2 · Estadísticos descriptivos | Posición, tendencia central, dispersión y forma de tu serie, cada una interpretada además de calculada |
 | 3 · Representación | Tabla de frecuencias y las gráficas que tu tipo de variable admite |
 | 4 · Probabilidad | Un evento relevante de tu dominio, formalizado y con su probabilidad estimada |
 | 5 · Distribuciones | ¿Tu variable se parece a alguna distribución conocida? Argumenta a favor y en contra |
@@ -51,21 +49,20 @@ lo anterior.
 
 En orden de peso:
 
-1. **La interpretación**, no el cálculo. R calcula bien siempre. La pregunta es
-   qué significa el número **para tu serie**, con sus unidades y su contexto.
-2. **Los límites.** Cada sección cierra declarando qué NO se puede concluir. Una
-   sección sin límites declarados está incompleta, aunque los cálculos estén
-   perfectos.
+1. **La interpretación.** R calcula bien siempre; la pregunta es qué significa el
+   número **para tu serie**, con sus unidades y su contexto.
+2. **Los límites.** Cada sección cierra diciendo hasta dónde llegan los datos.
+   Una sección sin límites está incompleta, aunque los cálculos estén perfectos.
 3. **La coherencia acumulada.** Si en el bloque 2 dijiste que tu variable es
    fuertemente asimétrica y en el bloque 5 la modelas como normal sin comentarlo,
    eso es una contradicción y cuenta como error.
 4. **La reproducibilidad.** Tu código corre de principio a fin en una sesión
-   limpia de R. Si no corre, no se califica.
-5. **El cálculo.** Que esté bien es un requisito, no un mérito.
+   limpia de R.
+5. **El cálculo.** Es un requisito de entrada.
 
 ::: {.no-dice}
-Un portafolio con veinte gráficas impecables y ninguna frase que diga qué
-significan está reprobado. Producir la gráfica es la parte que ya no es escasa.
+Veinte gráficas impecables sin una frase que diga qué significan no aprueban.
+Producir la gráfica es la parte que ya no es escasa.
 :::
 
 ## Uso de IA

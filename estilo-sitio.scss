@@ -111,7 +111,13 @@ table thead {
 
   > :first-child { margin-top: 0; }
   > :last-child  { margin-bottom: 0; }
+}
 
+// Los rótulos solo van donde aportan contenido, no donde anuncian la técnica.
+// `.friccion` queda sin rótulo: el recuadro marca visualmente que ahí hay una
+// pregunta, y la pregunta habla por sí sola. Ver playbook §3.2: en slides solo
+// hay caso y preguntas profesionales.
+.a-mano, .no-dice, .ia-nota {
   &::before {
     display: block;
     font-weight: 700;
@@ -129,11 +135,10 @@ table thead {
   &::before { content: "Primero a mano"; color: $teal-900; }
 }
 
-// Pregunta de fricción: se responde ANTES de ver el resultado.
+// Pregunta que se responde antes de ver el resultado. Sin rótulo.
 .friccion {
   background-color: rgba(224, 168, 144, 0.16);
   border-left-color: $salmon-500;
-  &::before { content: "Detente y responde"; color: $salmon-700; }
 }
 
 // Los límites del número que se acaba de calcular.

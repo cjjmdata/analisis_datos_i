@@ -4,9 +4,9 @@ subtitle: "Cómo se nombran los archivos, las carpetas y los objetos"
 lang: es
 ---
 
-Estas convenciones son **obligatorias** en todos los entregables. No son
-burocracia: son la diferencia entre un análisis que alguien más puede verificar y
-uno que hay que creer a ciegas.
+Estas convenciones son **obligatorias** en todos los entregables. Son la
+diferencia entre un análisis que alguien más puede verificar y uno que hay que
+creer a ciegas.
 
 ## 1. El flujo completo, siempre
 
@@ -16,24 +16,23 @@ Todo ejercicio va **desde el origen del dato hasta la conclusión**, sin saltos.
 Descarga o carga → inspección → limpieza → análisis → interpretación → límites.
 :::
 
-No se entrega un análisis que empieza con un archivo ya limpio salido de la nada.
 Si limpiaste algo, la limpieza está en el documento. Si descargaste algo, la
 descarga está en el documento.
 
-La razón es simple: **si no puedo reconstruir cómo llegaste a tu número, tu número
-no existe.** Ésta es la forma operativa de la regla que atraviesa el curso —los
+La razón: **si no puedo reconstruir cómo llegaste a tu número, tu número
+no existe.** Es la forma operativa de la regla que atraviesa el curso: los
 resultados que no se pueden verificar no se pueden sostener.
 
 ```r
-# 1. ORIGEN — de dónde salió el dato
+# 1. ORIGEN: de dónde salió el dato
 datos_crudos <- read_csv("datos/crudos/precios-profeco_2025-03-15.csv")
 
-# 2. INSPECCIÓN — qué recibí
+# 2. INSPECCIÓN: qué recibí
 glimpse(datos_crudos)
 nrow(datos_crudos)
 sum(is.na(datos_crudos$precio))
 
-# 3. LIMPIEZA — qué cambié y por qué, con el conteo antes y después
+# 3. LIMPIEZA: qué cambié y por qué, con el conteo antes y después
 datos <- datos_crudos |>
   filter(!is.na(precio))          # 214 registros sin precio publicado
 
@@ -46,7 +45,7 @@ precio_mediano <- median(datos$precio)
 ```
 
 ::: {.no-dice}
-`filter(!is.na(precio))` no es una operación neutral: descarta observaciones.
+`filter(!is.na(precio))` descarta observaciones.
 
 Si los productos sin precio publicado son sistemáticamente los más caros, tu
 mediana está sesgada hacia abajo y ninguna función lo corrige. Por eso el conteo
@@ -71,7 +70,7 @@ Cada objeto debe poder rastrearse hasta su origen **por su nombre**.
 temporal), `_orig` (versión previa que se conserva para comparar).
 
 **Sufijos prohibidos**: `_final`, `_v2`, `_bueno`, `_limpio2`, `_definitivo`.
-Suenan a canónicos y en dos semanas nadie sabe cuál era cuál.
+Suenan a canónicos y en dos semanas se vuelven indistinguibles entre sí.
 
 ::: {.callout-important}
 ## Nombres estables durante el semestre
@@ -150,8 +149,8 @@ mi-portafolio/
 Nunca edites a mano el archivo original, ni siquiera para "arreglar un dato".
 
 Si lo haces, pierdes la única referencia contra la cual verificar tu trabajo, y
-nadie —incluido tú en tres semanas— puede saber qué cambiaste. Toda corrección va
-en el código, donde queda registrada.
+nadie, incluido tú en tres semanas, puede saber qué cambiaste. Toda corrección
+va en el código, donde queda registrada.
 :::
 
 ## 4. Rutas
@@ -169,9 +168,8 @@ setwd("C:/Users/ana/Documents/tarea")                        # ❌
 read_csv("C:/Users/ana/Downloads/datos.csv")                 # ❌
 ```
 
-Una ruta absoluta funciona en **una sola computadora**: la tuya. En cuanto la
-entregas, el documento no corre y no se califica. Es el error más común del
-portafolio.
+Una ruta absoluta funciona en **una sola computadora**: la tuya. Al entregarlo,
+el documento deja de correr. Es el error más común del portafolio.
 
 ## 5. Estilo del código
 
@@ -194,10 +192,10 @@ precios <- filter(precios, precio > 0)   # los precios en 0 son datos faltantes
 ```
 
 ::: {.a-mano}
-Un comentario que dice `# filtrar precios` es ruido: eso ya lo dice el código.
+`# filtrar precios` repite lo que ya dice el código.
 
-Un comentario que dice **por qué** filtras es información que no está en ninguna
-otra parte, y es lo que te va a salvar cuando revises tu trabajo un mes después.
+El **por qué** filtras es información que no está en ninguna otra parte, y es lo
+que vas a necesitar cuando revises tu trabajo un mes después.
 :::
 
 ## Referencias

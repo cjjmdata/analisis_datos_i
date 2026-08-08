@@ -8,7 +8,7 @@ format:
     theme: [default, ../../estilo-slides.scss]
     slide-number: c/t
     chalkboard: true
-    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I — Sesión 1 · Programa 1.1"
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 1 · Programa 1.1"
     incremental: false
     fig-align: center
     code-line-numbers: false
@@ -29,12 +29,12 @@ library(dplyr)
 library(knitr)
 
 # Snapshot del Banco Mundial congelado por scripts/00_descarga_datos.R.
-# Todas las cifras de esta sesión salen de aquí: ninguna se teclea a mano.
+# Todas las cifras de esta sesión salen de aquí.
 paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
 
 # Último año disponible por país, con exportaciones y el PIB total
-# reconstruido (per cápita × población) para poder comparar la proporción
-# contra el valor absoluto.
+# reconstruido (per cápita × población) para comparar la proporción contra el
+# valor absoluto.
 ultimo <- paises |>
   filter(!is.na(exportaciones_pc), !is.na(pib_per_capita), !is.na(poblacion)) |>
   group_by(pais) |>
@@ -63,7 +63,7 @@ Cuatro economías: **México · China · Estados Unidos · Brasil**
 ::: {.friccion}
 Ordénalas de mayor a menor según **cuánto exportan**.
 
-No hay truco. Escribe tu orden antes de avanzar.
+Escribe tu orden antes de avanzar.
 :::
 
 ## Depende de qué preguntaste {.smaller}
@@ -81,14 +81,14 @@ comparacion |>
 ```
 
 ::: {.a-mano}
-Las dos columnas salen **del mismo dato**. Y dan órdenes distintos.
+Las dos columnas salen del mismo dato y dan órdenes distintos.
 
 Como proporción de su economía, México exporta casi el doble que China. En
 dólares, China exporta **`r sprintf("%.1f", razon_absoluta)` veces más** que
 México.
 :::
 
-## Ninguna de las dos columnas miente {.smaller}
+## Cada columna responde una pregunta distinta {.smaller}
 
 ::::{.columns}
 
@@ -111,26 +111,25 @@ China: enorme. México: modesto.
 ::::
 
 ::: {.no-dice}
-Decir *"México exporta más que China"* sin decir **respecto a qué** no es un dato:
-es una frase que se puede defender o demoler según convenga.
+Decir *"México exporta más que China"* sin decir respecto a qué es una frase que
+se puede defender o demoler según convenga.
 
-El número no engaña. El que engaña es quien elige el denominador y no lo dice.
+El número está bien. El problema es de quien elige el denominador y se lo calla.
 :::
 
-## Lo que acaba de pasar {.smaller}
+## Lo que hicimos {.smaller}
 
-Tres pasos, y son los tres que hace esta materia:
-
-1. **Medir bien.** Elegir *qué* magnitud responde la pregunta —y, sobre todo,
-   **respecto a qué**. Casi todos los errores caros empiezan aquí.
-2. **Calcular.** La parte fácil. Una división.
-3. **Interpretar y acotar.** Qué implica el número y qué **no** implica.
+1. **Medir bien.** Elegir qué magnitud responde la pregunta, y respecto a qué.
+   Ahí empiezan casi todos los errores caros.
+2. **Calcular.** Una división.
+3. **Interpretar y acotar.** Qué implica el número y qué queda fuera de su
+   alcance.
 
 ::: {.a-mano}
-La aritmética era de secundaria. Lo difícil fue **saber qué había que calcular** y
-**decir hasta dónde llega la respuesta**.
+La aritmética era de secundaria. Lo difícil fue saber qué había que calcular y
+hasta dónde llega la respuesta.
 
-Eso es la materia. Y es la parte que no se puede delegar.
+Eso es la materia, y es la parte que no se delega.
 :::
 
 # El proceso completo {background-color="#24494C"}
@@ -145,17 +144,17 @@ apoyar la toma de decisiones.
 
 Para qué sirve:
 
-- Decidir con datos, lo que **disminuye la incertidumbre — aunque no la elimina**
+- Decidir con datos, lo que **disminuye la incertidumbre, aunque no la elimina**
 - Revelar patrones y tendencias
 - Optimizar operaciones
 - Segmentar clientes
 - Fomentar la innovación
 
 ::: {.a-mano}
-Fíjate en el paréntesis. Todo este curso vive ahí.
+Fíjate en la coma. Todo este curso vive ahí.
 
-Un análisis no te da certeza: te da menos incertidumbre y te obliga a declarar
-cuánta queda. Quien te venda certeza te está vendiendo otra cosa.
+Un análisis deja ver cuánta incertidumbre queda. Quien ofrezca certeza está
+vendiendo otra cosa.
 :::
 
 ## Las cinco etapas {.smaller}
@@ -169,12 +168,11 @@ cuánta queda. Quien te venda certeza te está vendiendo otra cosa.
 | 5 | **Visualización** | Comunicar el hallazgo de forma que se entienda |
 
 ::: {.no-dice}
-Las etapas 1 a 3 se llevan la mayor parte del tiempo real de un proyecto, y casi
-ningún curso las enseña.
+Las etapas 1 a 3 se llevan la mayor parte del tiempo real de un proyecto.
 
-En éste sí: todo lo que entregues va a incluir **de dónde salió el dato y qué le
-hiciste**. Un análisis que empieza con un archivo ya limpio, salido de la nada, no
-se puede verificar.
+Todo lo que entregues en este curso incluye de dónde salió el dato y qué le
+hiciste. Un análisis que arranca de un archivo ya limpio, sin decir de dónde
+vino, se tiene que creer a ciegas.
 :::
 
 ## Un caso: Starbucks {.smaller}
@@ -188,8 +186,8 @@ se puede verificar.
 - Patrones de flujo de personas
 - Proximidad de otras tiendas
 
-El modelo predice el impacto de la nueva ubicación **incluso sobre sus propias
-sucursales**.
+El modelo predice el impacto de la nueva ubicación, incluso sobre sus propias
+sucursales.
 :::
 
 :::{.column width="50%"}
@@ -203,21 +201,21 @@ sucursales**.
 ::::
 
 ::: {.no-dice}
-El modelo predice **cuánto vendería** una tienda nueva. No dice si abrirla es buena
-idea.
-
-Esa decisión depende de la renta, del contrato, de la marca, del riesgo — cosas que
-no están en los datos. El análisis acota la pregunta; no la contesta.
+El modelo predice cuánto vendería una tienda nueva. La decisión de abrirla
+depende de la renta, del contrato, de la marca y del riesgo, que están fuera de
+los datos.
 :::
 
-::: {style="font-size:0.55em; color:#6C7A7B;"}
-Fuente: Harvard Digital Initiative, *Starbucks: grinding data*.
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Fuente: Harvard Digital Initiative, *Starbucks: grinding data*. Entrada de
+estudiante en plataforma de curso, no publicación arbitrada; las cifras del caso
+provienen de la empresa.
 :::
 
 ## Dónde entra este curso {.smaller}
 
-De las cinco etapas, este curso vive sobre todo en la **4 y la 5** —analizar y
-comunicar— con la **2** presente todo el tiempo, porque los datos reales llegan
+De las cinco etapas, este curso vive sobre todo en la **4 y la 5**, analizar y
+comunicar, con la **2** presente todo el tiempo, porque los datos reales llegan
 sucios.
 
 ::: {.friccion}
@@ -231,7 +229,7 @@ la población equivocada. Ningún análisis posterior lo arregla.
 
 ## Definición de trabajo {.smaller}
 
-Si el análisis de datos es el proceso, la estadística es la **caja de herramientas**
+Si el análisis de datos es el proceso, la estadística es la caja de herramientas
 de las etapas 4 y 5.
 
 ::: {.concepto}
@@ -239,8 +237,8 @@ La estadística es el conjunto de métodos para **recolectar, organizar, resumir
 analizar datos**, y para **tomar decisiones** cuando la información es incompleta.
 :::
 
-Las dos mitades importan. La primera describe lo que tienes. La segunda te permite
-afirmar algo sobre lo que **no** observaste.
+Las dos mitades cuentan. La primera describe lo que tienes. La segunda te permite
+afirmar algo sobre lo que no observaste.
 
 ## Las dos ramas {.smaller}
 
@@ -255,7 +253,7 @@ Resume y presenta los datos **que tienes**.
 - Distribución de precios en una tienda
 - La tabla que acabamos de ver
 
-No se sale de los datos observados.
+Se queda dentro de los datos observados.
 
 **Es este curso.**
 :::
@@ -268,7 +266,7 @@ Concluye sobre una población **a partir de una muestra**.
 - Estatura promedio de la universidad, midiendo 200 alumnos
 - Intención de voto nacional, con 1,200 entrevistas
 
-Requiere probabilidad — por eso es la segunda mitad del semestre.
+Requiere probabilidad, que es la segunda mitad del semestre.
 
 **Es Análisis de Datos II.**
 :::
@@ -290,19 +288,19 @@ promedio. ¿Descriptiva o inferencial?
 
 ## Descriptiva {.smaller}
 
-Registró **todas** las ventas: no hay muestra. El promedio es exacto.
+Registró todas las ventas, así que no hay muestra. El promedio es exacto.
 
 Ahora cambia la pregunta: *¿cuál será el ticket promedio del mes que entra?*
 
-Eso ya es inferencia — y de la difícil, porque el mes que entra no es una muestra
-aleatoria de nada. Es el futuro.
+Eso ya es inferencia, y de la difícil, porque el mes que entra es el futuro, no
+una muestra aleatoria de nada.
 
 ::: {.no-dice}
-El tamaño de los datos no determina la rama. La **pregunta** la determina.
+La **pregunta** determina la rama, no el tamaño de los datos.
 
 Millones de registros siguen siendo descriptiva si solo describes lo que
-contienen. Y 30 observaciones ya son inferencia si pretendes hablar de algo que no
-mediste.
+contienen. Y 30 observaciones ya son inferencia si pretendes hablar de algo que
+no mediste.
 :::
 
 # Cómo vamos a trabajar {background-color="#24494C"}
@@ -317,21 +315,20 @@ mediste.
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve |
 
-Las **gráficas van antes que los promedios**, a propósito: enseñar la media antes
-del histograma es enseñar el resumen de una forma que nunca has visto.
+Las gráficas van antes que los promedios. Cuando llegues a la media ya vas a
+saber dibujar la distribución sobre la que se calcula.
 
 ## Tres cosas prácticas {.smaller}
 
-**Programamos en R, desde el navegador.** No hay que instalar nada y no hay
-sesiones de "introducción a R": cada herramienta entra en la sesión donde hace
-falta para responder una pregunta.
+**Programamos en R, desde el navegador.** El curso corre en Colab y cada
+herramienta entra en la sesión donde hace falta para responder una pregunta.
 
-**Tu portafolio.** Eliges una serie de datos reales de tu carrera —hay un catálogo—
-y le aplicas todo lo del curso durante el semestre. Es tuyo, no una plantilla.
+**Tu portafolio.** Eliges una serie de datos reales de tu carrera, de un catálogo
+que está en el sitio, y le aplicas todo lo del curso durante el semestre.
 
-**Los grupos son mixtos entre carreras a propósito.** Comparar una serie de precios
-accionarios contra una de comercio exterior contra una de ingreso de hogares es una
-discusión que un grupo homogéneo no puede tener.
+**Los grupos son mixtos entre carreras.** Comparar una serie de precios
+accionarios contra una de comercio exterior contra una de ingreso de hogares es
+una discusión que solo se puede tener con esa mezcla.
 
 ## Sobre la IA {.smaller}
 
@@ -339,10 +336,9 @@ discusión que un grupo homogéneo no puede tener.
 Está **permitida y regulada**. Puedes usarla para escribir y depurar código,
 declarándolo.
 
-No para redactar tus interpretaciones ni tus límites: es exactamente lo que se
-está evaluando.
+Las interpretaciones y los límites los redactas tú: es lo que se evalúa.
 
-Y eres responsable de todo lo que entregues, incluido lo que no revisaste.
+Respondes por todo lo que entregues, incluido lo que no revisaste.
 :::
 
 Las reglas completas están en el sitio, en *Postura sobre IA*. Es lectura
@@ -350,15 +346,15 @@ obligatoria antes de la primera entrega.
 
 ## Lo que espero al final {.smaller}
 
-Que puedas tomar un análisis hecho por alguien más —una persona, un modelo, un
-consultor— y responder tres preguntas:
+Que puedas tomar un análisis hecho por alguien más, una persona, un modelo o un
+consultor, y responder tres preguntas:
 
 1. ¿El cálculo corresponde a la pregunta que se decía responder?
 2. ¿Los supuestos del método se cumplen en estos datos?
 3. ¿Qué se está afirmando que los datos no sostienen?
 
 ::: {.a-mano}
-Ésa es la habilidad que sobrevive a la automatización, y es la que se paga.
+Esa es la habilidad que sobrevive a la automatización, y la que se paga.
 :::
 
 # La encuesta del grupo {background-color="#24494C"}
@@ -372,13 +368,12 @@ Se captura: **edad** en años cumplidos · **estatura** en metros · **carrera**
 **tiempo de traslado** en minutos · **número de zapatos**.
 
 ::: {.callout-important}
-## Sin nombre y sin correo
+## Anónima desde la captura
 
-La encuesta es **anónima desde la captura**, no anonimizada después.
+Se levanta sin nombre y sin correo.
 
-Es contenido del curso, no trámite: un dato personal que ya se recogió
-identificable no se puede desidentificar de verdad. La única protección sólida es
-no recogerlo.
+Un dato personal que ya se recogió identificable no se puede desidentificar
+después. La única protección sólida es no recogerlo.
 :::
 
 ## Por qué nuestros propios datos {.smaller}
@@ -389,7 +384,7 @@ no recogerlo.
 Porque van a discutir con ellos.
 
 Cuando salga la estatura promedio del salón, alguien va a decir *"pero yo no me
-parezco a ese número"*. Perfecto: esa objeción **es** la unidad 3.
+parezco a ese número"*. Esa objeción es la unidad 3 completa.
 
 Con datos ajenos nadie objeta nada. Con los propios, todos tienen una intuición
 que defender.
@@ -409,9 +404,8 @@ Materia de las sesiones 3 y 4.
 
 ## Para la próxima sesión {.smaller}
 
-**Revisa *Cómo trabajamos* en el sitio.** No tienes que instalar nada, pero
-confirma que puedes abrir Colab con tu cuenta de Google. La sesión 2 empieza
-escribiendo código.
+**Revisa *Cómo trabajamos* en el sitio** y confirma que puedes abrir Colab con tu
+cuenta de Google. La sesión 2 empieza escribiendo código.
 
 **Lee *Postura sobre IA*.** Es corta y define qué puedes y qué no puedes hacer.
 
@@ -422,6 +416,4 @@ sola, concreta.
 
 **Sesión 2 · Tu primer análisis**
 
-Vas a correr código real sobre datos reales antes de entender qué hace.
-
-Es a propósito.
+Código real sobre datos reales.

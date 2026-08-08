@@ -1,15 +1,13 @@
 ---
 title: "Unidad 4 · Anticipar"
-subtitle: "Sesiones 21 a 25 · Programa 4.1–4.4"
+subtitle: "Sesiones 20 a 24 · Programa 4.1 a 4.4"
 lang: es
 ---
 
 ## De qué se trata
 
 Hasta aquí el curso describió datos que ya existían. A partir de aquí se razona
-sobre lo que **todavía no ocurrió**. Es el giro conceptual más grande del
-semestre y conviene decirlo en voz alta: cambia el objeto de estudio, no solo la
-técnica.
+sobre lo que **todavía no ocurrió**. Cambia el objeto de estudio, no solo la técnica.
 
 Esta unidad es el puente hacia *Análisis de Datos II*. Toda la inferencia
 estadística de la materia siguiente descansa aquí.
@@ -18,11 +16,12 @@ estadística de la materia siguiente descansa aquí.
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 21 | Aleatoriedad, espacio muestral y eventos | 4.1 |
-| 22 | Probabilidad y ley de los grandes números | 4.1 |
-| 23 | Conteo: cuando los resultados son igualmente probables | 4.2 |
-| 24 | Eventos compuestos: regla aditiva, multiplicativa e independencia | 4.2.1, 4.2.2 |
-| 25 | Probabilidad condicional y teorema de Bayes | 4.2.2, 4.3 |
+| 20 | Aleatoriedad, espacio muestral y eventos | 4.1 |
+| 21 | Probabilidad y ley de los grandes números | 4.1 |
+| 22 | Conteo: cuando los resultados son igualmente probables | 4.2 |
+| 23 | Eventos compuestos: regla aditiva, multiplicativa e independencia | 4.2.1, 4.2.2 |
+| 24 | Probabilidad condicional y teorema de Bayes | 4.2.2, 4.3 |
+| | *Evaluación del parcial 2* | |
 
 ## Al terminar deberías poder
 
@@ -36,10 +35,9 @@ estadística de la materia siguiente descansa aquí.
 
 ## Las ideas que hay que entender de verdad
 
-**La aleatoriedad no se parece a lo que crees.** La gente genera secuencias "al
-azar" con muy pocas rachas, y descarta como sospechosas las secuencias
-genuinamente aleatorias, que sí las tienen. La simulación lo demuestra en tres
-líneas.
+**La aleatoriedad se ve distinta de como se la imagina.** Las secuencias que la
+gente genera "al azar" tienen muy pocas rachas, y las genuinamente aleatorias sí
+las tienen. La simulación lo muestra en tres líneas.
 
 **La ley de los grandes números no dice lo que dice la falacia del jugador.** Que
 las frecuencias converjan a la probabilidad no implica que los resultados se
@@ -48,11 +46,10 @@ completas.
 
 **Contar solo sirve si los resultados son igualmente probables.** Es el supuesto
 que casi nadie enuncia. Las reglas de conteo son una herramienta al servicio de
-ese supuesto, no un fin en sí mismas — por eso aquí ocupan una sesión y no tres.
+ese supuesto, así que aquí ocupan una sesión y no tres.
 
-**Condicionar es reducir el espacio muestral.** Es la única idea que hay que
-entender de probabilidad condicional; todo lo demás sale de ahí, incluida la regla
-multiplicativa y el propio Bayes.
+**Condicionar es reducir el espacio muestral.** De ahí sale todo lo demás,
+incluida la regla multiplicativa y el propio Bayes.
 
 **Bayes no es una fórmula, es cómo se actualiza una creencia con evidencia.** Se
 introduce con el caso clásico: una prueba diagnóstica muy precisa para una
@@ -63,9 +60,7 @@ razón por la que la prevalencia importa tanto como la precisión de la prueba.
 ## Cómo se enseña esta unidad
 
 **Simulando antes de derivar.** La secuencia de cada tema es la misma: simular,
-observar el patrón, y solo entonces derivar la fórmula que lo explica. La fórmula
-llega como confirmación de algo que ya se vio, no como afirmación que hay que
-creer.
+observar el patrón, y solo entonces derivar la fórmula que lo explica. La fórmula llega como confirmación de algo que ya se vio.
 
 ```r
 # La ley de los grandes números, en tres líneas
@@ -79,19 +74,18 @@ Que la frecuencia observada se acerque a 1/6 después de cinco mil tiradas no di
 nada sobre la tirada 5001.
 
 La convergencia es una propiedad del promedio acumulado, no una fuerza que
-corrija los resultados individuales. Confundir ambas cosas es la falacia del
-jugador, y es el error más caro de esta unidad.
+corrija los resultados individuales. Confundirlas es la falacia del jugador.
 :::
 
 ::: {.ia-nota}
 La probabilidad condicional es el punto donde los modelos de lenguaje fallan de
 forma más consistente y más peligrosa.
 
-Confundir $P(A|B)$ con $P(B|A)$ —la falacia del fiscal— es un error que aparece
+Confundir $P(A|B)$ con $P(B|A)$, la falacia del fiscal, es un error que aparece
 por todas partes en el material con el que se entrenaron, y lo reproducen con
-seguridad total y redacción impecable.
+redacción impecable.
 
-En la sesión 25 el ejercicio va al revés: se presentan razonamientos
+En la sesión 24 el ejercicio va al revés: se presentan razonamientos
 probabilísticos generados por un modelo, algunos correctos y otros no, y hay que
-distinguirlos. Ninguno viene con marca de agua; hay que hacer las cuentas.
+distinguirlos haciendo las cuentas.
 :::

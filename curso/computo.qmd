@@ -1,36 +1,31 @@
 ---
 title: "Cómo trabajamos"
-subtitle: "Nada que instalar el primer día"
+subtitle: "Todo desde el navegador"
 lang: es
 ---
 
-## Lo primero: no instales nada
+## El curso corre en el navegador
 
 Este curso corre en **Google Colab**, un entorno que ya trae R listo en el
 navegador. Abres un enlace, inicias sesión con tu cuenta de Google y escribes
-código. No hay instalación, no hay versiones incompatibles, no hay "a mí me
-funciona y a ti no".
+código. Todos trabajan sobre la misma versión y el mismo entorno.
 
 ::: {.a-mano}
-Esto es una decisión de diseño, no un atajo.
-
-Una primera clase que se va en instalar programas pierde a la mitad del grupo
-antes de haber enseñado nada, y les deja la impresión de que esto es frágil y
-difícil. Tu primer contacto con R tiene que ser *escribí algo y pasó algo
-interesante*, no *llevo cuarenta minutos con un error de permisos*.
+Tu primer contacto con R va a ser escribir algo y ver qué pasa, en la primera
+sesión, sin haber configurado nada antes.
 :::
 
-## Lo único que necesitas
+## Lo que necesitas
 
 1. Una **cuenta de Google** (la institucional sirve).
 2. Un navegador.
 
-Eso es todo. Comprueba que puedes abrir <https://colab.research.google.com> antes
-de la primera sesión. Si abre, estás listo.
+Comprueba que puedes abrir <https://colab.research.google.com> antes de la
+primera sesión. Si abre, estás listo.
 
 ## Cómo se ve un cuaderno
 
-Un cuaderno de Colab es una secuencia de **celdas**. Hay de dos tipos:
+Un cuaderno de Colab es una secuencia de **celdas**, de dos tipos:
 
 - **Celdas de texto**: explicaciones, como esta.
 - **Celdas de código**: R que puedes ejecutar.
@@ -42,7 +37,7 @@ Para correr una celda de código: clic en ella y **Ctrl + Enter** (o el botón d
 ## Los cuadernos del curso son de solo lectura
 
 Cuando abras un cuaderno de la clase, lo primero es **Archivo → Guardar una copia
-en Drive**. Trabajas sobre tu copia. Si editas sin copiar, pierdes tu trabajo.
+en Drive**. Trabajas sobre tu copia; los cambios sobre el original se pierden.
 
 Es el error del primer día, todos los semestres.
 :::
@@ -54,9 +49,9 @@ la 3, R no conoce todavía lo que la 3 define y te va a decir `object not found`
 Cuando algo se rompa sin razón aparente: **Entorno de ejecución → Reiniciar y
 ejecutar todo**. Resuelve el 80% de los problemas.
 
-**La sesión se muere.** Si dejas Colab inactivo un rato, se desconecta y se
-olvida de todo. No pierdes tu código, pero sí los objetos en memoria: hay que
-volver a correr las celdas desde arriba. No es un error tuyo.
+**La sesión caduca.** Si dejas Colab inactivo un rato, se desconecta y libera la
+memoria. Tu código sigue ahí; los objetos hay que volver a crearlos corriendo las
+celdas desde arriba. Es comportamiento normal del entorno.
 
 ## Paquetes
 
@@ -69,8 +64,8 @@ library(tidyverse)
 ```
 
 ::: {.callout-note}
-`install.packages()` **instala** — se hace una vez y en Colab casi nunca hace
-falta. `library()` **carga** — se hace cada vez que abres un cuaderno.
+`install.packages()` **instala**: se hace una vez, y en Colab casi nunca hace
+falta. `library()` **carga**: se hace cada vez que abres un cuaderno.
 
 Confundirlas es normal el primer mes. Si ves `could not find function`, casi
 siempre falta un `library()`.
@@ -78,8 +73,8 @@ siempre falta un `library()`.
 
 ## Si prefieres trabajar en tu computadora
 
-Es opcional y no da ninguna ventaja de calificación, pero si quieres tener tu
-propio entorno —y para Análisis de Datos II te va a servir— este es el camino:
+Es opcional. Si quieres tener tu
+propio entorno (y para Análisis de Datos II te va a servir), este es el camino:
 
 1. **R** desde <https://cran.r-project.org/>
 2. Un editor: **Positron** (<https://positron.posit.co/>) o **RStudio Desktop**
@@ -100,16 +95,16 @@ Hazlo cuando tengas tiempo y calma, no la noche antes de una entrega.
 
 Antes de escribirme, en este orden:
 
-1. **Lee el mensaje completo.** No el color rojo: las palabras. R es críptico
-   pero rara vez miente.
-2. **¿Es error o advertencia?** `Warning` no detiene nada. `Error` sí.
-3. **Reinicia y ejecuta todo.** En serio, resuelve casi todo.
+1. **Lee el mensaje completo**, las palabras y no el color. R es críptico pero
+   preciso.
+2. **Distingue error de advertencia.** `Warning` deja seguir; `Error` detiene.
+3. **Reinicia y ejecuta todo.** Resuelve la mayoría de los casos.
 4. **Busca el texto exacto del error.** Alguien ya lo tuvo.
 5. **Pregúntale a un modelo de lenguaje.** Para errores de entorno es apropiado y
    no hay que declararlo. Ver [Postura sobre IA](postura-ia.qmd).
 
 Si nada funciona, escríbeme con qué escribiste y **el texto completo** del error.
-Una captura del mensaje cortado no me deja ayudarte.
+Con el mensaje completo puedo ayudarte; con una captura cortada, no.
 
 ## Los errores del primer mes
 
@@ -122,7 +117,7 @@ Una captura del mensaje cortado no me deja ayudarte.
 | `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
 
 ::: {.a-mano}
-El último es el más frecuente y el más frustrante. R señala **dónde se dio
-cuenta** del problema, que casi nunca es **dónde está**: suele estar en la línea
-anterior. Acostúmbrate a mirar hacia arriba.
+El último es el más frecuente. R señala **dónde se dio cuenta** del problema, que
+casi nunca es **dónde está**: suele estar en la línea anterior. Acostúmbrate a
+mirar hacia arriba.
 :::

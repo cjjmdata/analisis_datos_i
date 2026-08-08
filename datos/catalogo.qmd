@@ -11,13 +11,12 @@ datos hasta conocerlos de verdad.
 
 Las carreras que aparecen en cada fuente son una **sugerencia de afinidad**, no
 una restricción. Si eres de Finanzas y quieres trabajar con precios de la
-canasta básica, adelante — pero tendrás que argumentar por qué.
+canasta básica, adelante, con el argumento de por qué.
 
 ## Cómo leer el estado de verificación
 
 Las fuentes cambian: cierran APIs, migran portales, bloquean descargas
-automatizadas. Cada ficha declara **qué se comprobó y cuándo**, para que sepas
-qué esperar antes de perder una tarde.
+automatizadas. Cada ficha declara **qué se comprobó y cuándo**.
 
 | Estado | Significa |
 |---|---|
@@ -57,10 +56,10 @@ Precios diarios de acciones, índices y ETF.
 ::: {.callout-warning}
 ## Stooq no sirve para esto
 
-Es la fuente que aparece en muchos tutoriales de R. **Está bloqueada para
-descargas por script**: responde con un reto de JavaScript en lugar del CSV, así
-que `read_csv("https://stooq.com/...")` te devuelve HTML, no datos. Comprobado el
-8 de agosto de 2026.
+Es la fuente que aparece en muchos tutoriales de R. **Bloquea las descargas por
+script**: responde con un reto de JavaScript en lugar del CSV, así que
+`read_csv("https://stooq.com/...")` devuelve HTML. Comprobado el 8 de agosto de
+2026.
 :::
 
 ### INEGI · Índice Nacional de Precios al Consumidor {#inpc}
@@ -81,7 +80,7 @@ Exportaciones e importaciones por país, producto y año. Interfaz en español.
 - **Estado**: 🟡 Portal disponible y navegable. Descarga a CSV desde la interfaz;
   la API tiene niveles de acceso de pago.
 - **Para qué sirve aquí**: la distribución de las exportaciones mexicanas por
-  destino es fuertemente asimétrica — es un caso natural para discutir por qué la
+  destino es fuertemente asimétrica, y es un caso natural para discutir por qué la
   media es una pésima descripción y la mediana tampoco alcanza.
 - <https://oec.world/es>
 
@@ -225,8 +224,7 @@ su serie. Está documentada en `scripts/00_descarga_datos.R`.
 
 ## Lo que tienes que documentar de tu fuente
 
-Parte de la calificación del portafolio es la **ficha de la fuente**. No es
-burocracia: es la diferencia entre un analista y alguien que grafica columnas.
+Parte de la calificación del portafolio es la **ficha de la fuente**.
 
 1. **Quién levanta el dato y con qué propósito.** Un precio que reporta Profeco
    para vigilar abusos no se levanta igual que uno que reporta una empresa para

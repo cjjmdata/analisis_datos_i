@@ -9,8 +9,7 @@ Lectura obligatoria antes de la primera entrega.
 ## El punto de partida
 
 Un modelo de lenguaje resuelve en segundos casi cualquier ejercicio de cálculo
-de este curso. Eso es un hecho, no una amenaza, y fingir lo contrario sería
-tratarlos como tontos.
+de este curso. Es un hecho verificable y el curso parte de ahí.
 
 La pregunta interesante es otra: **si la ejecución ya no es escasa, ¿qué te hace
 valioso?**
@@ -34,7 +33,7 @@ ni qué decisión vas a tomar con ellos. Eso lo sabes tú, o no lo sabe nadie.
 - Preguntar qué significa un mensaje de error.
 - Pedir que te expliquen un concepto de otra manera.
 
-Es equivalente a consultar la documentación. No hay nada que declarar.
+Es equivalente a consultar la documentación.
 
 ### Permitido, declarando
 
@@ -52,11 +51,11 @@ Se declara en una sección **Uso de IA** al final del entregable, con:
 ### No permitido
 
 - **Que redacte tus interpretaciones.** Es lo que se está evaluando.
-- **Que redacte la sección de límites.** Ídem, y además es donde los modelos
-  producen texto más genérico y vacío.
-- **Entregar resultados que no verificaste.** Si lo entregas, lo sostienes.
+- **Que redacte la sección de límites.** Igual, y además es donde los modelos
+  producen el texto más genérico.
+- **Entregar resultados sin verificar.** Si lo entregas, lo sostienes.
 - **Inventar o completar datos.** Un dato que no viene de tu fuente no existe.
-  Esto es motivo de anulación del trabajo, no de puntos menos.
+  Es motivo de anulación del trabajo.
 
 ## Por qué la verificación no es opcional
 
@@ -76,8 +75,8 @@ Sesión 4.
 
 **Aplican fórmulas fuera de su dominio de validez.** La regla empírica del
 68-95-99.7 solo vale para distribuciones aproximadamente normales. Aplicada a
-ingresos o a precios —fuertemente asimétricos— da resultados absurdos con toda
-confianza. Chebyshev sí aplica siempre, y por eso existe. Sesión 13.
+ingresos o a precios, que son fuertemente asimétricos, da resultados absurdos
+con toda confianza. Chebyshev sí aplica siempre, y por eso existe. Sesión 13.
 
 **Fallan en probabilidad condicional.** Confundir $P(A|B)$ con $P(B|A)$ es el
 error clásico del razonamiento bayesiano, y es un error que los modelos
@@ -95,19 +94,18 @@ en el segundo.
 
 ## Cómo se detecta
 
-No con detectores automáticos: no funcionan y producen acusaciones falsas.
-
-Se detecta preguntando. En cualquier momento puedo pedirte que expliques una
+Preguntando. Los detectores automáticos producen acusaciones falsas.
+ En cualquier momento puedo pedirte que expliques una
 línea de tu código o que justifiques una decisión de tu análisis. Si el trabajo
 es tuyo, la conversación dura dos minutos.
 
 ## Lo que espero de ti al terminar el semestre
 
-Que puedas tomar un análisis hecho por alguien más —una persona, un modelo, un
-consultor— y responder tres preguntas:
+Que puedas tomar un análisis hecho por alguien más, sea una persona, un modelo o
+un consultor, y responder tres preguntas:
 
 1. ¿El cálculo corresponde a la pregunta que se decía responder?
 2. ¿Los supuestos del método se cumplen en estos datos?
 3. ¿Qué se está afirmando que los datos no sostienen?
 
-Esa es la habilidad que sobrevive a la automatización. Es la que se paga.
+Es la habilidad que sobrevive a la automatización, y la que se paga.
