@@ -15,186 +15,116 @@ format:
     highlight-style: github
     transition: fade
     background-transition: fade
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
-# Arranque {background-color="#24494C"}
+```{r}
+#| label: setup
 
-## Ocho preguntas, sin calculadora {.smaller}
+library(readr)
+library(dplyr)
+library(knitr)
 
-Antes de cualquier otra cosa, ocho preguntas rápidas.
+# Snapshot del Banco Mundial congelado por scripts/00_descarga_datos.R.
+# Todas las cifras de esta sesión salen de aquí: ninguna se teclea a mano.
+paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
 
-::: {.friccion}
-**No cuentan para calificación. No hay que estudiar nada. No se entregan.**
+# Último año disponible por país, con exportaciones y el PIB total
+# reconstruido (per cápita × población) para poder comparar la proporción
+# contra el valor absoluto.
+ultimo <- paises |>
+  filter(!is.na(exportaciones_pc), !is.na(pib_per_capita), !is.na(poblacion)) |>
+  group_by(pais) |>
+  filter(anio == max(anio)) |>
+  ungroup() |>
+  mutate(
+    pib_bdd = pib_per_capita * poblacion / 1e12,   # billones de USD
+    exp_bdd = pib_bdd * exportaciones_pc / 100
+  )
 
-Contesta lo que te dicte la intuición y **anota tus respuestas**: las vamos a ir
-recuperando a lo largo del semestre.
-:::
+comparacion <- ultimo |>
+  filter(pais %in% c("México", "China", "Estados Unidos", "Brasil")) |>
+  arrange(desc(exportaciones_pc))
 
-Ninguna requiere hacer cuentas. Todas se responden razonando.
+val <- function(p, col) comparacion[[col]][comparacion$pais == p]
 
-## 1 · La pizza {.smaller}
+razon_absoluta <- val("China", "exp_bdd") / val("México", "exp_bdd")
+```
 
-|  | Diámetro | Precio |
-|---|:--:|:--:|
-| Chica | 30 cm | 180 MXN |
-| Grande | 40 cm | 280 MXN |
+# Una pregunta para empezar {background-color="#24494C"}
 
-La grande cuesta **56% más**.
+## ¿Quién exporta más? {.smaller}
 
-::: {.friccion}
-¿Cuánta **más pizza** te llevas?
-:::
-
-## 2 · Dos cafeterías {.smaller}
-
-Ana registra la **edad** de los clientes de la cafetería del campus, entre 11 am y
-2 pm.
-
-Beto registra la **edad** de los clientes de un restaurante de carretera, el mismo
-día y a la misma hora.
-
-::: {.friccion}
-¿Quién va a observar edades **más dispersas**? ¿Por qué?
-:::
-
-## 3 · Personas y gatos {.smaller}
+Cuatro economías: **México · China · Estados Unidos · Brasil**
 
 ::: {.friccion}
-**a)** ¿Qué es más grande: el **peso promedio** de 10 personas al azar, o el peso
-promedio de 1,000 gatos al azar?
+Ordénalas de mayor a menor según **cuánto exportan**.
 
-**b)** ¿Qué es más grande: **qué tan dispersos** están los pesos de 1,000
-personas, o qué tan dispersos están los pesos de 10 gatos?
+No hay truco. Escribe tu orden antes de avanzar.
 :::
 
-## 4 · El titular {.smaller}
+## Depende de qué preguntaste {.smaller}
 
-> *"El apoyo a la política pasó de **60% a 75%**."*
+```{r}
+#| label: tabla-exportaciones
 
-::: {.friccion}
-¿Eso es un aumento de **15%**?
+comparacion |>
+  transmute(
+    País = pais,
+    `Exportaciones (% del PIB)` = sprintf("%.1f %%", exportaciones_pc),
+    `Exportaciones (billones de USD)` = sprintf("%.2f", exp_bdd)
+  ) |>
+  kable(align = "lrr")
+```
+
+::: {.a-mano}
+Las dos columnas salen **del mismo dato**. Y dan órdenes distintos.
+
+Como proporción de su economía, México exporta casi el doble que China. En
+dólares, China exporta **`r sprintf("%.1f", razon_absoluta)` veces más** que
+México.
 :::
 
-## 5 · Los sueldos {.smaller}
-
-Un equipo de cinco personas. El sueldo **promedio** del equipo es de 15,000 pesos
-mensuales.
-
-::: {.friccion}
-¿Cuántas de las cinco personas ganan **menos** que el promedio?
-
-¿Puede ser que sean cuatro?
-:::
-
-## 6 · La moneda {.smaller}
-
-Lanzas una moneda diez veces y las diez caen **sol**.
-
-<br>
-
-::: {style="text-align:center; font-size:1.6em; letter-spacing:0.3em;"}
-S S S S S S S S S S
-:::
-
-<br>
-
-::: {.friccion}
-¿Cuál es la probabilidad de que el siguiente lanzamiento sea sol?
-
-Menos de 0.5 · exactamente 0.5 · más de 0.5
-:::
-
-## 7 · La prueba {.smaller}
-
-Una enfermedad afecta a **1 de cada 1,000** personas.
-
-Existe una prueba que detecta la enfermedad **correctamente el 99% de las veces**.
-
-Te haces la prueba y sale **positiva**.
-
-::: {.friccion}
-¿Qué tan probable es que realmente tengas la enfermedad?
-
-Cerca de 99% · cerca de 50% · cerca de 10% · menos de 10%
-:::
-
-## 8 · Las dos gráficas {.smaller}
-
-Las dos representan **exactamente los mismos datos** de ventas de una empresa.
+## Ninguna de las dos columnas miente {.smaller}
 
 ::::{.columns}
 
 :::{.column width="50%"}
-**Gráfica A**
+**"% del PIB"** responde:
 
-El eje vertical va de **0 a 100**.
+*¿Qué tan dependiente es esta economía del comercio exterior?*
 
-La línea se ve casi plana.
+México: mucho. Estados Unidos: poco.
 :::
 
 :::{.column width="50%"}
-**Gráfica B**
+**"billones de USD"** responde:
 
-El eje vertical va de **48 a 52**.
+*¿Cuánto peso tiene este país en el comercio mundial?*
 
-La línea sube dramáticamente.
+China: enorme. México: modesto.
 :::
 
 ::::
 
-::: {.friccion}
-¿Cuál de las dos **miente**?
+::: {.no-dice}
+Decir *"México exporta más que China"* sin decir **respecto a qué** no es un dato:
+es una frase que se puede defender o demoler según convenga.
+
+El número no engaña. El que engaña es quien elige el denominador y no lo dice.
 :::
-
-## Guarda tus respuestas {.smaller}
-
-Esas ocho preguntas son, en desorden, **el temario de la materia**.
-
-| Pregunta | Cuándo la contestamos |
-|:--:|---|
-| 1 · La pizza | Hoy |
-| 4 · El titular | Sesión 6 |
-| 8 · Las gráficas | Sesión 6 |
-| 5 · Los sueldos | Sesión 13 |
-| 2 · Las cafeterías · 3 · Personas y gatos | Sesiones 16 y 17 |
-| 6 · La moneda | Sesión 22 |
-| 7 · La prueba | Sesión 25 |
-
-Al final del semestre vamos a volver a las ocho. La idea es que la diferencia
-entre lo que contestaste hoy y lo que contestes entonces sea evidente.
-
-# La primera, hoy {background-color="#24494C"}
-
-## La mayoría contesta 33% {.smaller}
-
-Porque 40 cm es 33% más que 30 cm. El **diámetro** creció 33%.
-
-Pero tú no te comes el diámetro.
-
-::: {.a-mano}
-El área de un círculo es $A = \pi r^2$: lo que importa es el **radio al
-cuadrado**.
-
-$$\frac{A_{grande}}{A_{chica}} = \frac{\pi \cdot 20^2}{\pi \cdot 15^2} = \frac{400}{225} = 1.78$$
-:::
-
-La grande cuesta 56% más y trae **78% más pizza**. Por centímetro cuadrado, es la
-más barata.
 
 ## Lo que acaba de pasar {.smaller}
 
-1. **Medir bien.** Elegir *qué* magnitud responde la pregunta. Área, no diámetro.
-   Casi todos los errores caros empiezan aquí.
+Tres pasos, y son los tres que hace esta materia:
+
+1. **Medir bien.** Elegir *qué* magnitud responde la pregunta —y, sobre todo,
+   **respecto a qué**. Casi todos los errores caros empiezan aquí.
 2. **Calcular.** La parte fácil. Una división.
 3. **Interpretar y acotar.** Qué implica el número y qué **no** implica.
-
-::: {.no-dice}
-Nada de esto dice que debas comprar la pizza grande.
-
-Si van a sobrar tres rebanadas que terminarán en la basura, el precio por
-centímetro cuadrado es irrelevante. Un número correcto no responde una pregunta
-que no hiciste.
-:::
 
 ::: {.a-mano}
 La aritmética era de secundaria. Lo difícil fue **saber qué había que calcular** y
@@ -226,7 +156,7 @@ Resume y presenta los datos **que tienes**.
 
 - Estatura promedio de este salón
 - Distribución de precios en una tienda
-- Exportaciones de México por destino
+- La tabla que acabamos de ver
 
 No se sale de los datos observados.
 
@@ -278,19 +208,48 @@ contienen. Y 30 observaciones ya son inferencia si pretendes hablar de algo que 
 mediste.
 :::
 
-## Cómo vamos a trabajar {.smaller}
+# Cómo vamos a trabajar {background-color="#24494C"}
 
-**El arco del curso**: pregunta → ver → resumir y comparar → anticipar → modelar.
-Las gráficas van **antes** que los promedios, a propósito.
+## El arco del curso {.smaller}
 
-**Programamos en R**, desde el navegador. No hay que instalar nada y no hay
-sesiones de "introducción a R": cada herramienta entra cuando hace falta.
+| | Unidad | Idea |
+|:--:|---|---|
+| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo |
+| 2 | **Ver** | Antes de resumir una variable, hay que verla completa |
+| 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde |
+| 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió |
+| 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve |
 
-**Tu portafolio**: eliges una serie de datos reales de tu carrera y le aplicas
-todo lo del curso durante el semestre.
+Las **gráficas van antes que los promedios**, a propósito: enseñar la media antes
+del histograma es enseñar el resumen de una forma que nunca has visto.
 
-**La IA está permitida y regulada.** Puedes usarla para escribir código. No para
-redactar tus interpretaciones — que es justo lo que se evalúa.
+## Tres cosas prácticas {.smaller}
+
+**Programamos en R, desde el navegador.** No hay que instalar nada y no hay
+sesiones de "introducción a R": cada herramienta entra en la sesión donde hace
+falta para responder una pregunta.
+
+**Tu portafolio.** Eliges una serie de datos reales de tu carrera —hay un catálogo—
+y le aplicas todo lo del curso durante el semestre. Es tuyo, no una plantilla.
+
+**Los grupos son mixtos entre carreras a propósito.** Comparar una serie de precios
+accionarios contra una de comercio exterior contra una de ingreso de hogares es una
+discusión que un grupo homogéneo no puede tener.
+
+## Sobre la IA {.smaller}
+
+::: {.ia-nota}
+Está **permitida y regulada**. Puedes usarla para escribir y depurar código,
+declarándolo.
+
+No para redactar tus interpretaciones ni tus límites: es exactamente lo que se
+está evaluando.
+
+Y eres responsable de todo lo que entregues, incluido lo que no revisaste.
+:::
+
+Las reglas completas están en el sitio, en *Postura sobre IA*. Es lectura
+obligatoria antes de la primera entrega.
 
 ## Lo que espero al final {.smaller}
 
@@ -353,12 +312,11 @@ Materia de las sesiones 3 y 4.
 
 ## Para la próxima sesión {.smaller}
 
-**Revisa [Cómo trabajamos](../../curso/computo.html).** No tienes que instalar
-nada, pero confirma que puedes abrir Colab con tu cuenta de Google. La sesión 2
-empieza escribiendo código.
+**Revisa *Cómo trabajamos* en el sitio.** No tienes que instalar nada, pero
+confirma que puedes abrir Colab con tu cuenta de Google. La sesión 2 empieza
+escribiendo código.
 
-**Lee la [Postura sobre IA](../../curso/postura-ia.html).** Es corta y define qué
-puedes y qué no puedes hacer.
+**Lee *Postura sobre IA*.** Es corta y define qué puedes y qué no puedes hacer.
 
 **Trae escrita una pregunta** que te gustaría responder con datos en tu área. Una
 sola, concreta.
