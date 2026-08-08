@@ -1,9 +1,16 @@
-# Datos generados (se regeneran con scripts/00_descarga_datos.R)
+# Datos pesados o regenerables
 datos/*.rds
-datos/*.csv
 datos/*.csv.gz
 datos/*.xlsx
 !datos/.gitkeep
+
+# EXCEPCIÓN: el snapshot compartido SÍ se versiona.
+# Es chico (~40 KB), es CC-BY, y todo el curso depende de que alumnos y
+# profesor lean exactamente el mismo archivo: si cada quien corre el script
+# en un momento distinto, los números de los apuntes dejan de coincidir con
+# los del examen. Además así se lee desde Colab por raw.githubusercontent
+# sin que nadie tenga que ejecutar el script de descarga.
+!datos/banco_mundial.csv
 
 # NUNCA versionar respuestas crudas de la encuesta del grupo:
 # contienen datos personales de alumnos. Solo se publica el

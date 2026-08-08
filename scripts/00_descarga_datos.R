@@ -127,9 +127,14 @@ if (length(faltantes) > 0) {
   stop("Faltan países en el resultado final: ", paste(faltantes, collapse = ", "))
 }
 
+# Un decimal, no cero: con %.0f una serie a la que le faltan 2 de 540 valores
+# se reporta como "100%", que es justo el tipo de redondeo que esconde huecos.
 message("\nCobertura por indicador:")
 for (v in names(indicadores)) {
-  message(sprintf("  %-16s %.0f%%", v, 100 * mean(!is.na(banco_mundial[[v]]))))
+  faltan <- sum(is.na(banco_mundial[[v]]))
+  message(sprintf("  %-16s %.1f%%  (faltan %d de %d)",
+                  v, 100 * mean(!is.na(banco_mundial[[v]])),
+                  faltan, nrow(banco_mundial)))
 }
 
 write_csv(banco_mundial, "datos/banco_mundial.csv")
