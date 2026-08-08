@@ -216,6 +216,30 @@ Listados de Airbnb por ciudad, con precio, tipo, ubicación y reseñas.
   da ventaja el semestre siguiente, pero también te quita la novedad.
 - <https://insideairbnb.com/get-the-data/>
 
+## Series de tiempo: lee esto antes de elegir
+
+Los precios de acciones y el tipo de cambio son **series de tiempo**: cada
+observación depende de la anterior y la serie tiene tendencia. Eso cambia lo que
+se puede calcular con ellas.
+
+::: {.no-dice}
+La media y la desviación estándar del **nivel** de un precio a cinco años dicen
+muy poco. La serie sube o baja, así que el promedio describe un punto por el que
+la serie pasó, no un valor típico.
+
+Sobre los **rendimientos** —la variación porcentual de un día al siguiente— esos
+mismos estadísticos sí funcionan, porque los rendimientos no arrastran tendencia.
+:::
+
+Si eliges una serie financiera para tu portafolio, trabajas con rendimientos.
+Es lo que se hace en la práctica y es lo que permite la sesión 14, donde la media
+geométrica es la única correcta.
+
+**El análisis de series de tiempo no es parte de este curso ni de Análisis de
+Datos II.** Las dos materias trabajan con observaciones independientes entre sí.
+Vale la pena saberlo al elegir: una serie de corte transversal, como la de
+Profeco o la de comercio exterior de un año, te sirve en las dos.
+
 ## Regla del curso sobre descargas
 
 ::: {.a-mano}
