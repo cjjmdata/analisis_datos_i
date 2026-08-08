@@ -1,6 +1,6 @@
 ---
 title: "Unidad 5 · Modelar"
-subtitle: "Sesiones 25 a 30 · Programa 5.1 a 5.4"
+subtitle: "Sesiones 24 a 30 · Programa 5.1 a 5.4"
 lang: es
 ---
 
@@ -14,12 +14,13 @@ antesala directa de la inferencia estadística.
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 25 | Variables aleatorias discretas y continuas | 5.1 |
-| 26 | Valor esperado | 5.2 |
-| 27 | Distribución binomial | 5.3.1 |
-| 28 | Distribución Poisson | 5.3.2 |
-| 29 | Distribución normal: la curva y la estandarización | 5.4.1 |
-| 30 | Cierre: ¿tu variable se parece a alguna? | 5.4.2 |
+| 24 | Variables aleatorias discretas y continuas | 5.1 |
+| 25 | Valor esperado | 5.2 |
+| 26 | Distribución binomial | 5.3.1 |
+| 27 | Distribución Poisson | 5.3.2 |
+| 28 | Distribución normal: la curva y la estandarización | 5.4.1 |
+| 29 | Cierre: ¿tu variable se parece a alguna? | 5.4.2 |
+| 30 | Repaso e integración | |
 
 ## Al terminar deberías poder
 
@@ -52,8 +53,8 @@ observación individual: quitar unidades para poder comparar.
 
 ## La sesión de cierre
 
-La sesión 30 cierra el círculo. Se retoma la serie que cada quien eligió en la
-semana 2 y se pregunta: **¿esta variable se parece a alguna distribución
+La sesión 29 cierra el círculo. Se retoma la serie que cada quien eligió al inicio
+del curso y se pregunta: **¿esta variable se parece a alguna distribución
 conocida?**
 
 No hay respuesta única. Un alumno de Finanzas con rendimientos diarios va a

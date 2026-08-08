@@ -12,15 +12,18 @@ evalúa y cómo se juzga. Si algo aquí contradice a Brightspace, manda Brightsp
 
 ## Estructura
 
-| Momento | Cubre | Cuándo |
-|---|---|---|
-| Parcial 1 | Sesiones 1 a 14 | Semana 8, en clase |
-| Parcial 2 | Sesiones 15 a 24 | Semana 13, en clase |
-| Evaluación final | Sesiones 25 a 30 | Periodo de exámenes |
+| Momento | Cubre |
+|---|---|
+| Parcial 1 | Unidades 1 y 2, sesiones 1 a 9 |
+| Parcial 2 | Unidad 3, sesiones 10 a 18 |
+| Evaluación final | Unidades 4 y 5, sesiones 19 a 30 |
 
-Los dos parciales ocupan una sesión de clase cada uno, que ya está contemplada en
-el calendario. Cada momento se integra con tres componentes: examen, portafolio y
-trabajo de sesión.
+Los dos parciales ocupan una sesión de clase cada uno. La evaluación final se
+aplica en el periodo institucional de exámenes. Las fechas se publican en
+Brightspace.
+
+Cada momento se integra con tres componentes: examen, portafolio y trabajo de
+sesión.
 
 ## Los tres componentes
 

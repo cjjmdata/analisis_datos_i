@@ -1,6 +1,6 @@
 ---
 title: "Unidad 4 · Anticipar"
-subtitle: "Sesiones 20 a 24 · Programa 4.1 a 4.4"
+subtitle: "Sesiones 19 a 23 · Programa 4.1 a 4.4"
 lang: es
 ---
 
@@ -16,11 +16,11 @@ estadística de la materia siguiente descansa aquí.
 
 | # | Tema | Programa |
 |:--:|---|:--:|
-| 20 | Aleatoriedad, espacio muestral y eventos | 4.1 |
-| 21 | Probabilidad y ley de los grandes números | 4.1 |
-| 22 | Conteo: cuando los resultados son igualmente probables | 4.2 |
-| 23 | Eventos compuestos: regla aditiva, multiplicativa e independencia | 4.2.1, 4.2.2 |
-| 24 | Probabilidad condicional y teorema de Bayes | 4.2.2, 4.3 |
+| 19 | Aleatoriedad, espacio muestral y eventos | 4.1 |
+| 20 | Probabilidad y ley de los grandes números | 4.1 |
+| 21 | Conteo: cuando los resultados son igualmente probables | 4.2 |
+| 22 | Eventos compuestos: regla aditiva, multiplicativa e independencia | 4.2.1, 4.2.2 |
+| 23 | Probabilidad condicional y teorema de Bayes | 4.2.2, 4.3 |
 | | *Evaluación del parcial 2* | |
 
 ## Al terminar deberías poder
@@ -85,7 +85,7 @@ Confundir $P(A|B)$ con $P(B|A)$, la falacia del fiscal, es un error que aparece
 por todas partes en el material con el que se entrenaron, y lo reproducen con
 redacción impecable.
 
-En la sesión 24 el ejercicio va al revés: se presentan razonamientos
+En la sesión 23 el ejercicio va al revés: se presentan razonamientos
 probabilísticos generados por un modelo, algunos correctos y otros no, y hay que
 distinguirlos haciendo las cuentas.
 :::

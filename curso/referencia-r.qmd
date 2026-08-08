@@ -177,7 +177,7 @@ ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
 | Frecuencia acumulada | `stat_ecdf()` | 9 |
 | Diagrama de caja | `geom_boxplot()` | 11 |
 | Línea vertical (una media, un corte) | `geom_vline()` | 12 |
-| Separar por grupos | `facet_wrap(~ grupo)` | 19 |
+| Separar por grupos | `facet_wrap(~ grupo)` | 18 |
 
 ## Lo que este curso NO usa
 

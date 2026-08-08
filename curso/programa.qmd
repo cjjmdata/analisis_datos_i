@@ -28,17 +28,17 @@ esta página lo demuestra punto por punto. El orden en que se enseña responde a
 arco de un análisis real.
 :::
 
-Las 48 horas se organizan como **32 sesiones de 1.5 horas**, dos por semana: 30
-de contenido y 2 para las evaluaciones parciales. La evaluación final se aplica
-en el periodo de exámenes.
+Las 48 horas se organizan como **32 sesiones de 1.5 horas**: 30 de contenido y 2
+para las evaluaciones parciales. La evaluación final se aplica en el periodo de
+exámenes.
 
 | Unidad | Sesiones | Horas |
 |---|:--:|:--:|
 | 1 · La pregunta y los datos | 4 | 6.0 |
 | 2 · Ver los datos | 5 | 7.5 |
-| 3 · Resumir y comparar | 10 | 15.0 |
+| 3 · Resumir y comparar | 9 | 13.5 |
 | 4 · Anticipar | 5 | 7.5 |
-| 5 · Modelar | 6 | 9.0 |
+| 5 · Modelar | 7 | 10.5 |
 | Evaluaciones parciales | 2 | 3.0 |
 | **Total** | **32** | **48.0** |
 
@@ -69,8 +69,8 @@ Cada punto del programa oficial, con la sesión donde se cubre.
 | 2.3.3 Coeficiente de variación | 16 | ✅ |
 | 2.3.4 Práctica manual y aplicaciones con Excel | 15, 16 | ✅ |
 | 2.4 Medidas de forma: sesgo y curtosis | 17 | ✅ |
-| 2.5 Teorema de Chebyshev y regla empírica | 18 | ✅ |
-| 2.6 Aplicaciones con Excel | 19 | ✅ |
+| 2.5 Teorema de Chebyshev y regla empírica | 17 | ✅ |
+| 2.6 Aplicaciones con Excel | 18 | ✅ |
 
 ### 3. Representación tabular y gráfica
 
@@ -81,29 +81,29 @@ Cada punto del programa oficial, con la sesión donde se cubre.
 | 3.2.1 Gráfica de pastel | 6 | ⚠️ |
 | 3.2.2 Histograma, polígono y ojiva | 8, 9 | ✅ |
 | 3.2.3 Diagrama de caja | 11 | ✅ |
-| 3.3 Aplicaciones con Excel | 19 | ✅ |
+| 3.3 Aplicaciones con Excel | 18 | ✅ |
 
 ### 4. Introducción a la probabilidad
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 4.1 Probabilidades de eventos simples | 20, 21 | ✅ |
-| 4.2 Probabilidades de eventos compuestos | 22 | ✅ |
-| 4.2.1 Regla aditiva | 23 | ✅ |
-| 4.2.2 Regla multiplicativa | 23, 24 | ✅ |
-| 4.3 Teorema de Bayes | 24 | ✅ |
-| 4.4 Práctica manual y aplicaciones con Excel | 20 a 24 | ✅ |
+| 4.1 Probabilidades de eventos simples | 19, 20 | ✅ |
+| 4.2 Probabilidades de eventos compuestos | 21 | ✅ |
+| 4.2.1 Regla aditiva | 22 | ✅ |
+| 4.2.2 Regla multiplicativa | 22, 23 | ✅ |
+| 4.3 Teorema de Bayes | 23 | ✅ |
+| 4.4 Práctica manual y aplicaciones con Excel | 19 a 23 | ✅ |
 
 ### 5. Distribuciones de probabilidad
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 5.1 Variables aleatorias: discretas y continuas | 25 | ✅ |
-| 5.2 Valor esperado | 26 | ✅ |
-| 5.3.1 Distribución binomial | 27 | ✅ |
-| 5.3.2 Distribución Poisson | 28 | ✅ |
-| 5.4.1 Distribución normal | 29 | ✅ |
-| 5.4.2 Aplicaciones con Excel | 30 | ✅ |
+| 5.1 Variables aleatorias: discretas y continuas | 24 | ✅ |
+| 5.2 Valor esperado | 25 | ✅ |
+| 5.3.1 Distribución binomial | 26 | ✅ |
+| 5.3.2 Distribución Poisson | 27 | ✅ |
+| 5.4.1 Distribución normal | 28 | ✅ |
+| 5.4.2 Aplicaciones con Excel | 29 | ✅ |
 
 ## Ajustes de cátedra
 
@@ -144,6 +144,12 @@ Experimentation, and Application to the Development of Graphical Methods.
 *Journal of the American Statistical Association*, 79(387), 531–554.
 :::
 
+### 🔁 Se fusiona: forma con Chebyshev y regla empírica
+
+Medidas de forma (2.4) y las reglas de cobertura (2.5) responden la misma
+pregunta: qué implica la forma de la distribución para el resumen que elegiste.
+Se ven juntas en la sesión 17.
+
 ### 🔁 Se fusiona: cuartiles con deciles y percentiles
 
 Son la misma función con distinto argumento: `quantile(x, probs = 0.25)` y
@@ -172,7 +178,7 @@ silencioso produce porcentajes que no suman lo que deberían, y un promedio
 calculado sobre los casos completos responde una pregunta distinta a la que se
 hizo.
 
-### ➕ Se agrega: paradoja de Simpson (sesión 19)
+### ➕ Se agrega: paradoja de Simpson (sesión 18)
 
 Una relación entre dos variables puede invertirse al considerar una tercera. Es
 la puerta de entrada al **pensamiento multivariado** que pide la revisión 2016 de

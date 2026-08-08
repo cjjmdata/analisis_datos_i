@@ -24,9 +24,9 @@ El curso recorre el temario en el orden en que ocurre un análisis real:
 |:--:|---|---|:--:|
 | 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo entre manos | 4 |
 | 2 | **Ver** | Antes de resumir una variable, hay que verla completa | 5 |
-| 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde | 11 |
+| 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde | 9 |
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió | 5 |
-| 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 6 |
+| 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 7 |
 
 Las gráficas van antes que los promedios. Cuando llegues a la media ya vas a
 saber dibujar la distribución, y la media va a ser una línea vertical sobre ella.
@@ -54,9 +54,9 @@ es una discusión que solo se puede tener con esa mezcla.
 falta para responder una pregunta estadística. Ver
 [Enfoque del curso](curso/enfoque.qmd).
 
-## Calendario
+## Las sesiones
 
-16 semanas · 2 sesiones de 1.5 h por semana · 31 sesiones de contenido.
+30 sesiones de contenido, más dos destinadas a las evaluaciones parciales.
 
 ::: {.calendario}
 
@@ -74,35 +74,33 @@ falta para responder una pregunta estadística. Ver
 | 8 | Histograma: la forma de una variable numérica | `geom_histogram` | 3.2.2 |
 | 9 | El ancho del intervalo, polígono y frecuencia acumulada | `binwidth`, `geom_freqpoly`, `stat_ecdf` | 3.2.2 |
 | | **Unidad 3 · Resumir y comparar** | | |
-| 10 | Cuartiles: la fórmula y `quantile()` | `quantile`, `sum`, `length` | 2.1 |
-| 11 | Deciles y percentiles; leer la frecuencia acumulada | `seq`, `probs` | 2.1 |
-| 12 | Diagrama de caja: detectar y decidir qué hacer | `geom_boxplot`, `filter` | 3.2.3 |
-| 13 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
-| 14 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |
-| 15 | Centro III: media geométrica | `prod`, `exp`, `log` | 2.2.3 |
-| 16 | Dispersión I: rango, rango intercuartil, varianza y desviación estándar | `range`, `IQR`, `var`, `sd` | 2.3.1, 2.3.2 |
-| 17 | Dispersión II: coeficiente de variación | `summarize`, `group_by` | 2.3.3 |
-| 18 | Medidas de forma: sesgo y curtosis | funciones propias | 2.4 |
-| 19 | Teorema de Chebyshev y regla empírica | `replicate` | 2.5 |
-| 20 | Comparar grupos y la paradoja de Simpson | `facet_wrap`, `group_by` | 2.6, 3.3 |
+| 10 | Cuantiles: cuartiles, deciles y percentiles | `quantile`, `seq`, `probs` | 2.1 |
+| 11 | Diagrama de caja: detectar y decidir qué hacer | `geom_boxplot`, `filter` | 3.2.3 |
+| 12 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
+| 13 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |
+| 14 | Centro III: media geométrica | `prod`, `exp`, `log` | 2.2.3 |
+| 15 | Dispersión I: rango, rango intercuartil, varianza y desviación estándar | `range`, `IQR`, `var`, `sd` | 2.3.1, 2.3.2 |
+| 16 | Dispersión II: coeficiente de variación | `summarize`, `group_by` | 2.3.3 |
+| 17 | Forma: sesgo, curtosis, Chebyshev y regla empírica | funciones propias, `replicate` | 2.4, 2.5 |
+| 18 | Comparar grupos y la paradoja de Simpson | `facet_wrap`, `group_by` | 2.6, 3.3 |
 | | **Unidad 4 · Anticipar** | | |
-| 21 | Aleatoriedad, espacio muestral y eventos | `sample`, `set.seed` | 4.1 |
-| 22 | Probabilidad y ley de los grandes números | `cumsum`, `replicate` | 4.1 |
-| 23 | Conteo: cuando los resultados son igualmente probables | `factorial`, `choose` | 4.2 |
-| 24 | Eventos compuestos: regla aditiva, multiplicativa e independencia | `expand.grid` | 4.2.1, 4.2.2 |
-| 25 | Probabilidad condicional y teorema de Bayes | simulación de diagnósticos | 4.2.2, 4.3 |
+| 19 | Aleatoriedad, espacio muestral y eventos | `sample`, `set.seed` | 4.1 |
+| 20 | Probabilidad y ley de los grandes números | `cumsum`, `replicate` | 4.1 |
+| 21 | Conteo: cuando los resultados son igualmente probables | `factorial`, `choose` | 4.2 |
+| 22 | Eventos compuestos: regla aditiva, multiplicativa e independencia | `expand.grid` | 4.2.1, 4.2.2 |
+| 23 | Probabilidad condicional y teorema de Bayes | simulación de diagnósticos | 4.2.2, 4.3 |
 | | **Unidad 5 · Modelar** | | |
-| 26 | Variables aleatorias discretas y continuas | `sample`, `runif` | 5.1 |
-| 27 | Valor esperado | `weighted.mean` | 5.2 |
-| 28 | Distribución binomial | `dbinom`, `pbinom` | 5.3.1 |
-| 29 | Distribución Poisson | `dpois`, `ppois` | 5.3.2 |
-| 30 | Distribución normal: la curva y la estandarización | `dnorm`, `pnorm`, `qnorm` | 5.4.1 |
-| 31 | Cierre: ¿tu variable se parece a alguna? | todo lo anterior | 5.4.2 |
+| 24 | Variables aleatorias discretas y continuas | `sample`, `runif` | 5.1 |
+| 25 | Valor esperado | `weighted.mean` | 5.2 |
+| 26 | Distribución binomial | `dbinom`, `pbinom` | 5.3.1 |
+| 27 | Distribución Poisson | `dpois`, `ppois` | 5.3.2 |
+| 28 | Distribución normal: la curva y la estandarización | `dnorm`, `pnorm`, `qnorm` | 5.4.1 |
+| 29 | Cierre: ¿tu variable se parece a alguna? | todo lo anterior | 5.4.2 |
+| 30 | Repaso e integración | todo lo anterior | |
 
 :::
 
-Las evaluaciones se aplican fuera de estas 31 sesiones. Ver
-[Evaluación](curso/evaluacion.qmd).
+Ver [Evaluación](curso/evaluacion.qmd) para el esquema completo.
 
 ## Por dónde empezar
 

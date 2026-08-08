@@ -1,6 +1,6 @@
 ---
 title: "Unidad 3 · Resumir y comparar"
-subtitle: "Sesiones 10 a 19 · Programa 2.1 a 2.6, 3.2.3, 3.3"
+subtitle: "Sesiones 10 a 18 · Programa 2.1 a 2.6, 3.2.3, 3.3"
 lang: es
 ---
 
@@ -10,7 +10,7 @@ Resumir muchos números en pocos números, sabiendo exactamente qué se pierde e
 camino. Y después comparar esos resúmenes entre grupos, que es donde el análisis
 empieza a servir para decidir algo.
 
-Es la unidad más larga, diez sesiones y un tercio del curso. Aquí se construye el
+Es la unidad más larga, nueve sesiones y casi un tercio del curso. Aquí se construye el
 vocabulario que usa todo lo demás, incluida la materia siguiente.
 
 Toda esta unidad se apoya en la anterior. Cada estadístico se dibuja sobre el
@@ -29,9 +29,8 @@ como la caja del diagrama, el sesgo como la asimetría que ya viste a ojo.
 | | *Evaluación del parcial 1* | |
 | 15 | Dispersión I: rango, rango intercuartil, varianza y desviación estándar | 2.3.1, 2.3.2 |
 | 16 | Dispersión II: coeficiente de variación | 2.3.3 |
-| 17 | Medidas de forma: sesgo y curtosis | 2.4 |
-| 18 | Teorema de Chebyshev y regla empírica | 2.5 |
-| 19 | Comparar grupos y la paradoja de Simpson | 2.6, 3.3 |
+| 17 | Forma: sesgo, curtosis, Chebyshev y regla empírica | 2.4, 2.5 |
+| 18 | Comparar grupos y la paradoja de Simpson | 2.6, 3.3 |
 
 ## Al terminar deberías poder
 
