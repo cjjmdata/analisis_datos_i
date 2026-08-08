@@ -133,9 +133,106 @@ La aritmética era de secundaria. Lo difícil fue **saber qué había que calcul
 Eso es la materia. Y es la parte que no se puede delegar.
 :::
 
-# De qué se trata el curso {background-color="#24494C"}
+# El proceso completo {background-color="#24494C"}
+
+## Análisis de datos {.smaller}
+
+::: {.concepto}
+Proceso de **revisión, limpieza, transformación y modelado** de datos con el
+objetivo de descubrir información útil, formular y comunicar conclusiones, y
+apoyar la toma de decisiones.
+:::
+
+Para qué sirve:
+
+- Decidir con datos, lo que **disminuye la incertidumbre — aunque no la elimina**
+- Revelar patrones y tendencias
+- Optimizar operaciones
+- Segmentar clientes
+- Fomentar la innovación
+
+::: {.a-mano}
+Fíjate en el paréntesis. Todo este curso vive ahí.
+
+Un análisis no te da certeza: te da menos incertidumbre y te obliga a declarar
+cuánta queda. Quien te venda certeza te está vendiendo otra cosa.
+:::
+
+## Las cinco etapas {.smaller}
+
+| | Etapa | Qué pasa ahí |
+|:--:|---|---|
+| 1 | **Recopilación** | Bases de datos, archivos, APIs, web scraping, encuestas, redes sociales |
+| 2 | **Limpieza** | Errores, inconsistencias, duplicados, valores perdidos |
+| 3 | **Transformación** | Reestructurar, estandarizar, crear variables derivadas |
+| 4 | **Análisis y modelado** | Explorar, modelar, interpretar |
+| 5 | **Visualización** | Comunicar el hallazgo de forma que se entienda |
+
+::: {.no-dice}
+Las etapas 1 a 3 se llevan la mayor parte del tiempo real de un proyecto, y casi
+ningún curso las enseña.
+
+En éste sí: todo lo que entregues va a incluir **de dónde salió el dato y qué le
+hiciste**. Un análisis que empieza con un archivo ya limpio, salido de la nada, no
+se puede verificar.
+:::
+
+## Un caso: Starbucks {.smaller}
+
+::::{.columns}
+
+:::{.column width="50%"}
+**Dónde abrir una tienda**
+
+- Datos demográficos
+- Patrones de flujo de personas
+- Proximidad de otras tiendas
+
+El modelo predice el impacto de la nueva ubicación **incluso sobre sus propias
+sucursales**.
+:::
+
+:::{.column width="50%"}
+**Marketing dirigido**
+
+- Descuentos y recompensas personalizadas
+- Recuperación de clientes inactivos
+- Impacto del clima en el consumo
+:::
+
+::::
+
+::: {.no-dice}
+El modelo predice **cuánto vendería** una tienda nueva. No dice si abrirla es buena
+idea.
+
+Esa decisión depende de la renta, del contrato, de la marca, del riesgo — cosas que
+no están en los datos. El análisis acota la pregunta; no la contesta.
+:::
+
+::: {style="font-size:0.55em; color:#6C7A7B;"}
+Fuente: Harvard Digital Initiative, *Starbucks: grinding data*.
+:::
+
+## Dónde entra este curso {.smaller}
+
+De las cinco etapas, este curso vive sobre todo en la **4 y la 5** —analizar y
+comunicar— con la **2** presente todo el tiempo, porque los datos reales llegan
+sucios.
+
+::: {.friccion}
+¿En qué etapa crees que se cometen los errores más caros?
+:::
+
+Casi siempre en la **1**: recolectar el dato equivocado, o el dato correcto sobre
+la población equivocada. Ningún análisis posterior lo arregla.
+
+# De qué se trata la estadística {background-color="#24494C"}
 
 ## Definición de trabajo {.smaller}
+
+Si el análisis de datos es el proceso, la estadística es la **caja de herramientas**
+de las etapas 4 y 5.
 
 ::: {.concepto}
 La estadística es el conjunto de métodos para **recolectar, organizar, resumir y
