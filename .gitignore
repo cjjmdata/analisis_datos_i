@@ -11,6 +11,8 @@ datos/*.xlsx
 # los del examen. Además así se lee desde Colab por raw.githubusercontent
 # sin que nadie tenga que ejecutar el script de descarga.
 !datos/banco_mundial.csv
+!datos/precios_profeco.csv
+!datos/emisora_bimboa.csv
 
 # NUNCA versionar respuestas crudas de la encuesta del grupo:
 # contienen datos personales de alumnos. Solo se publica el

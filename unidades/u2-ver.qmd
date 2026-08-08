@@ -77,16 +77,21 @@ Experimentation, and Application to the Development of Graphical Methods.
 
 ## El caso de negocio
 
-A partir de esta unidad entra el caso en equipo: una empresa mexicana exportadora
-que tiene que tomar decisiones con datos. Está construido para tocar las cuatro
-carreras del grupo al mismo tiempo.
+A partir de esta unidad entra el caso en equipo: **Quién es Quién en los
+Precios**, el levantamiento que hace Profeco en tiendas de todo el país.
 
-| Perfil | Lo que aporta al caso |
+El subconjunto del curso trae **42,351 precios** de seis productos de canasta
+básica, levantados en **63 cadenas comerciales** de **30 estados** durante
+noviembre de 2025.
+
+Cada perfil del grupo entra por una puerta distinta:
+
+| Perfil | Pregunta que puede responder |
 |---|---|
-| Mercadotecnia Estratégica | Precio, segmento y posicionamiento |
-| Administración y Dirección de Empresas | Producción, inventarios y capacidad |
-| Finanzas y Contaduría Pública | Costos, márgenes y exposición cambiaria |
-| Negocios Internacionales | Destinos de exportación y concentración de mercado |
+| Mercadotecnia Estratégica | ¿Cómo se posiciona cada marca por precio dentro de su categoría? |
+| Administración y Dirección de Empresas | ¿Qué cadena sostiene precios más parejos entre sus sucursales? |
+| Finanzas y Contaduría Pública | ¿Cuánto varía el precio del mismo producto entre estados? |
+| Negocios Internacionales | ¿Se comportan distinto los productos con insumo importado? |
 
 Los equipos son mixtos: cada perfil ve una parte del problema que los demás no
 ven.

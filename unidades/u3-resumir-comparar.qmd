@@ -72,10 +72,13 @@ aplicado.
 absurdos con toda confianza. La cota de Chebyshev es más floja y vale sin
 supuestos, que es la razón de su existencia.
 
-**Una relación puede invertirse al mirar una tercera variable.** Es la paradoja de
-Simpson, y se demuestra entera con porcentajes. Es la puerta al pensamiento
-multivariado que pide la revisión 2016 de GAISE, y el argumento más contundente
-del curso para la sección *lo que este número no dice*.
+**Una comparación entre grupos puede invertirse al mirar una tercera variable.**
+En los datos de Profeco, Soriana Super sale más barata que Bodega Aurrera en el
+promedio general, y más cara en cinco de los seis productos. La diferencia está
+en la mezcla: cada cadena tiene distinta proporción de productos caros y baratos.
+
+Es la puerta al pensamiento multivariado que pide la revisión 2016 de GAISE, y el
+mejor argumento del curso para la sección *lo que este número no dice*.
 
 ## Los cuatro momentos de fricción
 

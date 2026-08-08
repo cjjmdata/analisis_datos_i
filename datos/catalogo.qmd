@@ -46,9 +46,12 @@ con historia larga.
 
 Precios diarios de acciones, índices y ETF.
 
-- **Estado**: 🟡 El endpoint responde, pero exige encabezado de navegador y
-  cambia sin aviso. **Usa el snapshot del curso**, no la descarga en vivo.
-- **En R**: `quantmod` o `tidyquant` (ambos en CRAN).
+- **Estado**: ✅ **Descarga verificada** para emisoras de la Bolsa Mexicana de
+  Valores: `BIMBOA.MX`, `WALMEX.MX`, `FEMSAUBD.MX`, `GMEXICOB.MX`,
+  `CEMEXCPO.MX`, y el índice `^MXX`. Precios diarios en pesos.
+- **En R**: `leer_emisora("BIMBOA.MX")` de `R/datos.R`, que trae el dato en vivo
+  y cae al respaldo si el servicio no responde. También sirven `quantmod` y
+  `tidyquant`.
 - **Para qué sirve aquí**: rendimientos para media geométrica, comparación de
   volatilidad entre emisoras con coeficiente de variación, y colas pesadas al
   llegar a curtosis y distribución normal.
@@ -110,12 +113,18 @@ PIB, comercio, inversión extranjera, población, para todos los países.
 Precios de productos específicos, por establecimiento y ciudad, levantados por
 la Procuraduría Federal del Consumidor.
 
-- **Estado**: ✅ **Catálogo verificado** en datos.gob.mx. Ediciones **2024 y
-  2025** publicadas bajo licencia **CC-BY-4.0**.
-- **Para qué sirve aquí**: es probablemente la mejor fuente del catálogo para
-  este curso. El mismo producto, en la misma ciudad, el mismo día, a precios
-  distintos según la tienda: la dispersión deja de ser un concepto abstracto y se
-  vuelve dinero que el consumidor pierde por no comparar.
+- **Estado**: ✅ **Descarga verificada.** CSV directo, sin token, bajo licencia
+  **CC-BY-4.0**. Un archivo por quincena, de unos 150 MB.
+- **Es la fuente central del curso.** El subconjunto de clase trae 42,351 precios
+  de seis productos de canasta básica, en 63 cadenas comerciales y 30 estados,
+  levantados en noviembre de 2025.
+- **Columnas**: producto, presentación, marca, categoría, precio, fecha, cadena
+  comercial, giro, estado, municipio.
+- **Para qué sirve aquí**: el mismo producto, la misma presentación, la misma
+  marca, el mismo mes, a precios distintos según la tienda. En el subconjunto del
+  curso, un kilo de arroz a granel va de 16 a 50 pesos: **212% de diferencia**
+  entre la tienda más barata y la más cara.
+- **En R**: `scripts/01_profeco.R` baja una quincena y recorta el subconjunto.
 - <https://datos.gob.mx/> (buscar "quién es quién en los precios")
 
 ### Google Trends {#trends}

@@ -38,8 +38,10 @@ El programa oficial se cubre completo. El mapeo punto por punto está en
 ## Cómo funciona el curso
 
 **En clase, todos los mismos datos.** En la primera sesión el grupo se
-auto-encuesta: ustedes son la población. A partir de la unidad 2 se suma el caso
-de una empresa mexicana exportadora, que toca las cuatro carreras a la vez.
+auto-encuesta: ustedes son la población. A partir de la unidad 2 entra
+**Quién es Quién en los Precios**, el levantamiento de precios de Profeco: el
+mismo producto, la misma marca, el mismo día, a precios distintos según la
+tienda y el estado.
 
 **Fuera de clase, tu serie.** Cada quien adopta una serie de datos reales del
 [catálogo](datos/catalogo.qmd), elegida según su carrera, y le aplica cada
