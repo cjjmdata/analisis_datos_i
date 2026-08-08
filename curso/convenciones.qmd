@@ -1,0 +1,207 @@
+---
+title: "Convenciones de trabajo"
+subtitle: "Cómo se nombran los archivos, las carpetas y los objetos"
+lang: es
+---
+
+Estas convenciones son **obligatorias** en todos los entregables. No son
+burocracia: son la diferencia entre un análisis que alguien más puede verificar y
+uno que hay que creer a ciegas.
+
+## 1. El flujo completo, siempre
+
+::: {.a-mano}
+Todo ejercicio va **desde el origen del dato hasta la conclusión**, sin saltos.
+
+Descarga o carga → inspección → limpieza → análisis → interpretación → límites.
+:::
+
+No se entrega un análisis que empieza con un archivo ya limpio salido de la nada.
+Si limpiaste algo, la limpieza está en el documento. Si descargaste algo, la
+descarga está en el documento.
+
+La razón es simple: **si no puedo reconstruir cómo llegaste a tu número, tu número
+no existe.** Ésta es la forma operativa de la regla que atraviesa el curso —los
+resultados que no se pueden verificar no se pueden sostener.
+
+```r
+# 1. ORIGEN — de dónde salió el dato
+datos_crudos <- read_csv("datos/crudos/precios-profeco_2025-03-15.csv")
+
+# 2. INSPECCIÓN — qué recibí
+glimpse(datos_crudos)
+nrow(datos_crudos)
+sum(is.na(datos_crudos$precio))
+
+# 3. LIMPIEZA — qué cambié y por qué, con el conteo antes y después
+datos <- datos_crudos |>
+  filter(!is.na(precio))          # 214 registros sin precio publicado
+
+nrow(datos_crudos) - nrow(datos)  # cuántos se fueron: queda registrado
+
+# 4. ANÁLISIS
+precio_mediano <- median(datos$precio)
+
+# 5. INTERPRETACIÓN y 6. LÍMITES van en texto, no en código
+```
+
+::: {.no-dice}
+`filter(!is.na(precio))` no es una operación neutral: descarta observaciones.
+
+Si los productos sin precio publicado son sistemáticamente los más caros, tu
+mediana está sesgada hacia abajo y ninguna función lo corrige. Por eso el conteo
+de lo que se descartó **se reporta**, no se esconde.
+:::
+
+## 2. Trazabilidad hacia atrás
+
+Cada objeto debe poder rastrearse hasta su origen **por su nombre**.
+
+**Regla:** un nombre describe *qué contiene*, no *qué paso del proceso es*.
+
+| ✅ Bien | ❌ Mal | Por qué |
+|---|---|---|
+| `precios_crudos` | `datos1` | El nombre dice qué hay adentro |
+| `precios` | `datos2` | Se sabe qué es sin leer el código |
+| `precio_mediano` | `resultado` | Un resultado, ¿de qué? |
+| `precios_sin_na` | `df_final` | "Final" hoy es "intermedio" mañana |
+| `cv_por_tienda` | `temp` | Se puede buscar en el documento |
+
+**Sufijos permitidos** para variantes: `_crudos` (como llegó), `_aux` (auxiliar,
+temporal), `_orig` (versión previa que se conserva para comparar).
+
+**Sufijos prohibidos**: `_final`, `_v2`, `_bueno`, `_limpio2`, `_definitivo`.
+Suenan a canónicos y en dos semanas nadie sabe cuál era cuál.
+
+::: {.callout-important}
+## Nombres estables durante el semestre
+
+Tu cuaderno crece sesión a sesión. Estos nombres **no cambian** en todo el curso,
+aunque su contenido evolucione:
+
+| Nombre | Qué es |
+|---|---|
+| `grupo` | La encuesta anonimizada del salón |
+| `caso` | Los datos del caso de negocio |
+| `serie` | La serie que elegiste para tu portafolio |
+| `paises` | El snapshot del Banco Mundial |
+
+Si los renombras, los ejercicios de las sesiones siguientes dejan de funcionar
+sobre tu cuaderno.
+:::
+
+## 3. Nombres de archivos y carpetas
+
+Seguimos la convención de **Jenny Bryan**, que es el estándar en análisis de
+datos. Tiene tres principios y de ellos sale todo lo demás:
+
+::: {.a-mano}
+**1. Legible por máquina** · **2. Legible por humano** · **3. Que ordene bien por
+defecto**
+:::
+
+### Las reglas
+
+| Regla | ✅ | ❌ |
+|---|---|---|
+| Sin espacios | `precios-profeco.csv` | `precios profeco.csv` |
+| Sin acentos ni `ñ` ni símbolos | `analisis-tamano.qmd` | `análisis-tamaño.qmd` |
+| Todo en minúsculas | `datos-crudos.csv` | `Datos_Crudos.CSV` |
+| `-` separa palabras dentro de un campo | `precios-profeco` | `preciosprofeco` |
+| `_` separa campos distintos | `01_precios-profeco_2025-03-15.csv` | `01-precios-profeco-2025-03-15.csv` |
+| Fechas en ISO: `AAAA-MM-DD` | `2025-03-15` | `15-03-2025`, `15mar25` |
+| Números con cero a la izquierda | `01_`, `02_`, `10_` | `1_`, `2_`, `10_` |
+
+**Por qué los acentos.** El curso 2021 arrastró un `GÃ.nero` en el código durante
+todo el semestre por un problema de codificación. Los nombres de archivo tienen el
+mismo riesgo, y además se rompen al compartir entre Windows, Mac y la nube.
+
+**Por qué el cero a la izquierda.** Sin él, la computadora ordena `1, 10, 11, 2,
+3`. Con él, `01, 02, 03, 10, 11`. Es el tercer principio: que ordene bien solo.
+
+**Por qué `-` y `_` hacen cosas distintas.** Al separar campos con `_` y palabras
+con `-`, el nombre se vuelve buscable: puedes pedir todos los archivos de una
+fecha, o de una fuente, sin abrirlos.
+
+```
+01_precios-profeco_2025-03-15.csv
+02_precios-profeco_2025-04-15.csv
+03_ingresos-enigh_2022.csv
+```
+
+### Estructura de un entregable
+
+Todo ejercicio y el portafolio usan esta estructura:
+
+```
+mi-portafolio/
+├── portafolio.qmd            ← el documento; se renderiza sin errores
+├── datos/
+│   ├── crudos/               ← como llegó de la fuente. NUNCA se edita
+│   │   └── exportaciones-oec_2025-08-01.csv
+│   └── procesados/           ← lo que produce tu código
+│       └── exportaciones-limpias.csv
+└── figuras/                  ← gráficas exportadas, si las necesitas aparte
+```
+
+::: {.callout-warning}
+## La carpeta `crudos/` es de solo lectura
+
+Nunca edites a mano el archivo original, ni siquiera para "arreglar un dato".
+
+Si lo haces, pierdes la única referencia contra la cual verificar tu trabajo, y
+nadie —incluido tú en tres semanas— puede saber qué cambiaste. Toda corrección va
+en el código, donde queda registrada.
+:::
+
+## 4. Rutas
+
+Siempre **relativas** a la carpeta del proyecto:
+
+```r
+read_csv("datos/crudos/exportaciones-oec_2025-08-01.csv")   # ✅
+```
+
+Nunca absolutas ni `setwd()`:
+
+```r
+setwd("C:/Users/ana/Documents/tarea")                        # ❌
+read_csv("C:/Users/ana/Downloads/datos.csv")                 # ❌
+```
+
+Una ruta absoluta funciona en **una sola computadora**: la tuya. En cuanto la
+entregas, el documento no corre y no se califica. Es el error más común del
+portafolio.
+
+## 5. Estilo del código
+
+```r
+# Nombres en español, en minúsculas, separados con guión bajo
+precio_mediano <- median(precios$precio)
+
+# Un espacio alrededor de los operadores
+cv <- sd(x) / mean(x)          # ✅
+cv<-sd(x)/mean(x)              # ❌
+
+# Pipe nativo |>, no %>%
+datos |>
+  filter(precio > 0) |>
+  summarize(mediana = median(precio))
+
+# Comentarios que explican POR QUÉ, no QUÉ
+precios <- filter(precios, precio > 0)   # los precios en 0 son datos faltantes
+                                         # codificados, no productos gratis
+```
+
+::: {.a-mano}
+Un comentario que dice `# filtrar precios` es ruido: eso ya lo dice el código.
+
+Un comentario que dice **por qué** filtras es información que no está en ninguna
+otra parte, y es lo que te va a salvar cuando revises tu trabajo un mes después.
+:::
+
+## Referencias
+
+- Bryan, J. *How to name files.* <https://speakerdeck.com/jennybc/how-to-name-files>
+- Wickham, H., Çetinkaya-Rundel, M. y Grolemund, G. *R for Data Science* (2ª ed.),
+  capítulo 4: *Workflow: code style*. <https://r4ds.hadley.nz/workflow-style>

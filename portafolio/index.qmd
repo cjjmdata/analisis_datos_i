@@ -1,0 +1,93 @@
+---
+title: "Portafolio de carrera"
+subtitle: "Una serie de datos, dieciséis semanas, tu carrera"
+lang: es
+---
+
+## La idea
+
+En clase todos analizamos los mismos datos. Fuera de clase, **cada quien analiza
+los suyos**.
+
+Eliges una serie del [catálogo](../datos/catalogo.qmd) en las primeras dos
+semanas y le aplicas cada técnica que se ve en clase, en la semana en que se ve.
+Al final del semestre tienes un documento que recorre todo el programa sobre
+datos que te importan, en el lenguaje de tu carrera.
+
+## Por qué así y no con ejercicios sueltos
+
+Tres razones, y vale la pena que las entiendas porque explican cómo se califica.
+
+**Porque los grupos son mixtos.** En este salón hay gente de Mercadotecnia, de
+Administración, de Finanzas y de Negocios Internacionales. Un caso único
+diseñado para uno de esos perfiles aburre a los otros tres. Un caso genérico no
+le sirve a nadie.
+
+**Porque la técnica se entiende cuando la transfieres.** Calcular un coeficiente
+de variación sobre los datos del profesor demuestra que sabes teclear. Calcularlo
+sobre una serie que tú elegiste, y explicar por qué ese número tiene o no
+sentido para *esa* serie, demuestra otra cosa.
+
+**Porque la mezcla es el mejor material de discusión que tenemos.** Cuando
+lleguemos a asimetría, alguien va a traer una serie de rendimientos accionarios
+casi simétrica y alguien más una de exportaciones por destino brutalmente
+sesgada. Esa comparación, hecha con datos que los propios alumnos trajeron, vale
+más que cualquier ejemplo que yo prepare.
+
+## Cómo se arma
+
+El portafolio crece por capas. Cada bloque agrega una sección; no se reescribe
+lo anterior.
+
+| Después del bloque | Agregas |
+|---|---|
+| 1 · Definición y clasificación | Ficha de la fuente. Unidad de observación. Escala de medición de cada variable |
+| 2 · Estadísticos descriptivos | Posición, tendencia central, dispersión y forma de tu serie — cada una interpretada, no solo calculada |
+| 3 · Representación | Tabla de frecuencias y las gráficas que tu tipo de variable admite |
+| 4 · Probabilidad | Un evento relevante de tu dominio, formalizado y con su probabilidad estimada |
+| 5 · Distribuciones | ¿Tu variable se parece a alguna distribución conocida? Argumenta a favor y en contra |
+
+## Qué se evalúa
+
+En orden de peso:
+
+1. **La interpretación**, no el cálculo. R calcula bien siempre. La pregunta es
+   qué significa el número **para tu serie**, con sus unidades y su contexto.
+2. **Los límites.** Cada sección cierra declarando qué NO se puede concluir. Una
+   sección sin límites declarados está incompleta, aunque los cálculos estén
+   perfectos.
+3. **La coherencia acumulada.** Si en el bloque 2 dijiste que tu variable es
+   fuertemente asimétrica y en el bloque 5 la modelas como normal sin comentarlo,
+   eso es una contradicción y cuenta como error.
+4. **La reproducibilidad.** Tu código corre de principio a fin en una sesión
+   limpia de R. Si no corre, no se califica.
+5. **El cálculo.** Que esté bien es un requisito, no un mérito.
+
+::: {.no-dice}
+Un portafolio con veinte gráficas impecables y ninguna frase que diga qué
+significan está reprobado. Producir la gráfica es la parte que ya no es escasa.
+:::
+
+## Uso de IA
+
+Permitido y regulado. Las reglas completas están en
+[Postura sobre IA](../curso/postura-ia.qmd). El resumen:
+
+- Puedes usarla para escribir y depurar código.
+- Debes declararla, con lo que preguntaste y qué hiciste con la respuesta.
+- No puedes usarla para redactar las interpretaciones ni los límites: es
+  exactamente lo que se está evaluando.
+- Eres responsable de todo lo que entregues, incluido lo que no revisaste.
+
+## Requisitos técnicos
+
+- Documento Quarto (`.qmd`) que renderiza a HTML o PDF sin errores.
+- Los datos van en una carpeta `datos/` junto al documento. Nada de rutas
+  absolutas ni de `setwd()`.
+- Código comentado en español.
+- Cita de la fuente conforme a su licencia.
+
+::: {.callout-important}
+Si tu serie contiene datos de personas identificables, no la subas. Habla
+conmigo antes: casi siempre existe una versión agregada que sirve igual.
+:::

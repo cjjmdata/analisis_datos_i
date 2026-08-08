@@ -1,0 +1,97 @@
+---
+title: "Unidad 4 · Anticipar"
+subtitle: "Sesiones 21 a 25 · Programa 4.1–4.4"
+lang: es
+---
+
+## De qué se trata
+
+Hasta aquí el curso describió datos que ya existían. A partir de aquí se razona
+sobre lo que **todavía no ocurrió**. Es el giro conceptual más grande del
+semestre y conviene decirlo en voz alta: cambia el objeto de estudio, no solo la
+técnica.
+
+Esta unidad es el puente hacia *Análisis de Datos II*. Toda la inferencia
+estadística de la materia siguiente descansa aquí.
+
+## Sesiones
+
+| # | Tema | Programa |
+|:--:|---|:--:|
+| 21 | Aleatoriedad, espacio muestral y eventos | 4.1 |
+| 22 | Probabilidad y ley de los grandes números | 4.1 |
+| 23 | Conteo: cuando los resultados son igualmente probables | 4.2 |
+| 24 | Eventos compuestos: regla aditiva, multiplicativa e independencia | 4.2.1, 4.2.2 |
+| 25 | Probabilidad condicional y teorema de Bayes | 4.2.2, 4.3 |
+
+## Al terminar deberías poder
+
+- Formalizar una situación de negocio como espacio muestral y eventos.
+- Contar resultados sin enumerarlos, y decir cuándo ese conteo sirve para calcular
+  una probabilidad y cuándo no.
+- Calcular probabilidades de eventos compuestos con las reglas aditiva y
+  multiplicativa.
+- Distinguir $P(A|B)$ de $P(B|A)$ y explicar por qué confundirlas es caro.
+- Actualizar una creencia con información nueva usando el teorema de Bayes.
+
+## Las ideas que hay que entender de verdad
+
+**La aleatoriedad no se parece a lo que crees.** La gente genera secuencias "al
+azar" con muy pocas rachas, y descarta como sospechosas las secuencias
+genuinamente aleatorias, que sí las tienen. La simulación lo demuestra en tres
+líneas.
+
+**La ley de los grandes números no dice lo que dice la falacia del jugador.** Que
+las frecuencias converjan a la probabilidad no implica que los resultados se
+"compensen". Una moneda no tiene memoria. Este malentendido sostiene industrias
+completas.
+
+**Contar solo sirve si los resultados son igualmente probables.** Es el supuesto
+que casi nadie enuncia. Las reglas de conteo son una herramienta al servicio de
+ese supuesto, no un fin en sí mismas — por eso aquí ocupan una sesión y no tres.
+
+**Condicionar es reducir el espacio muestral.** Es la única idea que hay que
+entender de probabilidad condicional; todo lo demás sale de ahí, incluida la regla
+multiplicativa y el propio Bayes.
+
+**Bayes no es una fórmula, es cómo se actualiza una creencia con evidencia.** Se
+introduce con el caso clásico: una prueba diagnóstica muy precisa para una
+condición poco frecuente produce, en su mayoría, **positivos falsos**. El
+resultado es contraintuitivo hasta para profesionales, y no es un truco: es la
+razón por la que la prevalencia importa tanto como la precisión de la prueba.
+
+## Cómo se enseña esta unidad
+
+**Simulando antes de derivar.** La secuencia de cada tema es la misma: simular,
+observar el patrón, y solo entonces derivar la fórmula que lo explica. La fórmula
+llega como confirmación de algo que ya se vio, no como afirmación que hay que
+creer.
+
+```r
+# La ley de los grandes números, en tres líneas
+tiradas <- sample(1:6, 5000, replace = TRUE)
+plot(cumsum(tiradas == 6) / seq_along(tiradas), type = "l", ylim = c(0, 0.4))
+abline(h = 1/6, col = "#B4704F", lwd = 2)
+```
+
+::: {.no-dice}
+Que la frecuencia observada se acerque a 1/6 después de cinco mil tiradas no dice
+nada sobre la tirada 5001.
+
+La convergencia es una propiedad del promedio acumulado, no una fuerza que
+corrija los resultados individuales. Confundir ambas cosas es la falacia del
+jugador, y es el error más caro de esta unidad.
+:::
+
+::: {.ia-nota}
+La probabilidad condicional es el punto donde los modelos de lenguaje fallan de
+forma más consistente y más peligrosa.
+
+Confundir $P(A|B)$ con $P(B|A)$ —la falacia del fiscal— es un error que aparece
+por todas partes en el material con el que se entrenaron, y lo reproducen con
+seguridad total y redacción impecable.
+
+En la sesión 25 el ejercicio va al revés: se presentan razonamientos
+probabilísticos generados por un modelo, algunos correctos y otros no, y hay que
+distinguirlos. Ninguno viene con marca de agua; hay que hacer las cuentas.
+:::

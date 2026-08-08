@@ -1,0 +1,112 @@
+---
+title: "Recursos y bibliografía"
+lang: es
+---
+
+## El libro del curso
+
+::: {.a-mano}
+**R for Data Science (2ª edición)** — Hadley Wickham, Mine Çetinkaya-Rundel y
+Garrett Grolemund.
+
+<https://r4ds.hadley.nz/> · Gratuito, en línea, en inglés.
+
+Hay traducción al español de la primera edición en
+<https://es.r4ds.hadley.nz/>. Es más vieja y usa `%>%` en vez de `|>`, pero
+sirve si el inglés te cuesta.
+:::
+
+Es la referencia de **cómo se programa** en este curso. No sustituye a las
+sesiones: las complementa.
+
+### Por qué este libro y no un manual de R
+
+Casi todos los manuales de R empiezan igual: tipos de datos, vectores, listas,
+bucles, funciones. Cincuenta páginas antes de tocar un dato real.
+
+R4DS hace lo contrario: **el capítulo 1 es visualización.** Antes de saber qué es
+un vector, ya hiciste una gráfica de datos reales. La justificación de Wickham es
+que la visualización da recompensa inmediata y engancha; la plomería del lenguaje
+se aprende después, cuando ya tienes una razón para necesitarla.
+
+Es exactamente la estrategia de este curso, y es también la razón por la que el
+temario se recorre en un orden distinto al del documento oficial: **ver los datos
+antes de resumirlos.**
+
+### Qué capítulos, y cuándo
+
+Lee el capítulo cuando toque la sesión; no intentes leerlo completo de corrido.
+
+| Capítulos de R4DS | Cuándo | Para qué |
+|---|---|---|
+| 1 · Data visualization | Unidad 2 | La gramática de ggplot2, de cero |
+| 2 · Workflow: basics | Unidad 1–2 | Asignación, nombres, cómo no perderse |
+| 3 · Data transformation | Unidad 2–3 | `filter`, `mutate`, `summarize`, `group_by` |
+| 4 · Workflow: code style | Unidad 3 | Escribir código que otro pueda leer |
+| 5 · Data tidying | Unidad 3 | Por qué una fila es una observación |
+| 9 · Layers | Unidad 2 | Capas de ggplot2 a fondo |
+| 10 · Exploratory data analysis | Unidad 3 | El capítulo más cercano a lo que hace este curso |
+| 11 · Communication | Unidad 3 | Títulos, etiquetas, escalas |
+| 28 · Quarto | Portafolio | Cómo se produce el entregable |
+
+::: {.callout-note}
+R4DS enseña con `tidyverse`. Este curso usa `tidyverse` para manipular y graficar,
+pero **base R para los estadísticos** (`mean`, `quantile`, `var`, `sd`). No es
+incoherencia: son las funciones que verás en cualquier código de R que te
+encuentres, y en Análisis de Datos II las vas a seguir usando.
+:::
+
+## Lecturas críticas
+
+No son manuales. Son textos sobre **qué significa medir** y cómo se abusa de los
+números. Se discuten en clase.
+
+- **Escudero, S. W. (2019).** *¿Cuán grande es una pizza grande? Prácticas,
+  mediciones y estándares.* En *Qué es (y qué no es) la estadística*. Siglo XXI.
+  → Unidad 1. Por qué la medición es una decisión, no un dato.
+
+- **Escudero, W. S. (2020).** *Sobrecensos, muestras y poblaciones.* En *El lado
+  oscuro de la econometría*. Alianza Editorial.
+  → Unidad 1, sesión 2. Población contra muestra, sin romanticismo.
+
+- **Knaflic, C. N.** *Storytelling with Data.*
+  → Unidad 2. Cómo se comunica un hallazgo, y cómo se distorsiona.
+
+- **Rossman, A.** *Ask Good Questions* (blog). <https://askgoodquestions.blog>
+  → Todo el curso. Preguntas conceptuales de estadística introductoria.
+
+## Manuales de consulta
+
+Para cuando necesites la definición formal o una demostración.
+
+- **Levin, R. y Rubin, D.** *Estadística para administración y economía.* Pearson.
+  → El más cercano al programa oficial de MAT1409.
+- **Anderson, Sweeney y Williams.** *Estadística para administración y economía.*
+  Cengage.
+- **Arnholt, A., Militino, A. y Ugarte, M. D. (2016).** *Probability and
+  Statistics with R.* CRC Press.
+  → Más avanzado. Útil si quieres ver la demostración detrás de una fórmula.
+
+## Referencias rápidas
+
+- **Hojas de referencia de Posit** — <https://posit.co/resources/cheatsheets/>
+  Las de `ggplot2` y `dplyr` valen la pena impresas.
+- **Documentación de Quarto** — <https://quarto.org/docs/guide/>
+- **The R Graph Gallery** — <https://r-graph-gallery.com/>
+  Catálogo de gráficas con su código. Úsalo para saber qué es posible, no para
+  copiar sin entender.
+
+## Fuentes de datos
+
+El [catálogo de fuentes](../datos/catalogo.qmd) tiene las fuentes del portafolio,
+por carrera, con su estado de verificación.
+
+## Marcos pedagógicos
+
+Si te interesa por qué el curso está diseñado así, está explicado en
+[Enfoque del curso](../curso/enfoque.qmd). Las fuentes:
+
+- ASA (2016). *GAISE College Report.* <https://www.amstat.org/education/gaise>
+- Çetinkaya-Rundel, M. (2023) y Rossman, A. (2021). *Preparing to Teach.*
+  <https://preparingtoteach.org/>
+- Wiggins, G. y McTighe, J. (2005). *Understanding by Design.* ASCD.

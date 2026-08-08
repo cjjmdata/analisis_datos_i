@@ -1,0 +1,63 @@
+name: Publicar sitio en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # El CI NO instala R. Publica a partir de los resultados
+      # pre-computados en _freeze/, que se versionan en el repo.
+      # Este paso falla ruidosamente si algún .qmd con código R
+      # llegó sin su freeze, en lugar de romper en el render con
+      # un error críptico de "object not found".
+      - name: Verificar que _freeze cubre los .qmd con código R
+        run: |
+          set -euo pipefail
+          faltan=0
+          while IFS= read -r qmd; do
+            grep -qE '^```\{r' "$qmd" || continue
+            base="${qmd%.qmd}"
+            if [ ! -d "_freeze/${base}" ]; then
+              echo "::error file=${qmd}::Sin _freeze/. Renderiza localmente y haz commit de _freeze/ antes de publicar."
+              faltan=1
+            fi
+          done < <(find . -name '*.qmd' -not -path './_site/*' -not -path './_freeze/*')
+          [ "$faltan" -eq 0 ] || exit 1
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

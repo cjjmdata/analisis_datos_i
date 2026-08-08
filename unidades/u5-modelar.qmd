@@ -1,0 +1,90 @@
+---
+title: "Unidad 5 · Modelar"
+subtitle: "Sesiones 26 a 31 · Programa 5.1–5.4"
+lang: es
+---
+
+## De qué se trata
+
+Modelos que describen cómo se comporta una variable aleatoria completa, en lugar
+de calcular la probabilidad de un evento a la vez. Es el cierre del curso y la
+antesala directa de la inferencia estadística.
+
+## Sesiones
+
+| # | Tema | Programa |
+|:--:|---|:--:|
+| 26 | Variables aleatorias discretas y continuas | 5.1 |
+| 27 | Valor esperado | 5.2 |
+| 28 | Distribución binomial | 5.3.1 |
+| 29 | Distribución Poisson | 5.3.2 |
+| 30 | Distribución normal: la curva y la estandarización | 5.4.1 |
+| 31 | Cierre: ¿tu variable se parece a alguna? | 5.4.2 |
+
+## Al terminar deberías poder
+
+- Distinguir variables aleatorias discretas de continuas y saber por qué importa.
+- Calcular e interpretar el valor esperado, incluyendo por qué casi nunca es un
+  valor que vayas a observar.
+- Reconocer cuándo un fenómeno de negocio admite un modelo binomial o Poisson, y
+  cuándo no.
+- Calcular probabilidades y percentiles con la distribución normal.
+- Evaluar críticamente si tus datos se parecen a una distribución teórica.
+
+## Las ideas que hay que entender de verdad
+
+**El valor esperado no es lo que esperas observar.** El valor esperado de un dado
+es 3.5, que es un resultado imposible. Es un promedio de largo plazo, no una
+predicción. Confundir ambas cosas destruye decisiones de negocio reales.
+
+**Cada distribución trae supuestos, y los supuestos se verifican.** La binomial
+exige ensayos independientes con probabilidad constante. Poisson exige eventos
+independientes a tasa constante. Cuando los supuestos no se cumplen, el modelo
+sigue produciendo números — y siguen estando mal.
+
+**La normal es un modelo, no una ley de la naturaleza.** Es extraordinariamente
+útil y se abusa de ella. Casi ninguna variable de negocios es normal: ingresos,
+precios, ventas y tiempos de espera son asimétricos. Hay que saber cuándo la
+aproximación sirve.
+
+**La estandarización hace comparable lo incomparable.** El puntaje $z$ es la misma
+idea del coeficiente de variación de la sesión 16, llevada al nivel de la
+observación individual: quitar unidades para poder comparar.
+
+## La sesión de cierre
+
+La sesión 31 cierra el círculo. Se retoma la serie que cada quien eligió en la
+semana 2 y se pregunta: **¿esta variable se parece a alguna distribución
+conocida?**
+
+No hay respuesta única. Un alumno de Finanzas con rendimientos diarios va a
+encontrar algo casi simétrico pero con **colas más pesadas** que la normal — lo
+cual importa mucho, y es la razón por la que los modelos de riesgo fallan en las
+crisis. Un alumno de Negocios Internacionales con exportaciones por destino va a
+encontrar una asimetría severa que ninguna distribución del curso describe bien.
+
+Ambas respuestas son correctas y ambas exigen argumentar. Ése es el examen real
+del curso: no calcular, sino juzgar el ajuste entre un modelo y unos datos, y
+declarar qué se pierde al aceptarlo.
+
+::: {.no-dice}
+Que una variable pase una prueba de normalidad no la vuelve normal. Y que no la
+pase no la vuelve inútil.
+
+Los datos nunca provienen exactamente de una distribución teórica. La pregunta
+útil no es *"¿es normal?"* sino *"¿el error que cometo al tratarla como normal
+cambia la decisión que voy a tomar?"*.
+:::
+
+::: {.ia-nota}
+Pídele a un modelo de lenguaje que ajuste una distribución a tus datos y te dará
+parámetros, una gráfica y una prueba de bondad de ajuste. Todo correcto y todo
+insuficiente.
+
+Lo que no te dirá es que ajustar una normal a exportaciones por destino es
+inadecuado por razones estructurales —el comercio se concentra en pocos socios, y
+esa concentración es el fenómeno, no ruido— porque no sabe de qué son tus datos.
+
+Ésa es la última lección del curso, y es la misma que la primera: la máquina opera
+sobre números; tú operas sobre lo que los números significan.
+:::

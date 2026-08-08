@@ -1,0 +1,72 @@
+/*-- scss:defaults --*/
+
+// Variante oscura. Solo redefine colores: la tipografía, el espaciado
+// y las reglas de los callouts pedagógicos se heredan de estilo-sitio.scss.
+
+$body-bg:    #181818;
+$body-color: #F2F2F2;
+$link-color: #9FC4C7;   // teal aclarado para contraste sobre #181818
+
+$light: #525252;
+
+$navbar-bg:  #2A3536;
+$sidebar-bg: #2A3536;
+$footer-bg:  #181818;
+
+$code-bg: #262626;
+$popover-bg: #242424;
+$input-bg: #242424;
+
+/*-- scss:rules --*/
+
+h1, h2, h3 {
+  color: #C3DBDD;
+}
+
+h2 {
+  border-bottom-color: #3A5457;
+}
+
+code:not(pre code) {
+  background-color: rgba(159, 196, 199, 0.14);
+  color: #C3DBDD;
+}
+
+pre {
+  border-left-color: #5B888C;
+}
+
+.sourceCode {
+  background-color: #262626 !important;
+}
+
+table thead {
+  background-color: rgba(159, 196, 199, 0.10);
+}
+
+// Callouts pedagógicos: fondos oscurecidos, mismos bordes de acento
+// ---------------------------------------------------------------
+.a-mano {
+  background-color: rgba(91, 136, 140, 0.16);
+  &::before { color: #C3DBDD; }
+}
+
+.friccion {
+  background-color: rgba(224, 168, 144, 0.14);
+  &::before { color: #E0A890; }
+}
+
+.no-dice {
+  background-color: rgba(164, 80, 60, 0.16);
+  border-left-color: #C4705C;
+  &::before { color: #E5967F; }
+}
+
+.ia-nota {
+  background-color: rgba(122, 158, 122, 0.14);
+  border-left-color: #7A9E7A;
+  &::before { color: #A8C4A8; }
+}
+
+.concepto { color: #C3DBDD; }
+.alerta   { color: #E5967F; }

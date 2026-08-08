@@ -1,0 +1,119 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "curso/**/*.qmd"
+    - "unidades/**/*.qmd"
+    - "slides/**/*.qmd"
+    - "datos/**/*.qmd"
+    - "portafolio/**/*.qmd"
+    - "recursos/**/*.qmd"
+    - "!analisis/"     # notebooks internos de validación — no se publican
+    - "!scripts/"      # scripts de preparación de datos — no se publican
+    - "!prompts/"      # memos de diseño de sesiones — no se publican
+    - "!examen/"       # material de evaluación — no se publica
+
+website:
+  title: "Análisis de Datos I"
+  description: "Estadística descriptiva y probabilidad para la toma de decisiones (MAT1409)"
+  site-url: https://cjjmdata.github.io/analisis_datos_i/
+  repo-url: https://github.com/cjjmdata/analisis_datos_i
+  repo-actions: [issue]
+  page-navigation: true
+  open-graph: true
+
+  sidebar:
+    background: "#D9E3E4"
+    pinned: true
+    align: center
+    style: docked
+    search: true
+    collapse-level: 1
+    tools:
+      - icon: github
+        href: https://github.com/cjjmdata/analisis_datos_i
+        text: "Repositorio del curso"
+    contents:
+      - section: "El curso"
+        contents:
+          - href: index.qmd
+            text: Inicio
+          - href: curso/programa.qmd
+            text: Programa y calendario
+          - href: curso/enfoque.qmd
+            text: Enfoque del curso
+          - href: curso/evaluacion.qmd
+            text: Evaluación
+          - href: curso/computo.qmd
+            text: Cómo trabajamos
+          - href: curso/convenciones.qmd
+            text: Convenciones de trabajo
+          - href: curso/referencia-r.qmd
+            text: Referencia de R
+          - href: curso/postura-ia.qmd
+            text: Postura sobre IA
+      - section: "1 · La pregunta y los datos"
+        contents:
+          - href: unidades/u1-pregunta-datos.qmd
+            text: Panorama de la unidad
+          - href: slides/u1/s01_que_es_la_estadistica.qmd
+            text: "S1 · ¿Qué es la estadística?"
+      - section: "2 · Ver los datos"
+        contents:
+          - href: unidades/u2-ver.qmd
+            text: Panorama de la unidad
+      - section: "3 · Resumir y comparar"
+        contents:
+          - href: unidades/u3-resumir-comparar.qmd
+            text: Panorama de la unidad
+      - section: "4 · Anticipar"
+        contents:
+          - href: unidades/u4-anticipar.qmd
+            text: Panorama de la unidad
+      - section: "5 · Modelar"
+        contents:
+          - href: unidades/u5-modelar.qmd
+            text: Panorama de la unidad
+      - section: "Datos y portafolio"
+        contents:
+          - href: datos/catalogo.qmd
+            text: Catálogo de fuentes
+          - href: portafolio/index.qmd
+            text: Portafolio de carrera
+      - section: "Apoyo"
+        contents:
+          - href: recursos/index.qmd
+            text: Recursos y bibliografía
+          - href: slides/index.qmd
+            text: Todas las presentaciones
+
+  page-footer:
+    left: "Análisis de Datos I · MAT1409"
+    right: "Construido con [Quarto](https://quarto.org/)"
+    background: "#D9E3E4"
+
+format:
+  html:
+    respect-user-color-scheme: true
+    theme:
+      light: [cosmo, estilo-sitio.scss]
+      dark: [cosmo, estilo-sitio.scss, estilo-oscuro.scss]
+    mainfont: "Atkinson Hyperlegible"
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-overflow: wrap
+    code-link: true
+    lang: es
+    fig-responsive: true
+    highlight-style:
+      light: a11y
+      dark: a11y-dark
+
+execute:
+  freeze: auto      # los chunks ya computados no se re-ejecutan
+  warning: false
+  message: false
+
+editor: source

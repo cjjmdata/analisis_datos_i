@@ -1,0 +1,33 @@
+---
+title: "Presentaciones"
+lang: es
+listing:
+  - id: unidad-1
+    contents: ["u1/*.qmd"]
+    type: table
+    fields: [title, subtitle]
+    field-display-names:
+      title: "Sesión"
+      subtitle: "Tema"
+    sort: "filename asc"
+    categories: false
+    filter-ui: false
+    sort-ui: false
+---
+
+Cada sesión tiene su presentación con el código a la vista. Las pestañas separan
+la fórmula, el cálculo a mano, la función de R y el resultado, para que puedas
+seguir la secuencia completa cuando estudies.
+
+## Unidad 1 · La pregunta y los datos
+
+:::{#unidad-1}
+:::
+
+## Unidades 2 a 5
+
+En producción. El panorama de cada unidad ya está publicado con los objetivos y
+el mapeo al programa: [Ver los datos](../unidades/u2-ver.qmd) ·
+[Resumir y comparar](../unidades/u3-resumir-comparar.qmd) ·
+[Anticipar](../unidades/u4-anticipar.qmd) ·
+[Modelar](../unidades/u5-modelar.qmd).

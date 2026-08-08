@@ -1,0 +1,207 @@
+/*-- scss:defaults --*/
+
+@import 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap';
+
+// Misma paleta que el sitio (ver estilo-sitio.scss)
+$teal-900:   #24494C;
+$teal-700:   #3A6B6F;
+$teal-500:   #5B888C;
+$teal-100:   #D9E3E4;
+$salmon-700: #B4704F;
+$salmon-500: #E0A890;
+$brick-700:  #A4503C;
+$sage-700:   #5A7B5A;
+
+$body-bg:      #FFFFFF;
+$body-color:   #1F2A2B;
+$link-color:   $teal-700;
+$selection-bg: rgba(91, 136, 140, 0.3);
+
+$main-font:    "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+$heading-font: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+$code-font:    "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+$main-font-size: 28px;
+$heading-color: $teal-900;
+$heading-font-weight: 700;
+$h1-font-size: 1.75em;
+$h2-font-size: 1.30em;
+$h3-font-size: 1.08em;
+
+$code-block-font-size: 0.62em;
+$presentation-slide-text-align: left;
+
+/*-- scss:rules --*/
+
+.reveal .slide-title {
+  color: $teal-900;
+  font-weight: 700;
+  border-bottom: 3px solid $teal-500;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.5em;
+}
+
+// Tabsets: patrón "Fórmula / A mano / Función / Resultado"
+// ---------------------------------------------------------------
+.reveal .panel-tabset {
+  margin-top: 0.5em;
+
+  [role="tab"] {
+    font-size: 0.82em;
+    padding: 0.4em 1em;
+    color: $teal-900;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+
+    &[aria-selected="true"] {
+      border-bottom-color: $teal-500;
+      color: $teal-700;
+      font-weight: 700;
+    }
+
+    &:hover { background-color: rgba(91, 136, 140, 0.09); }
+  }
+}
+
+// Código
+// ---------------------------------------------------------------
+
+// Ligaduras DESACTIVADAS. Ver la nota en estilo-sitio.scss: `<-` debe verse
+// como los dos caracteres que el alumno teclea, no como una flecha.
+.reveal code,
+.reveal pre,
+.reveal .sourceCode,
+.reveal div.sourceCode pre {
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+}
+
+.reveal pre {
+  box-shadow: none;
+  border-left: 4px solid $teal-500;
+  background-color: rgba(217, 227, 228, 0.45);
+  font-size: 0.48em;
+  padding: 0.5em 0.9em;
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+.reveal .cell-output pre {
+  font-size: 0.45em;
+  line-height: 1.25;
+}
+
+.reveal code { color: $teal-900; }
+
+// Callouts pedagógicos (mismos nombres que el sitio)
+// ---------------------------------------------------------------
+.reveal .a-mano,
+.reveal .friccion,
+.reveal .no-dice,
+.reveal .ia-nota {
+  font-size: 0.72em;
+  padding: 0.5em 0.85em;
+  margin: 0.45em 0;
+  border-radius: 4px;
+  border-left: 4px solid;
+  line-height: 1.35;
+
+  p { margin: 0.25em 0; }
+
+  &::before {
+    display: block;
+    font-weight: 700;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.3em;
+  }
+}
+
+.reveal .a-mano {
+  background-color: rgba(91, 136, 140, 0.10);
+  border-left-color: $teal-500;
+  &::before { content: "Primero a mano"; color: $teal-900; }
+}
+
+.reveal .friccion {
+  background-color: rgba(224, 168, 144, 0.18);
+  border-left-color: $salmon-500;
+  &::before { content: "Detente y responde"; color: $salmon-700; }
+}
+
+.reveal .no-dice {
+  background-color: rgba(164, 80, 60, 0.10);
+  border-left-color: $brick-700;
+  &::before { content: "Lo que este número NO dice"; color: $brick-700; }
+}
+
+.reveal .ia-nota {
+  background-color: rgba(90, 123, 90, 0.11);
+  border-left-color: $sage-700;
+  &::before { content: "IA en este tema"; color: $sage-700; }
+}
+
+// Callouts nativos de Quarto
+// ---------------------------------------------------------------
+.reveal .callout {
+  font-size: 0.72em;
+  padding: 0.5em 0.9em;
+  border-radius: 4px;
+  margin: 0.4em 0;
+  line-height: 1.35;
+}
+.reveal .callout p { margin: 0.3em 0; }
+
+// Énfasis en línea
+// ---------------------------------------------------------------
+.concepto { color: $teal-900; font-weight: 700; }
+.alerta   { color: $brick-700; font-weight: 700; }
+.dato     { color: $salmon-700; font-weight: 700; }
+
+// Listas y tablas
+// ---------------------------------------------------------------
+.reveal ul li,
+.reveal ol li {
+  margin-bottom: 0.2em;
+  line-height: 1.35;
+}
+
+.reveal table {
+  font-size: 0.62em;
+  border-collapse: collapse;
+
+  th {
+    background-color: rgba(91, 136, 140, 0.11);
+    color: $teal-900;
+    border-bottom: 2px solid $teal-500;
+  }
+
+  td, th { padding: 0.3em 0.7em; }
+}
+
+// Control de densidad (slides con mucho contenido)
+// ---------------------------------------------------------------
+.reveal .slide.t-90, .reveal section.t-90 { font-size: 0.90em; }
+.reveal .slide.t-80, .reveal section.t-80 { font-size: 0.80em; }
+.reveal .slide.t-70, .reveal section.t-70 { font-size: 0.70em; }
+.reveal .slide.t-60, .reveal section.t-60 { font-size: 0.60em; }
+
+.reveal .slide.scrollable,
+.reveal section.scrollable {
+  overflow-y: auto;
+  max-height: 95vh;
+}
+
+.reveal .slide { padding-top: 0.2em; }
+
+.reveal .math.display {
+  font-size: 0.95em;
+  margin: 0.35em 0;
+}
+
+.reveal .footer {
+  font-size: 0.5em;
+  color: #6C7A7B;
+}

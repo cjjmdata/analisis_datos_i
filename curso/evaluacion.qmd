@@ -1,0 +1,86 @@
+---
+title: "Evaluación"
+subtitle: "Qué se evalúa y con qué criterio"
+lang: es
+---
+
+::: {.callout-important}
+Las ponderaciones exactas, las fechas y las calificaciones se publican
+**únicamente en Brightspace**. Esta página describe el **criterio**: qué se
+evalúa y cómo se juzga. Si algo aquí contradice a Brightspace, manda Brightspace.
+:::
+
+## Estructura
+
+El programa oficial establece dos momentos de evaluación, cada uno con un peso
+de entre 40% y 60% de la calificación final.
+
+| Momento | Cubre | Cuándo |
+|---|---|---|
+| Evaluación parcial | Bloques 1 a 3 | Semana 9 |
+| Evaluación final | Bloques 4 y 5 | Periodo de exámenes |
+
+Cada momento se integra con tres componentes: examen, portafolio y trabajo de
+sesión.
+
+## Los tres componentes
+
+### Examen
+
+Resolución de problemas. Incluye cálculo, pero el cálculo por sí solo no
+aprueba: cada reactivo numérico viene acompañado de una pregunta de
+interpretación o de límites.
+
+Un reactivo típico no pregunta *"calcula el coeficiente de variación"*. Pregunta
+*"aquí están dos series con sus estadísticos; ¿cuál es más dispersa, y qué
+tendría que ser cierto para que esa comparación sea válida?"*.
+
+### Portafolio
+
+El análisis acumulado sobre tu serie. Los criterios están detallados en
+[Portafolio de carrera](../portafolio/index.qmd). En resumen y por orden de
+peso: interpretación, límites declarados, coherencia acumulada,
+reproducibilidad, y hasta el final, corrección del cálculo.
+
+### Trabajo de sesión
+
+Ejercicios de clase, participación en las discusiones comparadas entre series, y
+el trabajo en equipo del caso de negocio.
+
+## Criterios que atraviesan todo
+
+Estos aplican a cualquier entregable del curso.
+
+**Un número sin unidades no es una respuesta.** `1.68` no significa nada.
+`1.68 metros` sí. Los coeficientes adimensionales —como el de variación— se
+declaran explícitamente como adimensionales, que es distinto de olvidar las
+unidades.
+
+**El cálculo correcto sobre la variable equivocada vale cero.** Sacar la media
+de una variable nominal está mal aunque la aritmética sea impecable. La sesión 3
+existe para esto.
+
+**Si el código no corre, no se califica.** No parcialmente: no se califica. Un
+análisis que no se puede reproducir no es un análisis.
+
+**Los límites son parte de la respuesta, no un adorno.** Un entregable que
+concluye sin declarar qué no se puede concluir está incompleto.
+
+**Resultados sin verificar son tu responsabilidad.** Vengan de donde vengan,
+incluida la IA. Ver [Postura sobre IA](postura-ia.qmd).
+
+## Sobre la práctica manual
+
+El programa oficial pide explícitamente "práctica manual" en varios puntos, y
+este curso la toma en serio, pero no como se suele entender.
+
+No se evalúa que puedas hacer aritmética sin computadora. Se evalúa que puedas
+**traducir una fórmula a operaciones y verificar que la función enlatada hace lo
+que crees que hace**. En el examen eso se ve así:
+
+> Aquí está una fórmula y aquí está un resultado de R. ¿Coinciden? Si no, ¿por
+> qué?
+
+Esa pregunta es la habilidad central del curso, y es intransferible. Un modelo
+de lenguaje te da los dos números; decidir cuál es el correcto para tu problema
+es tuyo.

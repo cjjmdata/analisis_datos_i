@@ -1,0 +1,240 @@
+---
+title: "Catálogo de fuentes de datos"
+subtitle: "Datos reales, públicos y gratuitos, organizados por perfil de carrera"
+lang: es
+---
+
+De este catálogo eliges **la serie que te va a acompañar todo el semestre**. La
+elección se hace en las primeras dos semanas y no se cambia después: la gracia
+del [portafolio](../portafolio/index.qmd) es acumular análisis sobre los mismos
+datos hasta conocerlos de verdad.
+
+Las carreras que aparecen en cada fuente son una **sugerencia de afinidad**, no
+una restricción. Si eres de Finanzas y quieres trabajar con precios de la
+canasta básica, adelante — pero tendrás que argumentar por qué.
+
+## Cómo leer el estado de verificación
+
+Las fuentes cambian: cierran APIs, migran portales, bloquean descargas
+automatizadas. Cada ficha declara **qué se comprobó y cuándo**, para que sepas
+qué esperar antes de perder una tarde.
+
+| Estado | Significa |
+|---|---|
+| ✅ Descarga verificada | Se descargó el dato programáticamente y llegó completo |
+| 🟡 Portal disponible | El sitio responde; la descarga es manual o no se probó de punta a punta |
+| 🔑 Requiere registro | Funciona, pero necesitas una llave gratuita |
+| ⛔ Bloqueado por script | El portal existe pero rechaza descargas automatizadas |
+
+Última comprobación: **8 de agosto de 2026**.
+
+## Finanzas y Contaduría Pública
+
+### Banco de México · Sistema de Información Económica (SIE) {#banxico}
+
+Tipo de cambio FIX, TIIE, CETES, inflación, agregados monetarios. Series diarias
+con historia larga.
+
+- **Estado**: 🔑 Requiere registro. La API responde `400` sin token; el token es
+  gratuito y se obtiene en el portal de Banxico.
+- **En R**: paquete `siebanxicor` (en CRAN).
+- **Para qué sirve aquí**: el tipo de cambio diario es *la* serie para media
+  geométrica (variaciones porcentuales), volatilidad con desviación estándar, y
+  forma de la distribución de rendimientos.
+- <https://www.banxico.org.mx/SieAPIRest/>
+
+### Precios accionarios · Yahoo Finance {#acciones}
+
+Precios diarios de acciones, índices y ETF.
+
+- **Estado**: 🟡 El endpoint responde, pero exige encabezado de navegador y
+  cambia sin aviso. **Usa el snapshot del curso**, no la descarga en vivo.
+- **En R**: `quantmod` o `tidyquant` (ambos en CRAN).
+- **Para qué sirve aquí**: rendimientos para media geométrica, comparación de
+  volatilidad entre emisoras con coeficiente de variación, y colas pesadas al
+  llegar a curtosis y distribución normal.
+
+::: {.callout-warning}
+## Stooq no sirve para esto
+
+Es la fuente que aparece en muchos tutoriales de R. **Está bloqueada para
+descargas por script**: responde con un reto de JavaScript en lugar del CSV, así
+que `read_csv("https://stooq.com/...")` te devuelve HTML, no datos. Comprobado el
+8 de agosto de 2026.
+:::
+
+### INEGI · Índice Nacional de Precios al Consumidor {#inpc}
+
+Inflación general y por componentes, mensual y quincenal.
+
+- **Estado**: 🟡 Portal disponible. La API de indicadores de INEGI requiere token
+  gratuito.
+- **En R**: `inegiR` (en CRAN), o descarga manual a CSV.
+- <https://www.inegi.org.mx/temas/inpc/>
+
+## Negocios Internacionales
+
+### OEC · Observatory of Economic Complexity {#oec}
+
+Exportaciones e importaciones por país, producto y año. Interfaz en español.
+
+- **Estado**: 🟡 Portal disponible y navegable. Descarga a CSV desde la interfaz;
+  la API tiene niveles de acceso de pago.
+- **Para qué sirve aquí**: la distribución de las exportaciones mexicanas por
+  destino es fuertemente asimétrica — es un caso natural para discutir por qué la
+  media es una pésima descripción y la mediana tampoco alcanza.
+- <https://oec.world/es>
+
+### UN Comtrade {#comtrade}
+
+La base primaria de comercio internacional. Es de donde bebe OEC.
+
+- **Estado**: 🟡 Portal disponible. Consulta gratuita con límites; la API amplia
+  requiere suscripción.
+- <https://comtradeplus.un.org/>
+
+### Banco Mundial · API de indicadores {#worldbank}
+
+PIB, comercio, inversión extranjera, población, para todos los países.
+
+- **Estado**: ✅ **Descarga verificada.** Sin token, sin registro, devuelve JSON
+  limpio. Datos actualizados al 13 de julio de 2026.
+- **Prueba directa** (pégala en tu navegador):
+  `https://api.worldbank.org/v2/country/MEX/indicator/NY.GDP.MKTP.CD?format=json`
+- **Para qué sirve aquí**: es la fuente más confiable del catálogo para trabajar
+  sin fricción técnica. Comparaciones entre países para coeficiente de variación.
+
+## Mercadotecnia Estratégica
+
+### Profeco · Quién es Quién en los Precios {#profeco}
+
+Precios de productos específicos, por establecimiento y ciudad, levantados por
+la Procuraduría Federal del Consumidor.
+
+- **Estado**: ✅ **Catálogo verificado** en datos.gob.mx. Ediciones **2024 y
+  2025** publicadas bajo licencia **CC-BY-4.0**.
+- **Para qué sirve aquí**: es probablemente la mejor fuente del catálogo para
+  este curso. El mismo producto, en la misma ciudad, el mismo día, a precios
+  distintos según la tienda: la dispersión deja de ser un concepto abstracto y se
+  vuelve dinero que el consumidor pierde por no comparar.
+- <https://datos.gob.mx/> (buscar "quién es quién en los precios")
+
+### Google Trends {#trends}
+
+Interés de búsqueda relativo por término, región y tiempo.
+
+- **Estado**: 🟡 `gtrendsR` está en CRAN y funciona, pero Google aplica límites de
+  tasa agresivos. Descarga una vez y guarda.
+- **Advertencia metodológica**: el valor **no** es volumen de búsquedas, es un
+  índice normalizado de 0 a 100 **relativo al periodo consultado**. Cambiar el
+  rango de fechas cambia todos los números. Es un ejemplo excelente de `Lo que
+  este número NO dice`.
+
+### INEGI · ENIGH (gasto de los hogares) {#enigh-gasto}
+
+Ingreso y gasto de hogares mexicanos, con desglose fino por rubro.
+
+- **Estado**: 🟡 Portal disponible, microdatos descargables.
+- **Para qué sirve aquí**: estructura de gasto por decil de ingreso. Segmentación
+  con datos reales en vez de personas inventadas.
+- <https://www.inegi.org.mx/programas/enigh/nc/2022/>
+
+## Administración y Dirección de Empresas
+
+### INEGI · DENUE {#denue}
+
+Directorio de todos los establecimientos económicos del país: giro, tamaño,
+ubicación.
+
+- **Estado**: 🟡 Portal y API documentados y disponibles. La API requiere token
+  gratuito.
+- **Para qué sirve aquí**: la distribución del tamaño de las empresas mexicanas
+  por número de empleados es brutalmente asimétrica. Sirve para tablas de
+  frecuencias, histogramas y para discutir por qué "la empresa promedio" es una
+  ficción estadística.
+- <https://www.inegi.org.mx/app/mapa/denue/default.aspx>
+
+### INEGI · ENOE (empleo y salarios) {#enoe}
+
+Encuesta Nacional de Ocupación y Empleo. Trimestral, con factores de expansión.
+
+- **Estado**: 🟡 Portal disponible, microdatos descargables.
+- <https://www.inegi.org.mx/programas/enoe/15ymas/>
+
+### INEGI · ENAPROCE (productividad y competitividad de empresas) {#enaproce}
+
+Prácticas de gestión, capacitación, financiamiento y productividad de micro,
+pequeñas y medianas empresas.
+
+- **Estado**: 🟡 Portal disponible (edición 2023).
+- <https://www.inegi.org.mx/programas/enaproce/2023/>
+
+### INEGI · Censos Económicos {#censos-economicos}
+
+Censo completo de la actividad económica del país.
+
+- **Estado**: 🟡 Portal disponible (edición 2024).
+- **Para qué sirve aquí**: es un **censo**, no una encuesta. Es el contraste
+  natural para la sesión 2, cuando se discute población contra muestra.
+- <https://www.inegi.org.mx/programas/ce/2024/>
+
+## Transversales
+
+### INEGI · ENIGH (ingreso) {#enigh-ingreso}
+
+- **Estado**: 🟡 Portal disponible.
+- **Para qué sirve aquí**: trae **factores de expansión reales**, que es lo que
+  vuelve honesta la enseñanza de la media ponderada. Sin ellos, la media
+  ponderada se enseña con calificaciones inventadas y nadie entiende para qué
+  sirve. Con ellos, el alumno ve que ignorar el ponderador cambia el ingreso
+  promedio nacional.
+- Es también la fuente de los deciles de ingreso de la sesión 5.
+
+### datos.gob.mx {#datosgob}
+
+Catálogo abierto del gobierno federal.
+
+- **Estado**: ✅ **API verificada.** La API de CKAN responde sin token.
+  79 conjuntos de datos para el término "precios", la mayoría bajo CC-BY-4.0.
+- **Prueba directa**:
+  `https://datos.gob.mx/api/3/action/package_search?q=precios`
+
+### Inside Airbnb {#airbnb}
+
+Listados de Airbnb por ciudad, con precio, tipo, ubicación y reseñas.
+
+- **Estado**: 🟡 Portal disponible. Licencia Creative Commons.
+- **Nota**: es el dataset central de *Análisis de Datos II*. Trabajarlo aquí te
+  da ventaja el semestre siguiente, pero también te quita la novedad.
+- <https://insideairbnb.com/get-the-data/>
+
+## Regla del curso sobre descargas
+
+::: {.a-mano}
+En clase **nunca** se descarga en vivo. Todas las sesiones leen un archivo local
+que ya está congelado en el repositorio.
+
+No es comodidad: es reproducibilidad. Si la sesión depende de que treinta
+laptops alcancen un servidor extranjero a través de la red de la universidad, la
+clase se cae. Y si el dato cambia entre hoy y el examen, los números de tus
+apuntes dejan de coincidir con los míos.
+
+La descarga en vivo es una **extensión opcional** para quien quiera actualizar
+su serie. Está documentada en `scripts/00_descarga_datos.R`.
+:::
+
+## Lo que tienes que documentar de tu fuente
+
+Parte de la calificación del portafolio es la **ficha de la fuente**. No es
+burocracia: es la diferencia entre un analista y alguien que grafica columnas.
+
+1. **Quién levanta el dato y con qué propósito.** Un precio que reporta Profeco
+   para vigilar abusos no se levanta igual que uno que reporta una empresa para
+   atraer inversión.
+2. **Cobertura**: qué periodo, qué geografía, qué universo. Y qué queda fuera.
+3. **Unidad de observación**: ¿cada renglón es una persona, un hogar, una
+   transacción, un día?
+4. **Cómo se llega al dato publicado**: ¿es un censo, una muestra, una
+   estimación, un índice normalizado?
+5. **Licencia** y cómo hay que citarla.
+6. **Qué pregunta NO puedes responder con esta fuente**, aunque parezca que sí.

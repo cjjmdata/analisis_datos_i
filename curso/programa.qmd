@@ -1,0 +1,206 @@
+---
+title: "Programa y cobertura"
+subtitle: "MAT1409 · qué cubre el curso y en qué orden"
+lang: es
+---
+
+## Datos de la asignatura
+
+| | |
+|---|---|
+| Clave | MAT1409 |
+| Bloque | Profesional |
+| Créditos | 6 |
+| Duración | 16 semanas |
+| Seriación | MAT1405 |
+| Horas con académico | 48 |
+| Horas independientes | 48 |
+
+**Resultado de aprendizaje oficial.** El alumno aplica técnicas de análisis
+cuantitativo para procesar bases de datos que permitan examinar problemas
+económicos y organizacionales.
+
+## Cómo se usa el programa oficial
+
+::: {.a-mano}
+El temario es la **lista de verificación de cobertura**, no el guion de
+presentación.
+
+Se cubre completo, y esta página lo demuestra punto por punto. Pero el orden en
+que se enseña responde al arco de un análisis real, no al orden en que están
+escritos los temas.
+:::
+
+Las 48 horas se organizan como **31 sesiones de 1.5 horas**, dos por semana. Las
+evaluaciones se aplican fuera de ese conteo.
+
+| Unidad | Sesiones | Horas |
+|---|:--:|:--:|
+| 1 · La pregunta y los datos | 3 | 4.5 |
+| 2 · Ver los datos | 5 | 7.5 |
+| 3 · Resumir y comparar | 12 | 18.0 |
+| 4 · Anticipar | 5 | 7.5 |
+| 5 · Modelar | 6 | 9.0 |
+| **Total** | **31** | **46.5** |
+
+## Matriz de cobertura
+
+Cada punto del programa oficial, con la sesión donde se cubre.
+
+### 1. Definición y clasificación
+
+| Punto | Sesión | |
+|---|:--:|:--:|
+| 1.1 Objetivo y ramas de la estadística | 1 | ✅ |
+| 1.2 Población y muestra | 2 | ✅ |
+| 1.3 Tipos de variables y escalas de medición | 3 | ✅ |
+
+### 2. Estadísticos descriptivos
+
+| Punto | Sesión | |
+|---|:--:|:--:|
+| 2.1 Medidas de posición: cuartiles, deciles y percentiles | 9, 10 | ✅ |
+| 2.2.1 Moda y mediana | 12 | ✅ |
+| 2.2.1 Media armónica | — | ⛔ |
+| 2.2.2 Media aritmética: simple y ponderada | 13 | ✅ |
+| 2.2.3 Media geométrica | 14 | ✅ |
+| 2.2.4 Práctica manual y aplicación con Excel | 9–14 | ✅ |
+| 2.3.1 Rango y rango intercuartil | 15 | ✅ |
+| 2.3.2 Varianza y desviación estándar | 15 | ✅ |
+| 2.3.3 Coeficiente de variación | 16 | ✅ |
+| 2.3.4 Práctica manual y aplicaciones con Excel | 15, 16 | ✅ |
+| 2.4 Medidas de forma: sesgo y curtosis | 17 | ✅ |
+| 2.5 Teorema de Chebyshev y regla empírica | 18 | ✅ |
+| 2.6 Aplicaciones con Excel | 19 | ✅ |
+
+### 3. Representación tabular y gráfica
+
+| Punto | Sesión | |
+|---|:--:|:--:|
+| 3.1 Tablas de distribución de frecuencias | 4 | ✅ |
+| 3.2.1 Gráfica de barras | 5 | ✅ |
+| 3.2.1 Gráfica de pastel | 5 | ⚠️ |
+| 3.2.2 Histograma, polígono y ojiva | 7, 8 | ✅ |
+| 3.2.3 Diagrama de caja | 11 | ✅ |
+| 3.3 Aplicaciones con Excel | 19 | ✅ |
+
+### 4. Introducción a la probabilidad
+
+| Punto | Sesión | |
+|---|:--:|:--:|
+| 4.1 Probabilidades de eventos simples | 21, 22 | ✅ |
+| 4.2 Probabilidades de eventos compuestos | 23 | ✅ |
+| 4.2.1 Regla aditiva | 24 | ✅ |
+| 4.2.2 Regla multiplicativa | 24, 25 | ✅ |
+| 4.3 Teorema de Bayes | 25 | ✅ |
+| 4.4 Práctica manual y aplicaciones con Excel | 21–25 | ✅ |
+
+### 5. Distribuciones de probabilidad
+
+| Punto | Sesión | |
+|---|:--:|:--:|
+| 5.1 Variables aleatorias: discretas y continuas | 26 | ✅ |
+| 5.2 Valor esperado | 27 | ✅ |
+| 5.3.1 Distribución binomial | 28 | ✅ |
+| 5.3.2 Distribución Poisson | 29 | ✅ |
+| 5.4.1 Distribución normal | 30 | ✅ |
+| 5.4.2 Aplicaciones con Excel | 31 | ✅ |
+
+## Ajustes de cátedra
+
+El programa admite ajuste. Estos son los que se hicieron, con su justificación.
+Ninguno reduce el resultado de aprendizaje oficial.
+
+### ⛔ Se elimina: media armónica
+
+Es la única técnica del programa que se retira por completo.
+
+Su dominio de aplicación real —promediar razones sobre una base constante, como
+velocidades— prácticamente no aparece en análisis de negocios. El costo de
+oportunidad es alto: media este el tiempo que necesita **la media geométrica**,
+que sí se usa todos los días para rendimientos compuestos y tasas de crecimiento,
+y que es donde los alumnos —y los modelos de lenguaje— se equivocan
+sistemáticamente.
+
+La idea de fondo, *"el tipo de promedio depende de qué se está promediando"*, se
+enseña igual. Solo se enseña con tres medias en vez de cuatro.
+
+### ⚠️ Se reencuadra: gráfica de pastel
+
+Se explica **qué es y por qué evitarla**, pero no se enseña a producirla.
+
+No es preferencia estética: hay evidencia experimental. Cleveland y McGill (1984)
+midieron la precisión con que las personas juzgan distintos elementos gráficos y
+encontraron un orden claro: la posición sobre una escala común se juzga con mucha
+mayor exactitud que el ángulo o el área. Un pastel codifica en ángulo y área
+justo lo que unas barras codifican en longitud.
+
+La consecuencia práctica: con más de dos o tres categorías, unas barras ganan
+siempre. Enseñar la herramienta incluye enseñar cuándo no usarla, y esta sesión
+es el primer ejercicio de lectura crítica de gráficas del curso.
+
+::: {.aside}
+Cleveland, W. S. y McGill, R. (1984). Graphical Perception: Theory,
+Experimentation, and Application to the Development of Graphical Methods.
+*Journal of the American Statistical Association*, 79(387), 531–554.
+:::
+
+### 🔁 Se moderniza: la ojiva
+
+Se cubre el concepto —**frecuencia acumulada**, y su lectura como percentiles—
+pero se dibuja con la función de distribución empírica, que es la versión que usa
+el software actual y la que conecta directamente con la sesión de percentiles.
+
+El nombre clásico se menciona para que lo reconozcan si lo encuentran en un libro
+de texto.
+
+### 🔁 Se comprime: reglas de conteo
+
+Permutaciones y combinaciones se cubren en una sesión en lugar de dos, enfocadas
+en **por qué** hace falta contar —el supuesto de resultados igualmente
+probables— más que en ejercitar `nPr` y `nCr`. La sesión liberada se destina al
+**teorema de Bayes**, que tiene mucho más valor para un tomador de decisiones.
+
+### ➕ Se agrega: datos faltantes (sesión 6)
+
+No está en el programa y es el problema más común de los datos reales. Una tabla
+de frecuencias con `NA` silencioso produce porcentajes que no suman lo que
+deberían, y un promedio calculado sobre los casos completos responde una pregunta
+distinta a la que se hizo.
+
+### ➕ Se agrega: paradoja de Simpson (sesión 20)
+
+Una relación entre dos variables puede invertirse al considerar una tercera. Es
+la puerta de entrada al **pensamiento multivariado** que la revisión 2016 de
+GAISE pide explícitamente, y se puede enseñar entera con porcentajes: no requiere
+nada que no se haya visto ya.
+
+Es además el argumento más contundente del curso para la sección *lo que este
+número NO dice*.
+
+## Sobre "práctica manual" y "aplicaciones con Excel"
+
+El programa pide ambas cosas de forma explícita.
+
+La **práctica manual** se cumple y se toma en serio: cada estadístico se calcula
+primero traduciendo la fórmula a operaciones elementales, antes de usar la
+función que lo resuelve en una línea. Es el dispositivo `Primero a mano` que
+aparece en todas las sesiones.
+
+Las **aplicaciones** se hacen en R en lugar de Excel. La razón no es estética: en
+R el cálculo manual y el automático se escriben uno debajo del otro y se pueden
+comparar; en una hoja de cálculo la fórmula queda escondida en una celda. La
+cobertura conceptual del programa se satisface íntegramente.
+
+## Actividades de aprendizaje
+
+Las que usa este curso, del catálogo oficial:
+
+**Con conducción del académico** — Ejercicios (cálculo manual y su verificación
+en R); experiencias estructuradas (la encuesta del grupo, las simulaciones);
+aprendizaje colaborativo (discusión comparada entre series de distintas carreras);
+aprendizaje basado en problemas (el caso de negocio).
+
+**Independientes** — Ejercicios sobre la serie propia del portafolio; lecturas
+dirigidas; investigación documental (documentar origen, cobertura y límites de la
+fuente elegida); trabajo cooperativo.

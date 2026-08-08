@@ -1,0 +1,163 @@
+/*-- scss:defaults --*/
+
+@import 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap';
+
+// Paleta
+// ---------------------------------------------------------------
+// Derivada de STA 210 (Çetinkaya-Rundel): el teal #5B888C y el
+// salmón #E0A890 son los acentos; #D9E3E4 el fondo de navegación.
+// Se agregan tonos oscuros propios porque #5B888C sobre blanco da
+// ~3.7:1 de contraste — suficiente para UI y títulos grandes, NO
+// para texto corrido (WCAG AA pide 4.5:1).
+
+$teal-900:   #24494C;   // encabezados y texto de énfasis  (~9.5:1)
+$teal-700:   #3A6B6F;   // enlaces y bordes                (~5.9:1)
+$teal-500:   #5B888C;   // acento principal (UI, no texto)
+$teal-100:   #D9E3E4;   // fondo de sidebar y footer
+$salmon-700: #B4704F;   // acento secundario en texto      (~4.6:1)
+$salmon-500: #E0A890;   // acento secundario en UI
+$brick-700:  #A4503C;   // advertencias fuertes
+$sage-700:   #5A7B5A;   // confirmaciones
+
+$primary:   $teal-700;
+$secondary: #6C7A7B;
+$success:   $sage-700;
+$info:      $teal-700;
+$warning:   $salmon-700;
+$danger:    $brick-700;
+$light:     $teal-100;
+
+// Tipografía
+// ---------------------------------------------------------------
+$font-family-sans-serif: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+$headings-font-family:   "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+$font-family-monospace:  "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+$font-size-base: 1rem;
+$h1-font-size: 2.1rem;
+$h2-font-size: 1.55rem;
+$h3-font-size: 1.25rem;
+$body-line-height: 1.65;
+
+$link-color: $teal-700;
+
+/*-- scss:rules --*/
+
+h1, h2, h3 {
+  font-weight: 700;
+  color: $teal-900;
+}
+
+h2 {
+  border-bottom: 2px solid $teal-100;
+  padding-bottom: 0.2em;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+// Código
+// ---------------------------------------------------------------
+
+// Ligaduras DESACTIVADAS, a propósito.
+//
+// JetBrains Mono y Fira Code convierten `<-` en una flecha y `|>` en un
+// triángulo. El código que se copia es correcto, pero el alumno ve un glifo
+// que no está en su teclado y no sabe qué teclear. En un curso donde nadie
+// ha programado antes, eso es una barrera real, no un detalle estético.
+//
+// `calt` es la que implementa las ligaduras en estas fuentes; sin apagarla
+// no basta con `font-variant-ligatures`.
+code, pre, kbd, samp,
+.sourceCode,
+div.sourceCode pre,
+pre.sourceCode code {
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "clig" 0, "calt" 0;
+}
+
+code:not(pre code) {
+  background-color: rgba(91, 136, 140, 0.10);
+  color: $teal-900;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  border-left: 3px solid $teal-500;
+}
+
+// Tablas
+// ---------------------------------------------------------------
+table thead {
+  background-color: rgba(91, 136, 140, 0.09);
+}
+
+// Callouts pedagógicos del curso
+// ---------------------------------------------------------------
+// Cuatro dispositivos didácticos con marca visual propia. Se usan
+// con `::: {.a-mano} ... :::` en los .qmd. Ver AGENTS.md.
+
+.a-mano, .friccion, .no-dice, .ia-nota {
+  padding: 0.9em 1.1em;
+  margin: 1.2em 0;
+  border-radius: 4px;
+  border-left: 4px solid;
+
+  > :first-child { margin-top: 0; }
+  > :last-child  { margin-bottom: 0; }
+
+  &::before {
+    display: block;
+    font-weight: 700;
+    font-size: 0.82em;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.45em;
+  }
+}
+
+// "Primero a mano": el puente entre la fórmula y la función enlatada.
+.a-mano {
+  background-color: rgba(91, 136, 140, 0.08);
+  border-left-color: $teal-500;
+  &::before { content: "Primero a mano"; color: $teal-900; }
+}
+
+// Pregunta de fricción: se responde ANTES de ver el resultado.
+.friccion {
+  background-color: rgba(224, 168, 144, 0.16);
+  border-left-color: $salmon-500;
+  &::before { content: "Detente y responde"; color: $salmon-700; }
+}
+
+// Los límites del número que se acaba de calcular.
+.no-dice {
+  background-color: rgba(164, 80, 60, 0.09);
+  border-left-color: $brick-700;
+  &::before { content: "Lo que este número NO dice"; color: $brick-700; }
+}
+
+// Uso e implicaciones de la IA en el punto exacto del temario.
+.ia-nota {
+  background-color: rgba(90, 123, 90, 0.10);
+  border-left-color: $sage-700;
+  &::before { content: "IA en este tema"; color: $sage-700; }
+}
+
+// Énfasis en línea
+// ---------------------------------------------------------------
+.concepto { color: $teal-900; font-weight: 700; }
+.alerta   { color: $brick-700; font-weight: 700; }
+
+// Tabla del calendario en la portada
+// ---------------------------------------------------------------
+.calendario {
+  font-size: 0.9rem;
+  th { white-space: nowrap; }
+}

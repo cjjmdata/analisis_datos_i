@@ -1,0 +1,56 @@
+# Datos generados (se regeneran con scripts/00_descarga_datos.R)
+datos/*.rds
+datos/*.csv
+datos/*.csv.gz
+datos/*.xlsx
+!datos/.gitkeep
+
+# NUNCA versionar respuestas crudas de la encuesta del grupo:
+# contienen datos personales de alumnos. Solo se publica el
+# derivado anonimizado que produce scripts/01_encuesta_grupo.R
+datos/encuesta_cruda*
+datos/*_identificable*
+
+# Cachés de Quarto
+_site/
+.quarto/
+*_files/
+# _freeze/ SÍ se versiona: el CI publica sin ejecutar R (ver AGENTS.md)
+_freeze/site_libs/
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+renv/library/
+renv/staging/
+
+# Material privado
+# OJO: en .gitignore el '#' solo abre comentario al INICIO de la línea.
+# Un comentario al final de un patrón se vuelve parte del patrón y no
+# coincide con nada. Cada comentario va en su propio renglón.
+
+# memos de diseño de sesiones e instrumentos de evaluación
+prompts/
+
+# reactivos y claves de respuesta
+examen/
+
+# material fuente de semestres previos y documentos institucionales
+referencias/
+
+# cuadernos de referencia con salidas incrustadas (pesan MB y ensucian diffs)
+referencias/*.ipynb
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+**/*.quarto_ipynb
+
+/.quarto/

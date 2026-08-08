@@ -1,0 +1,221 @@
+---
+title: "Referencia de R y Markdown"
+subtitle: "Para consultar, no para estudiar de corrido"
+lang: es
+---
+
+::: {.a-mano}
+Esta página **no se ve en clase**. Es tu manual de consulta.
+
+Cada herramienta de R se enseña en la sesión donde hace falta para responder una
+pregunta estadística. Aquí queda todo junto para cuando necesites recordar algo,
+o para cuando quieras ir más allá de lo que vimos.
+
+Si algo de aquí no aparece en ninguna sesión, es porque **no lo necesitas para
+este curso**. Está por si te da curiosidad.
+:::
+
+## Markdown en cuatro minutos
+
+Markdown da formato a texto plano. Es lo que usan las celdas de texto de Colab y
+lo que vas a usar en tu portafolio. Con esto te alcanza para todo el semestre:
+
+```markdown
+# Título          ## Subtítulo          ### Sub-subtítulo
+
+*itálica*    **negrita**    `código en línea`
+
+- viñeta             1. lista numerada
+- otra viñeta        2. siguiente
+
+[texto del enlace](https://ejemplo.com)
+
+![descripción de la imagen](ruta/imagen.png)
+```
+
+Para fórmulas, LaTeX entre signos de pesos: `$\bar{x}$` produce $\bar{x}$, y
+`$$\frac{a}{b}$$` produce una fórmula centrada. La vas a necesitar en el
+portafolio cuando escribas la fórmula antes del cálculo.
+
+## Lo básico de R
+
+### Guardar un valor
+
+```r
+precio <- 180        # se lee "precio recibe 180"
+precio               # imprime lo que guardaste
+```
+
+Usa siempre `<-`. R también acepta `=` y `->`, pero mezclarlos hace el código
+ilegible. Un solo estilo.
+
+::: {.callout-important}
+R distingue mayúsculas de minúsculas: `Precio` y `precio` son objetos distintos.
+Es la causa del 90% de los `object not found` del primer mes.
+:::
+
+### Vectores
+
+Un vector es una secuencia de valores del mismo tipo. Es la estructura que más vas
+a usar: una columna de datos es un vector.
+
+```r
+estaturas <- c(1.62, 1.75, 1.58, 1.81, 1.69)   # c() = combinar
+length(estaturas)     # cuántos elementos
+estaturas * 100       # opera sobre TODOS a la vez
+estaturas[2]          # el segundo elemento
+```
+
+La última idea —**R opera sobre el vector completo sin que tengas que repetir
+nada**— es la que hace innecesarios los ciclos que usan otros lenguajes.
+
+### Tablas de datos
+
+```r
+library(readr)
+datos <- read_csv("archivo.csv")   # leer
+
+nrow(datos)          # filas
+ncol(datos)          # columnas
+glimpse(datos)       # ver estructura y tipos
+head(datos)          # primeras filas
+datos$precio         # una columna, como vector
+```
+
+::: {.callout-warning}
+Usa `read_csv()` de `readr`, no `read.csv()` de base R. `read.csv()` maneja mal
+los acentos y te va a llenar el archivo de `Ã±`.
+
+Y nunca abrevies el nombre de una columna con `$`: `datos$prec` puede funcionar
+por coincidencia parcial y romperse en silencio el día que exista otra columna que
+empiece igual.
+:::
+
+### Comparar y filtrar
+
+```r
+precio > 100                     # ¿mayor que?
+tienda == "Norte"                # ¿igual a?   (dos signos)
+precio > 100 & tienda == "Norte" # ambas cosas (Y)
+precio > 100 | precio < 20       # cualquiera  (O)
+!is.na(precio)                   # NO es faltante
+
+filter(datos, precio > 100 & tienda == "Norte")
+```
+
+`==` con dos signos es comparación; `=` con uno es otra cosa. Confundirlos es
+normal al principio.
+
+### Valores faltantes
+
+```r
+is.na(precio)              # ¿cuáles faltan?
+sum(is.na(precio))         # cuántos faltan
+mean(precio, na.rm = TRUE) # calcular ignorando faltantes
+```
+
+::: {.no-dice}
+`na.rm = TRUE` no arregla el problema: lo esconde.
+
+Calcula el promedio de los que sí respondieron, que responde una pregunta
+distinta a la que hiciste. Si los que no respondieron su ingreso son
+sistemáticamente los que ganan más, ese promedio está sesgado y ningún argumento
+de la función lo corrige. Sesión 6.
+:::
+
+### Instalar y cargar paquetes
+
+```r
+install.packages("tidyverse")   # UNA vez en la vida de la computadora
+library(tidyverse)              # CADA vez que abres un cuaderno
+```
+
+En Colab casi todo ya está instalado; solo hace falta `library()`.
+
+### Escribir tu propia función
+
+Solo la vas a necesitar una vez en el curso (sesión 17, para el coeficiente de
+sesgo), pero está aquí por si la quieres antes:
+
+```r
+coeficiente_variacion <- function(x) {
+  sd(x) / abs(mean(x))
+}
+
+coeficiente_variacion(estaturas)
+```
+
+## Estadísticos, de un vistazo
+
+Todos son de base R: no necesitan ningún paquete.
+
+| Qué | Función | Sesión |
+|---|---|:--:|
+| Suma, cuántos | `sum(x)`, `length(x)` | 2 |
+| Mínimo, máximo, rango | `min(x)`, `max(x)`, `range(x)` | 15 |
+| Cuantiles | `quantile(x, probs = 0.25)` | 10 |
+| Rango intercuartil | `IQR(x)` | 15 |
+| Mediana | `median(x)` | 12 |
+| Media | `mean(x)` | 13 |
+| Media ponderada | `weighted.mean(x, w)` | 13 |
+| Producto (para media geométrica) | `prod(x)` | 14 |
+| Varianza, desviación estándar | `var(x)`, `sd(x)` | 15 |
+| Tabla de frecuencias | `table(x)`, `count(datos, var)` | 4 |
+| Proporciones | `prop.table(table(x))` | 4 |
+
+## Gráficas, de un vistazo
+
+```r
+library(ggplot2)
+
+ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
+  geom_histogram() +                 # qué tipo de gráfica
+  labs(title = "Título",             # las etiquetas
+       x = "Eje X", y = "Eje Y")
+```
+
+| Para | Geometría | Sesión |
+|---|---|:--:|
+| Variable categórica | `geom_bar()` | 6 |
+| Variable numérica | `geom_histogram()` | 8 |
+| Polígono de frecuencias | `geom_freqpoly()` | 9 |
+| Frecuencia acumulada | `stat_ecdf()` | 9 |
+| Diagrama de caja | `geom_boxplot()` | 12 |
+| Línea vertical (una media, un corte) | `geom_vline()` | 13 |
+| Separar por grupos | `facet_wrap(~ grupo)` | 20 |
+
+## Lo que este curso NO usa
+
+Aparece en casi todos los manuales de R. Si lo encuentras, no te está faltando
+nada: **no lo necesitas aquí**.
+
+| Tema | Por qué no |
+|---|---|
+| Matrices | No hacen falta para estadística descriptiva ni probabilidad a este nivel |
+| Listas | Estructura de programación, no de análisis |
+| Ciclos `for` | R opera sobre vectores completos. Escribir ciclos enseña el idioma equivocado |
+| Condicionales `if / else` | Se usan para programar, no para analizar |
+| `apply`, `sapply`, `lapply` | Mismo caso |
+| Operadores `->` y `=` para asignar | Usa `<-` y ya |
+
+Si en algún momento te topas con que **sí** los necesitas para tu portafolio,
+búscalos en [R for Data Science](https://r4ds.hadley.nz/) o pregúntame. Pero no
+inviertas tiempo en aprenderlos "por si acaso": no es donde está el valor de esta
+materia.
+
+## Cuando algo falle
+
+| Mensaje | Causa casi siempre |
+|---|---|
+| `could not find function "..."` | Falta `library()` |
+| `object '...' not found` | La celda que lo define no se ha corrido, o hay error de mayúsculas o acentos |
+| `cannot open file '...'` | Ruta mal escrita, o el archivo no está donde crees |
+| Los acentos salen como `Ã±` | Usa `read_csv()`, no `read.csv()` |
+| `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
+
+::: {.a-mano}
+El último es el más frecuente. R señala **dónde se dio cuenta** del problema, que
+casi nunca es **dónde está**: suele estar en la línea anterior. Mira hacia arriba.
+:::
+
+Más detalle en [Cómo trabajamos](computo.qmd).

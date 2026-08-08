@@ -1,0 +1,127 @@
+---
+title: "Análisis de Datos I"
+subtitle: "Estadística descriptiva y probabilidad para la toma de decisiones · MAT1409"
+lang: es
+toc: false
+---
+
+Este sitio reúne las presentaciones, los datos y los recursos del curso. El
+enfoque combina el programa oficial con una postura explícita sobre qué cambia
+—y qué no— cuando la ejecución de un análisis se puede delegar a una máquina.
+
+::: {.a-mano}
+La fórmula explica **qué** se calcula. El código lo **ejecuta**. La
+interpretación y sus límites son **intransferibles**, y son justamente la parte
+que la IA no hace por ti.
+:::
+
+## El arco del curso
+
+El curso no recorre el temario en el orden en que está escrito. Lo recorre en el
+orden en que ocurre un análisis real:
+
+| | Unidad | Idea | Sesiones |
+|:--:|---|---|:--:|
+| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo entre manos | 4 |
+| 2 | **Ver** | Antes de resumir una variable, hay que verla completa | 5 |
+| 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde | 11 |
+| 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió | 5 |
+| 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 6 |
+
+::: {.callout-note}
+## Por qué las gráficas van antes que los promedios
+
+En el documento oficial los estadísticos descriptivos van antes que las gráficas.
+Aquí es al revés, por una razón concreta: **enseñar la media antes del histograma
+es enseñar el resumen de una forma que nunca has visto.**
+
+Cuando llegues a la media ya vas a saber dibujar la distribución, y la media va a
+ser una línea vertical sobre ella. Cuando llegues a los cuartiles, la caja del
+diagrama va a tener sentido. Es también la estrategia del libro del curso, que
+abre con visualización antes que con cualquier otra cosa.
+:::
+
+## Cómo funciona el curso
+
+**En clase, todos los mismos datos.** En la primera sesión el grupo se
+auto-encuesta: ustedes son la población. A partir de la unidad 2 se suma el caso
+de una empresa mexicana exportadora, que toca las cuatro carreras a la vez.
+
+**Fuera de clase, tu serie.** Cada quien adopta una serie de datos reales del
+[catálogo](datos/catalogo.qmd), elegida según su carrera, y le aplica cada
+técnica que se ve en clase. Al final del semestre eso es tu
+[portafolio](portafolio/index.qmd).
+
+Los grupos son mixtos entre carreras a propósito. Comparar cómo se distribuye una
+serie de precios accionarios contra una de exportaciones contra una de ingreso de
+hogares es una discusión que solo se puede tener con esa mezcla.
+
+**R se aprende sobre la marcha.** No hay sesiones de "introducción a R": cada
+herramienta entra en la sesión donde hace falta para responder una pregunta
+estadística. Ver [Enfoque del curso](curso/enfoque.qmd).
+
+## Calendario
+
+16 semanas · 2 sesiones de 1.5 h por semana · 31 sesiones de contenido.
+
+::: {.calendario}
+
+| Ses | Tema | Herramienta de R | Programa |
+|:--:|:---|:---|:--:|
+| | **Unidad 1 · La pregunta y los datos** | | |
+| 1 | [Presentación del curso: ¿qué es la estadística?](slides/u1/s01_que_es_la_estadistica.qmd) | — | 1.1 |
+| 2 | Tu primer análisis: el cuaderno y los datos | correr código, `read_csv` | 1.1 |
+| 3 | Población y muestra | `nrow`, `slice_sample` | 1.2 |
+| 4 | Variables, escalas y la rutina de las cuatro preguntas | `glimpse`, `factor` | 1.3 |
+| | **Unidad 2 · Ver los datos** | | |
+| 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
+| 6 | Variables categóricas: barras (y por qué no pastel) | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
+| 7 | Datos faltantes: lo que no está también informa | `is.na`, `drop_na` | — |
+| 8 | Histograma: la forma de una variable numérica | `geom_histogram` | 3.2.2 |
+| 9 | El ancho del intervalo, polígono y frecuencia acumulada | `binwidth`, `geom_freqpoly`, `stat_ecdf` | 3.2.2 |
+| | **Unidad 3 · Resumir y comparar** | | |
+| 10 | Cuartiles: la fórmula contra `quantile()` | `quantile`, `sum`, `length` | 2.1 |
+| 11 | Deciles y percentiles; leer la frecuencia acumulada | `seq`, `probs` | 2.1 |
+| 12 | Diagrama de caja: detectar no es eliminar | `geom_boxplot`, `filter` | 3.2.3 |
+| 13 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
+| 14 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |
+| 15 | Centro III: media geométrica | `prod`, `exp`, `log` | 2.2.3 |
+| 16 | Dispersión I: rango, rango intercuartil, varianza y desviación estándar | `range`, `IQR`, `var`, `sd` | 2.3.1, 2.3.2 |
+| 17 | Dispersión II: coeficiente de variación | `summarize`, `group_by` | 2.3.3 |
+| 18 | Medidas de forma: sesgo y curtosis | funciones propias | 2.4 |
+| 19 | Teorema de Chebyshev y regla empírica | `replicate` | 2.5 |
+| 20 | Comparar grupos y la paradoja de Simpson | `facet_wrap`, `group_by` | 2.6, 3.3 |
+| | **Unidad 4 · Anticipar** | | |
+| 21 | Aleatoriedad, espacio muestral y eventos | `sample`, `set.seed` | 4.1 |
+| 22 | Probabilidad y ley de los grandes números | `cumsum`, `replicate` | 4.1 |
+| 23 | Conteo: cuando los resultados son igualmente probables | `factorial`, `choose` | 4.2 |
+| 24 | Eventos compuestos: regla aditiva, multiplicativa e independencia | `expand.grid` | 4.2.1, 4.2.2 |
+| 25 | Probabilidad condicional y teorema de Bayes | simulación de diagnósticos | 4.2.2, 4.3 |
+| | **Unidad 5 · Modelar** | | |
+| 26 | Variables aleatorias discretas y continuas | `sample`, `runif` | 5.1 |
+| 27 | Valor esperado | `weighted.mean` | 5.2 |
+| 28 | Distribución binomial | `dbinom`, `pbinom` | 5.3.1 |
+| 29 | Distribución Poisson | `dpois`, `ppois` | 5.3.2 |
+| 30 | Distribución normal: la curva y la estandarización | `dnorm`, `pnorm`, `qnorm` | 5.4.1 |
+| 31 | Cierre: ¿tu variable se parece a alguna? | todo lo anterior | 5.4.2 |
+
+:::
+
+Las evaluaciones se aplican fuera de estas 31 sesiones. Ver
+[Evaluación](curso/evaluacion.qmd).
+
+## Por dónde empezar
+
+1. [Cómo trabajamos](curso/computo.qmd) — no tienes que instalar nada, pero
+   revísalo antes de la primera sesión.
+2. [Postura sobre IA](curso/postura-ia.qmd) — lectura obligatoria antes de la
+   primera entrega.
+3. [Catálogo de datos](datos/catalogo.qmd) — elige tu serie durante las primeras
+   dos semanas.
+
+::: {.callout-important}
+## Sobre este sitio
+
+Contiene **únicamente materiales de consulta**. Entregas, calificaciones, fechas,
+avisos y comunicación con el grupo se administran exclusivamente por Brightspace.
+:::
