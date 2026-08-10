@@ -25,7 +25,7 @@ económicos y organizacionales.
 ::: {.a-mano}
 El temario es la **lista de verificación de cobertura**. Se cubre completo, y
 esta página lo demuestra punto por punto. El orden en que se enseña responde al
-arco de un análisis real.
+curso que sigue un análisis real.
 :::
 
 Las 48 horas se organizan como **32 sesiones de 1.5 horas**: 30 de contenido y 2

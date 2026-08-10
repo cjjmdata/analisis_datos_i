@@ -5,10 +5,9 @@ lang: es
 toc: false
 ---
 
-Este sitio reúne las presentaciones, los datos y los recursos del curso. El
-enfoque combina el programa oficial con una postura explícita sobre qué cambia y
-qué sigue igual cuando la ejecución de un análisis se puede delegar a una
-máquina.
+Este sitio reúne las presentaciones, los datos y los recursos del curso. Cubre el
+programa oficial de MAT1409 y lo trabaja en un escenario donde la ejecución de un
+análisis se puede delegar a una máquina: qué cambia con eso y qué sigue igual.
 
 ::: {.a-mano}
 La fórmula explica **qué** se calcula. El código lo **ejecuta**. La
@@ -16,7 +15,7 @@ interpretación y sus límites son **intransferibles**, y son la parte que la IA
 hace por ti.
 :::
 
-## El arco del curso
+## Las cinco unidades
 
 El curso recorre el temario en el orden en que ocurre un análisis real:
 
@@ -28,8 +27,11 @@ El curso recorre el temario en el orden en que ocurre un análisis real:
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió | 5 |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 7 |
 
-Las gráficas van antes que los estadísticos. Cuando llegues a la media ya vas a
-saber dibujar la distribución, y la media va a ser una línea vertical sobre ella.
+Las gráficas van antes que los estadísticos. Cuando llegues a las medidas de
+posición y de tendencia central ya vas a saber dibujar la distribución, y cada
+medida va a describir algo que ya viste: la mediana parte la distribución en dos
+mitades, los cuartiles marcan dónde cae cada 25% de los datos, y la media se
+corre hacia la cola larga.
 
 El programa oficial se cubre completo. El mapeo punto por punto está en
 [Programa y cobertura](curso/programa.qmd).

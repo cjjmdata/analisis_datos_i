@@ -305,7 +305,7 @@ no mediste.
 
 # Cómo vamos a trabajar {background-color="#24494C"}
 
-## El arco del curso {.smaller}
+## Las cinco unidades {.smaller}
 
 | | Unidad | Idea |
 |:--:|---|---|
