@@ -165,17 +165,18 @@ Permutaciones y combinaciones se trabajan alrededor de **por qué** hace falta
 contar: el supuesto de que todos los resultados son igualmente probables. Contar
 sirve para calcular una probabilidad solo cuando ese supuesto se sostiene.
 
-## Sobre "práctica manual" y "aplicaciones con Excel"
+## Sobre "práctica manual" y "aplicaciones con R"
 
-El programa pide ambas cosas de forma explícita.
+El programa pide las dos cosas, y nombra el software como Excel. Las dos se
+cubren; las aplicaciones se hacen en R.
 
-La **práctica manual** se cumple: cada estadístico se calcula primero traduciendo
-la fórmula a operaciones elementales, antes de usar la función que lo resuelve en
+La **práctica manual**: cada estadístico se calcula primero traduciendo la
+fórmula a operaciones elementales, antes de usar la función que lo resuelve en
 una línea. Es el dispositivo `Primero a mano`, presente en todas las sesiones.
 
-Las **aplicaciones** se hacen en R, donde el cálculo manual y el automático se
-escriben uno debajo del otro y se pueden comparar renglón por renglón. La
-cobertura conceptual del programa se satisface íntegramente.
+Las **aplicaciones en R**: el cálculo manual y el automático se escriben uno
+debajo del otro y se comparan renglón por renglón. La cobertura conceptual del
+programa se satisface íntegramente.
 
 ## Actividades de aprendizaje
 
