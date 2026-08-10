@@ -1,6 +1,5 @@
 ---
 title: "Enfoque del curso"
-subtitle: "Qué se espera de ti y cómo se trabaja"
 lang: es
 ---
 
@@ -111,8 +110,8 @@ Association, que son el consenso profesional sobre cómo se enseña un primer
 curso de estadística universitario.
 
 De ahí vienen tres decisiones que vas a notar: los datos son reales y con
-contexto, las gráficas van antes que los promedios, y la evaluación pesa más
-sobre la interpretación que sobre el cálculo.
+contexto, las gráficas van antes que las medidas de posición y de tendencia
+central, y la evaluación pesa más sobre la interpretación que sobre el cálculo.
 
 ::: {.aside}
 ASA (2016). *GAISE College Report*. <https://www.amstat.org/education/gaise>

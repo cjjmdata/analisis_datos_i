@@ -315,8 +315,9 @@ no mediste.
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve |
 
-Las gráficas van antes que los promedios. Cuando llegues a la media ya vas a
-saber dibujar la distribución sobre la que se calcula.
+Las gráficas van antes que las medidas de posición y de tendencia central.
+Cuando llegues a ellas ya vas a saber dibujar la distribución sobre la que se
+calculan.
 
 ## Tres cosas prácticas {.smaller}
 
