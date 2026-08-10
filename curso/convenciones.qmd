@@ -169,7 +169,7 @@ read_csv("C:/Users/ana/Downloads/datos.csv")                 # ❌
 ```
 
 Una ruta absoluta funciona en **una sola computadora**: la tuya. Al entregarlo,
-el documento deja de correr. Es el error más común del portafolio.
+el documento deja de correr.
 
 ## 5. Estilo del código
 

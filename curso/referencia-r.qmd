@@ -48,7 +48,7 @@ código legible.
 
 ::: {.callout-important}
 R distingue mayúsculas de minúsculas: `Precio` y `precio` son objetos distintos.
-Es la causa del 90% de los `object not found` del primer mes.
+Es una causa frecuente de `object not found`.
 :::
 
 ### Vectores

@@ -17,13 +17,36 @@ sesión, sin haber configurado nada antes.
 
 ## Lo que necesitas
 
-1. Una **cuenta de Google** (la institucional sirve).
-2. Un navegador.
-3. Una **cuenta de GitHub**, gratuita, para publicar tu portafolio. La creamos
-   en la sesión 4; puedes adelantarte en <https://github.com>.
+1. Un navegador.
+2. Una **cuenta de Google**, para Colab.
+3. Una **cuenta de GitHub**, gratuita, para publicar tu portafolio. La creamos en
+   la sesión 4; puedes adelantarte en <https://github.com>.
 
 Comprueba que puedes abrir <https://colab.research.google.com> antes de la
-primera sesión. Si abre, estás listo.
+primera sesión.
+
+## Sobre la cuenta de Google
+
+El correo institucional `@anahuac.mx` funciona con Microsoft, no con Google. Eso
+significa que **tu correo de la escuela no es una cuenta de Google todavía**,
+aunque puedes crear una que lo use como identificador.
+
+### Para usar tu correo institucional
+
+En <https://accounts.google.com/signup>, elige la opción de **usar tu dirección
+de correo actual** en lugar de crear un Gmail nuevo. Google te envía un código de
+verificación a tu correo institucional y con eso queda creada.
+
+Así obtienes Drive y Colab con tu dirección de la escuela, sin bandeja de Gmail.
+
+### Si algo se atora
+
+Algunas direcciones institucionales encuentran una pantalla que pide autorización
+de la organización. Cuando eso pasa, **usa cualquier otra cuenta de Google**, la
+que ya tengas.
+
+Colab funciona igual con cualquiera. Tu identificación en el curso va por tu
+repositorio de GitHub, no por el correo con el que entres a Colab.
 
 ## Cómo se ve un cuaderno
 
@@ -35,25 +58,29 @@ Un cuaderno de Colab es una secuencia de **celdas**, de dos tipos:
 Para correr una celda de código: clic en ella y **Ctrl + Enter** (o el botón de
 ▶). El resultado aparece justo debajo.
 
+Colab guarda tu trabajo en Drive de forma automática mientras tengas conexión, y
+sincroniza en cuanto vuelve si se cae.
+
 ::: {.callout-important}
-## Los cuadernos del curso son de solo lectura
+## Trabaja sobre tu copia
 
-Cuando abras un cuaderno de la clase, lo primero es **Archivo → Guardar una copia
-en Drive**. Trabajas sobre tu copia; los cambios sobre el original se pierden.
+Los cuadernos de clase se comparten en **modo lectura**, así que Colab no te deja
+guardar cambios dentro de ellos.
 
-Es el error del primer día, todos los semestres.
+Al abrir uno: **Archivo → Guardar una copia en Drive**. Esa copia es tuya, la
+puedes editar y ahí sí se guarda todo.
 :::
 
-## Dos cosas que confunden a todos al inicio
+## Dos comportamientos del entorno
 
-**El orden importa.** Las celdas comparten memoria. Si corres la celda 5 antes de
-la 3, R no conoce todavía lo que la 3 define y te va a decir `object not found`.
-Cuando algo se rompa sin razón aparente: **Entorno de ejecución → Reiniciar y
-ejecutar todo**. Resuelve el 80% de los problemas.
+**El orden de ejecución importa.** Las celdas comparten memoria. Si corres la
+celda 5 antes de la 3, R no conoce todavía lo que la 3 define y responde
+`object not found`. Cuando algo se rompa sin razón aparente:
+**Entorno de ejecución → Reiniciar y ejecutar todo**.
 
 **La sesión caduca.** Si dejas Colab inactivo un rato, se desconecta y libera la
 memoria. Tu código sigue ahí; los objetos hay que volver a crearlos corriendo las
-celdas desde arriba. Es comportamiento normal del entorno.
+celdas desde arriba.
 
 ## Paquetes
 
@@ -69,14 +96,14 @@ library(tidyverse)
 `install.packages()` **instala**: se hace una vez, y en Colab casi nunca hace
 falta. `library()` **carga**: se hace cada vez que abres un cuaderno.
 
-Confundirlas es normal el primer mes. Si ves `could not find function`, casi
-siempre falta un `library()`.
+Si ves `could not find function`, revisa primero que hayas corrido el
+`library()`.
 :::
 
 ## Si prefieres trabajar en tu computadora
 
-Es opcional. Si quieres tener tu
-propio entorno (y para Análisis de Datos II te va a servir), este es el camino:
+Es opcional. Si quieres tener tu propio entorno (y para Análisis de Datos II te
+va a servir), este es el camino:
 
 1. **R** desde <https://cran.r-project.org/>
 2. Un editor: **Positron** (<https://positron.posit.co/>) o **RStudio Desktop**
@@ -87,30 +114,26 @@ propio entorno (y para Análisis de Datos II te va a servir), este es el camino:
 install.packages(c("tidyverse", "readxl", "scales", "knitr", "rmarkdown"))
 ```
 
-4. **Quarto** (<https://quarto.org/docs/get-started/>) para el portafolio.
+4. **Quarto** (<https://quarto.org/docs/get-started/>) para publicar documentos.
    Positron y RStudio recientes ya lo traen; compruébalo con `quarto --version`
    en la terminal.
-
-Hazlo cuando tengas tiempo y calma, no la noche antes de una entrega.
 
 ## Cuando algo falle
 
 Antes de escribirme, en este orden:
 
-1. **Lee el mensaje completo**, las palabras y no el color. R es críptico pero
-   preciso.
+1. **Lee el mensaje completo**, las palabras y no el color.
 2. **Distingue error de advertencia.** `Warning` deja seguir; `Error` detiene.
-3. **Reinicia y ejecuta todo.** Resuelve la mayoría de los casos.
-4. **Busca el texto exacto del error.** Alguien ya lo tuvo.
+3. **Reinicia y ejecuta todo.**
+4. **Busca el texto exacto del error.**
 5. **Pregúntale a un modelo de lenguaje.** Para errores de entorno es apropiado y
    no hay que declararlo. Ver [Postura sobre IA](postura-ia.qmd).
 
 Si nada funciona, escríbeme con qué escribiste y **el texto completo** del error.
-Con el mensaje completo puedo ayudarte; con una captura cortada, no.
 
 ## Los errores del primer mes
 
-| Mensaje | Causa casi siempre |
+| Mensaje | Causa más frecuente |
 |---|---|
 | `could not find function "..."` | Falta `library()` |
 | `object '...' not found` | La celda que lo define no se ha corrido, o hay un error de mayúsculas o acentos |
@@ -119,7 +142,6 @@ Con el mensaje completo puedo ayudarte; con una captura cortada, no.
 | `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
 
 ::: {.a-mano}
-El último es el más frecuente. R señala **dónde se dio cuenta** del problema, que
-casi nunca es **dónde está**: suele estar en la línea anterior. Acostúmbrate a
-mirar hacia arriba.
+Con `unexpected symbol`, R señala **dónde se dio cuenta** del problema, que casi
+nunca es **dónde está**: suele estar en la línea anterior.
 :::

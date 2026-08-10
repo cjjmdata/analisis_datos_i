@@ -402,12 +402,23 @@ Materia de las sesiones 3 y 4.
 
 ::::
 
-## Para la próxima sesión {.smaller}
+## Tarea para la sesión 2 {.smaller}
 
-**Revisa *Cómo trabajamos* en el sitio** y confirma que puedes abrir Colab con tu
-cuenta de Google. La sesión 2 empieza escribiendo código.
+**Entra a Colab y deja tu cuenta lista.** <https://colab.research.google.com>
 
-**Lee *Postura sobre IA*.** Es corta y define qué puedes y qué no puedes hacer.
+::: {.a-mano}
+Tu correo `@anahuac.mx` funciona con Microsoft, así que todavía no es una cuenta
+de Google.
+
+En <https://accounts.google.com/signup> elige **usar tu dirección de correo
+actual** en vez de crear un Gmail. Google manda un código a tu correo
+institucional y listo: tendrás Drive y Colab con tu dirección de la escuela.
+
+Si aparece una pantalla pidiendo autorización de la organización, entra con
+cualquier otra cuenta de Google. Colab funciona igual.
+:::
+
+**Lee *Cómo trabajamos* y *Postura sobre IA*** en el sitio del curso.
 
 **Trae escrita una pregunta** que te gustaría responder con datos en tu área. Una
 sola, concreta.

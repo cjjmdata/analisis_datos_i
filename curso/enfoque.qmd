@@ -188,7 +188,7 @@ La primera separa *dispersión* de *cantidad de datos*. La segunda separa *tama�
 de muestra* de *variabilidad de la población*, y ninguna de las dos cantidades
 depende de cuántos midas. La tercera separa **puntos porcentuales** de **cambio
 porcentual**: de 60 a 75 son 15 puntos porcentuales y **25 por ciento** de
-aumento. Confundirlos es el error más común del periodismo de datos.
+aumento. Son dos cantidades distintas y el titular no dice cuál está usando.
 
 Se responden razonando sobre qué mide cada cantidad.
 
