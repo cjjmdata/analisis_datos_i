@@ -240,19 +240,16 @@ Datos II.** Las dos materias trabajan con observaciones independientes entre sí
 Vale la pena saberlo al elegir: una serie de corte transversal, como la de
 Profeco o la de comercio exterior de un año, te sirve en las dos.
 
-## Regla del curso sobre descargas
+## Cómo llegan los datos a clase
 
-::: {.a-mano}
-En clase **nunca** se descarga en vivo. Todas las sesiones leen un archivo local
-que ya está congelado en el repositorio.
+::: {.nota}
+El material lee de la fuente original cada vez que se abre. Si la fuente no
+responde, usa un respaldo congelado que vive en el repositorio, y lo dice.
 
-No es comodidad: es reproducibilidad. Si la sesión depende de que treinta
-laptops alcancen un servidor extranjero a través de la red de la universidad, la
-clase se cae. Y si el dato cambia entre hoy y el examen, los números de tus
-apuntes dejan de coincidir con los míos.
+La función `con_respaldo()` de `R/datos.R` hace las dos cosas y devuelve, junto
+con los datos, de dónde salieron. Las presentaciones lo imprimen.
 
-La descarga en vivo es una **extensión opcional** para quien quiera actualizar
-su serie. Está documentada en `scripts/00_descarga_datos.R`.
+Así ves el dato de hoy, y sabes cuándo estás viendo uno viejo.
 :::
 
 ## Lo que tienes que documentar de tu fuente

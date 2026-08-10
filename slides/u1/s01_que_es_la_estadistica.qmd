@@ -80,7 +80,7 @@ comparacion |>
   kable(align = "lrr")
 ```
 
-::: {.a-mano}
+::: {.nota}
 Las dos columnas salen del mismo dato y dan órdenes distintos.
 
 Como proporción de su economía, México exporta casi el doble que China. En
@@ -125,7 +125,7 @@ El número está bien. El problema es de quien elige el denominador y se lo call
 3. **Interpretar y acotar.** Qué implica el número y qué queda fuera de su
    alcance.
 
-::: {.a-mano}
+::: {.nota}
 La aritmética era de secundaria. Lo difícil fue saber qué había que calcular y
 hasta dónde llega la respuesta.
 
@@ -150,7 +150,7 @@ Para qué sirve:
 - Segmentar clientes
 - Fomentar la innovación
 
-::: {.a-mano}
+::: {.nota}
 Fíjate en la coma. Todo este curso vive ahí.
 
 Un análisis deja ver cuánta incertidumbre queda. Quien ofrezca certeza está
@@ -354,7 +354,7 @@ consultor, y responder tres preguntas:
 2. ¿Los supuestos del método se cumplen en estos datos?
 3. ¿Qué se está afirmando que los datos no sostienen?
 
-::: {.a-mano}
+::: {.nota}
 Esa es la habilidad que sobrevive a la automatización, y la que se paga.
 :::
 
@@ -407,7 +407,7 @@ Materia de las sesiones 3 y 4.
 
 **Entra a Colab y deja tu cuenta lista.** <https://colab.research.google.com>
 
-::: {.a-mano}
+::: {.nota}
 Tu correo `@anahuac.mx` funciona con Microsoft, así que todavía no es una cuenta
 de Google.
 

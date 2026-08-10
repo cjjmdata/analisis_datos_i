@@ -10,7 +10,7 @@ Este curso corre en **Google Colab**, un entorno que ya trae R listo en el
 navegador. Abres un enlace, inicias sesión con tu cuenta de Google y escribes
 código. Todos trabajan sobre la misma versión y el mismo entorno.
 
-::: {.a-mano}
+::: {.nota}
 Tu primer contacto con R va a ser escribir algo y ver qué pasa, en la primera
 sesión, sin haber configurado nada antes.
 :::
@@ -211,7 +211,7 @@ atoraste tú, es probable que alguien más también.
 | Los acentos salen como `Ã±` | Codificación; usa `read_csv()` de `readr`, no `read.csv()` |
 | `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
 
-::: {.a-mano}
+::: {.nota}
 Con `unexpected symbol`, R señala **dónde se dio cuenta** del problema, que casi
 nunca es **dónde está**: suele estar en la línea anterior.
 :::

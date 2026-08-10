@@ -64,7 +64,7 @@ escribes un mensaje que diga qué agregaste, y aceptas.
 GitHub muestra los cuadernos ya formateados, con sus gráficas y resultados, así
 que la liga de tu repositorio es la entrega.
 
-::: {.a-mano}
+::: {.nota}
 El mensaje del commit describe **qué cambió**, en pocas palabras.
 
 `Agrego tabla de frecuencias y gráfica de barras` sirve. `cambios`, `avance` y

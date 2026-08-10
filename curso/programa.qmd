@@ -22,7 +22,7 @@ económicos y organizacionales.
 
 ## Cómo se usa el programa oficial
 
-::: {.a-mano}
+::: {.nota}
 El temario es la **lista de verificación de cobertura**. Se cubre completo, y
 esta página lo demuestra punto por punto. El orden en que se enseña responde al
 curso que sigue un análisis real.
@@ -172,7 +172,8 @@ cubren; las aplicaciones se hacen en R.
 
 La **práctica manual**: cada estadístico se calcula primero traduciendo la
 fórmula a operaciones elementales, antes de usar la función que lo resuelve en
-una línea. Es el dispositivo `Primero a mano`, presente en todas las sesiones.
+una línea. Verás ese recuadro a partir de la sesión 10, en cada estadístico
+nuevo.
 
 Las **aplicaciones en R**: el cálculo manual y el automático se escriben uno
 debajo del otro y se comparan renglón por renglón. La cobertura conceptual del

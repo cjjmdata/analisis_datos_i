@@ -103,7 +103,7 @@ table thead {
 // Cuatro dispositivos didácticos con marca visual propia. Se usan
 // con `::: {.a-mano} ... :::` en los .qmd. Ver AGENTS.md.
 
-.a-mano, .friccion, .no-dice, .ia-nota {
+.a-mano, .nota, .friccion, .no-dice, .ia-nota {
   padding: 0.9em 1.1em;
   margin: 1.2em 0;
   border-radius: 4px;
@@ -129,10 +129,20 @@ table thead {
 }
 
 // "Primero a mano": el puente entre la fórmula y la función enlatada.
+// Se reserva para los ejercicios donde el estadístico se calcula traduciendo
+// la fórmula antes de usar la función que lo resuelve. Ese rótulo solo es
+// cierto ahí; para destacar cualquier otra cosa va `.nota`.
 .a-mano {
   background-color: rgba(91, 136, 140, 0.08);
   border-left-color: $teal-500;
   &::before { content: "Primero a mano"; color: $teal-900; }
+}
+
+// Recuadro para destacar sin rotular: ideas rectoras, reglas del curso,
+// advertencias técnicas. El contenido dice qué es; el rótulo sobraba.
+.nota {
+  background-color: rgba(91, 136, 140, 0.08);
+  border-left-color: $teal-500;
 }
 
 // Pregunta que se responde antes de ver el resultado. Sin rótulo.

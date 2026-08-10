@@ -10,7 +10,7 @@ creer a ciegas.
 
 ## 1. El flujo completo, siempre
 
-::: {.a-mano}
+::: {.nota}
 Todo ejercicio va **desde el origen del dato hasta la conclusión**, sin saltos.
 
 Descarga o carga → inspección → limpieza → análisis → interpretación → límites.
@@ -94,7 +94,7 @@ sobre tu cuaderno.
 Seguimos la convención de **Jenny Bryan**, que es el estándar en análisis de
 datos. Tiene tres principios y de ellos sale todo lo demás:
 
-::: {.a-mano}
+::: {.nota}
 **1. Legible por máquina** · **2. Legible por humano** · **3. Que ordene bien por
 defecto**
 :::
@@ -192,7 +192,7 @@ precios <- filter(precios, precio > 0)   # los precios en 0 son datos faltantes
                                          # codificados, no productos gratis
 ```
 
-::: {.a-mano}
+::: {.nota}
 `# filtrar precios` repite lo que ya dice el código.
 
 El **por qué** filtras es información que no está en ninguna otra parte, y es lo

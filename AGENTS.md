@@ -100,10 +100,17 @@ Quarto: `::: {.a-mano} ... :::`
 
 | Clase | Rótulo | Cuándo |
 |---|---|---|
-| `.a-mano` | PRIMERO A MANO | El cálculo traducido de la fórmula, **antes** de la función enlatada |
-| `.friccion` | DETENTE Y RESPONDE | Pregunta que se contesta **antes** de ver el resultado |
+| `.a-mano` | PRIMERO A MANO | **Solo** el cálculo traducido de la fórmula, antes de la función enlatada |
+| `.nota` | *(sin rótulo)* | Todo lo demás que se destaque: idea rectora, regla, advertencia técnica |
+| `.friccion` | *(sin rótulo)* | Pregunta que se contesta antes de ver el resultado |
 | `.no-dice` | LO QUE ESTE NÚMERO NO DICE | Límites de lo que se acaba de calcular |
 | `.ia-nota` | IA EN ESTE TEMA | Uso e implicaciones de la IA, anclado al tema exacto |
+
+**Si un rótulo se imprime solo, tiene que ser cierto en todos los usos.**
+`.a-mano` llegó a tener 19 apariciones sin un cálculo manual dentro, porque se
+usó como recuadro genérico. Queda reservado para las sesiones de la 10 en
+adelante, que son las que tienen ese ejercicio. Para destacar cualquier otra
+cosa, `.nota`.
 
 **`.a-mano` es obligatorio** la primera vez que aparece cualquier estadístico. No
 es una invención: **es el patrón que Javier ya usaba** en sus cuadernos de 2025

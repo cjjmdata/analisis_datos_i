@@ -24,7 +24,7 @@ Las cuatro se contestan antes de tocar el teclado. Las preguntas 3 y 4 determina
 qué se puede concluir, y muchas veces la respuesta honesta será *"con estos datos,
 no mucho"*. Decir eso con precisión es parte del contenido.
 
-::: {.a-mano}
+::: {.nota}
 Las cuatro preguntas aparecen en los exámenes y son la primera sección de tu
 portafolio.
 :::
@@ -73,7 +73,8 @@ algo cuesta una línea.
 
 **Primero a mano, después la función.** Cada estadístico se calcula traduciendo
 la fórmula a operaciones elementales antes de usar la función que lo resuelve en
-una línea. Vas a ver ese recuadro en todas las sesiones.
+una línea. Verás ese recuadro a partir de la unidad 3, que es donde empiezan los
+estadísticos.
 
 La razón es práctica: `mean()` funciona siempre y nunca te avisa cuándo no
 debiste usarla. Quien sabe qué hay adentro lo nota.

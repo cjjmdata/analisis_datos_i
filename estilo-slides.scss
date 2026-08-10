@@ -97,6 +97,7 @@ $presentation-slide-text-align: left;
 // Callouts pedagógicos (mismos nombres que el sitio)
 // ---------------------------------------------------------------
 .reveal .a-mano,
+.reveal .nota,
 .reveal .friccion,
 .reveal .no-dice,
 .reveal .ia-nota {
@@ -129,6 +130,11 @@ $presentation-slide-text-align: left;
   background-color: rgba(91, 136, 140, 0.10);
   border-left-color: $teal-500;
   &::before { content: "Primero a mano"; color: $teal-900; }
+}
+
+.reveal .nota {
+  background-color: rgba(91, 136, 140, 0.10);
+  border-left-color: $teal-500;
 }
 
 .reveal .friccion {

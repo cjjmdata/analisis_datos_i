@@ -5,7 +5,7 @@ lang: es
 
 ## El libro del curso
 
-::: {.a-mano}
+::: {.nota}
 **R for Data Science (2ª edición).** Hadley Wickham, Mine Çetinkaya-Rundel y
 Garrett Grolemund.
 

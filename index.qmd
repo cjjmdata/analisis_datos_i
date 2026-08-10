@@ -9,7 +9,7 @@ Este sitio reúne las presentaciones, los datos y los recursos del curso. Cubre 
 programa oficial de MAT1409 y lo trabaja en un escenario donde la ejecución de un
 análisis se puede delegar a una máquina: qué cambia con eso y qué sigue igual.
 
-::: {.a-mano}
+::: {.nota}
 La fórmula explica **qué** se calcula. El código lo **ejecuta**. La
 interpretación y sus límites son **intransferibles**, y son la parte que la IA no
 hace por ti.

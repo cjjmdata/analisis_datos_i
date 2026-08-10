@@ -16,7 +16,7 @@ valioso?**
 
 La respuesta de este curso:
 
-::: {.a-mano}
+::: {.nota}
 La fórmula explica **qué** se calcula. El código lo **ejecuta**. La
 interpretación y sus límites son **intransferibles**.
 :::
@@ -64,24 +64,24 @@ estadística descriptiva. Estas son las que verás en este curso:
 
 **Confunden medias.** Pedir el "rendimiento promedio" de una serie de precios
 produce una media aritmética con altísima frecuencia. Para rendimientos
-compuestos la correcta es la **geométrica**, y la diferencia no es cosmética: la
-aritmética sobreestima sistemáticamente. Lo trabajamos en la sesión 8.
+compuestos la correcta es la **geométrica**. La aritmética sobreestima siempre, y
+sobre series largas la diferencia es grande. Sesión 14.
 
 **Ignoran que el software elige por ti.** Hay al menos nueve definiciones
 distintas de cuantil. R usa una por defecto, Excel otra, y la fórmula de los
 libros de texto una tercera. Tres respuestas defendibles al mismo "¿cuál es el
 primer cuartil?". Un modelo te dará una sin avisarte que hubo una decisión.
-Sesión 4.
+Sesión 10.
 
 **Aplican fórmulas fuera de su dominio de validez.** La regla empírica del
 68-95-99.7 solo vale para distribuciones aproximadamente normales. Aplicada a
 ingresos o a precios, que son fuertemente asimétricos, da resultados absurdos
-con toda confianza. Chebyshev sí aplica siempre, y por eso existe. Sesión 13.
+con toda confianza. Chebyshev sí aplica siempre, y por eso existe. Sesión 17.
 
 **Fallan en probabilidad condicional.** Confundir $P(A|B)$ con $P(B|A)$ es el
 error clásico del razonamiento bayesiano, y es un error que los modelos
 reproducen porque está por todas partes en su material de entrenamiento.
-Sesión 24.
+Sesión 23.
 
 **Fabrican fuentes.** Referencias con formato impecable, autor plausible y año
 verosímil, que no existen. Si citas algo, ábrelo.
@@ -95,9 +95,9 @@ en el segundo.
 ## Cómo se detecta
 
 Preguntando. Los detectores automáticos producen acusaciones falsas.
- En cualquier momento puedo pedirte que expliques una
-línea de tu código o que justifiques una decisión de tu análisis. Si el trabajo
-es tuyo, la conversación dura dos minutos.
+
+En cualquier momento puedo pedirte que expliques una línea de tu código o que
+justifiques una decisión de tu análisis.
 
 ## Lo que espero de ti al terminar el semestre
 
