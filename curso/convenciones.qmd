@@ -111,9 +111,10 @@ defecto**
 | Fechas en ISO: `AAAA-MM-DD` | `2025-03-15` | `15-03-2025`, `15mar25` |
 | Números con cero a la izquierda | `01_`, `02_`, `10_` | `1_`, `2_`, `10_` |
 
-**Por qué los acentos.** El curso 2021 arrastró un `GÃ.nero` en el código durante
-todo el semestre por un problema de codificación. Los nombres de archivo tienen el
-mismo riesgo, y además se rompen al compartir entre Windows, Mac y la nube.
+**Por qué los acentos.** Windows, Mac y los servicios en la nube guardan los
+acentos de forma distinta. Un archivo llamado `análisis-tamaño.csv` puede llegar
+al otro lado como `anÃ¡lisis-tamaÃ±o.csv` y dejar de abrirse. Sin acentos, el
+nombre viaja igual a todas partes.
 
 **Por qué el cero a la izquierda.** Sin él, la computadora ordena `1, 10, 11, 2,
 3`. Con él, `01, 02, 03, 10, 11`. Es el tercer principio: que ordene bien solo.

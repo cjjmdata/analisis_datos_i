@@ -14,6 +14,12 @@ $sidebar-bg: #2A3536;
 $footer-bg:  #181818;
 
 $code-bg: #262626;
+
+// Bootstrap deja $pre-color en negro por omisión. Sin esta línea, los bloques
+// sin lenguaje (rutas, árboles de carpetas) quedan en texto negro sobre fondo
+// #262626 y son ilegibles. Los bloques con ```r no lo notan porque el
+// coloreado por token les da color propio a cada palabra.
+$pre-color: #F2F2F2;
 $popover-bg: #242424;
 $input-bg: #242424;
 
