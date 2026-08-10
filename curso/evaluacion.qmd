@@ -49,7 +49,7 @@ reproducibilidad, y hasta el final, corrección del cálculo.
 Ejercicios de clase, participación en las discusiones comparadas entre series, y
 el trabajo en equipo del caso de negocio.
 
-## Criterios que atraviesan todo
+## Criterios transversales
 
 Estos aplican a cualquier entregable del curso.
 

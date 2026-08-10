@@ -18,7 +18,7 @@ sesión, sin haber configurado nada antes.
 ## Lo que necesitas
 
 1. Un navegador.
-2. Una **cuenta de Google**, para Colab.
+2. Una **cuenta de Google**, para Colab, con tu usuario de la universidad (ver abajo).
 3. Una **cuenta de GitHub**, gratuita, para publicar tu portafolio. La creamos en
    la sesión 4; puedes adelantarte en <https://github.com>.
 
@@ -48,6 +48,21 @@ que ya tengas.
 Colab funciona igual con cualquiera. Tu identificación en el curso va por tu
 repositorio de GitHub, no por el correo con el que entres a Colab.
 
+## Lo primero en cada cuaderno nuevo: cambiar el entorno a R
+
+Colab abre en Python. Antes de escribir nada:
+
+**Entorno de ejecución → Cambiar tipo de entorno de ejecución → R → Guardar**
+
+Para confirmar que quedó, escribe `version` en una celda de código y ejecútala.
+Debe responder con los datos de la versión de R.
+
+::: {.callout-important}
+Si escribes código de R en un cuaderno que sigue en Python, el error no va a
+decirte que el entorno está mal. Va a decir algo sobre sintaxis, y vas a perder
+un rato buscando en el lugar equivocado.
+:::
+
 ## Cómo se ve un cuaderno
 
 Un cuaderno de Colab es una secuencia de **celdas**, de dos tipos:
@@ -61,22 +76,11 @@ Para correr una celda de código: clic en ella y **Ctrl + Enter** (o el botón d
 Colab guarda tu trabajo en Drive de forma automática mientras tengas conexión, y
 sincroniza en cuanto vuelve si se cae.
 
-::: {.callout-important}
-## Trabaja sobre tu copia
-
-Los cuadernos de clase se comparten en **modo lectura**, así que Colab no te deja
-guardar cambios dentro de ellos.
-
-Al abrir uno: **Archivo → Guardar una copia en Drive**. Esa copia es tuya, la
-puedes editar y ahí sí se guarda todo.
-:::
-
 ## Dos comportamientos del entorno
 
 **El orden de ejecución importa.** Las celdas comparten memoria. Si corres la
 celda 5 antes de la 3, R no conoce todavía lo que la 3 define y responde
-`object not found`. Cuando algo se rompa sin razón aparente:
-**Entorno de ejecución → Reiniciar y ejecutar todo**.
+`object not found`. La solución suele ser correr las celdas anteriores.
 
 **La sesión caduca.** Si dejas Colab inactivo un rato, se desconecta y libera la
 memoria. Tu código sigue ahí; los objetos hay que volver a crearlos corriendo las
@@ -85,19 +89,66 @@ celdas desde arriba.
 ## Paquetes
 
 Un paquete es código que alguien más escribió y publicó para no tener que
-reescribirlo. Colab ya trae instalados los que usa el curso, así que en clase
-solo hace falta **cargarlos**:
+reescribirlo. Trabajar con paquetes tiene dos pasos, y conviene no confundirlos.
+
+**Instalar** baja el paquete y lo deja disponible en la máquina:
+
+```r
+install.packages("tidyverse")
+```
+
+**Activar** lo pone a disposición de tu sesión, para que puedas usar sus
+funciones directamente:
 
 ```r
 library(tidyverse)
 ```
 
-::: {.callout-note}
-`install.packages()` **instala**: se hace una vez, y en Colab casi nunca hace
-falta. `library()` **carga**: se hace cada vez que abres un cuaderno.
+### Cuáles hay que instalar
 
-Si ves `could not find function`, revisa primero que hayas corrido el
-`library()`.
+Colab trae preinstalados muchos de los paquetes más usados, y no hace falta
+instalar esos. Otros sí, por ejemplo los que descargan datos de servicios
+externos.
+
+La lista exacta cambia con la versión del entorno y Google no la publica. Para
+ver qué tienes disponible en tu sesión:
+
+```r
+rownames(installed.packages())
+```
+
+### La práctica del curso
+
+Como la máquina virtual se reinicia entre sesiones, todo lo que instales se
+pierde. Por eso cada cuaderno arranca igual, con dos celdas de código:
+
+**Primera celda**, instalar lo que falte:
+
+```r
+paquetes <- c("tidyverse", "quantmod")
+
+faltantes <- paquetes[!paquetes %in% rownames(installed.packages())]
+if (length(faltantes) > 0) install.packages(faltantes)
+```
+
+**Segunda celda**, activar todo:
+
+```r
+library(tidyverse)
+library(quantmod)
+```
+
+Las tres líneas de la primera celda revisan qué falta y solo instalan eso.
+Cópialas tal cual; en la unidad 3 vas a entender qué hace cada una.
+
+::: {.callout-note}
+## Paquete, no librería
+
+En R, un **paquete** es la unidad de código que instalas. La **librería** es la
+carpeta donde viven los paquetes instalados.
+
+La función se llama `library()` porque va a la librería a buscar un paquete. Lo
+que instalas y activas son paquetes.
 :::
 
 ## Si prefieres trabajar en tu computadora
@@ -120,18 +171,37 @@ install.packages(c("tidyverse", "readxl", "scales", "knitr", "rmarkdown"))
 
 ## Cuando algo falle
 
-Antes de escribirme, en este orden:
+Vas a estar tecleando código en clase, así que los errores son parte del trabajo.
+Este es el orden para resolverlos:
 
-1. **Lee el mensaje completo**, las palabras y no el color.
-2. **Distingue error de advertencia.** `Warning` deja seguir; `Error` detiene.
-3. **Reinicia y ejecuta todo.**
-4. **Busca el texto exacto del error.**
-5. **Pregúntale a un modelo de lenguaje.** Para errores de entorno es apropiado y
-   no hay que declararlo. Ver [Postura sobre IA](postura-ia.qmd).
+**1. Lee el mensaje completo.** Las palabras, no el color. R te dice tres cosas:
+en qué línea se detuvo, qué esperaba encontrar y qué encontró en su lugar.
 
-Si nada funciona, escríbeme con qué escribiste y **el texto completo** del error.
+**2. Distingue error de advertencia.**
 
-## Los errores del primer mes
+- `Error` significa que R **se detuvo**. No hizo lo que le pediste y no hay
+  resultado.
+- `Warning` significa que R **terminó**, pero algo le pareció raro y quiere que
+  lo sepas. Sí hay resultado, y a veces está bien.
+
+Un `Warning` no siempre es un problema. Un `Error` siempre lo es.
+
+**3. Intenta resolverlo directamente.** Vuelve a la línea que señala el mensaje y
+compárala con lo que querías escribir. La mayoría de los errores del primer mes
+son una coma, un paréntesis o una mayúscula.
+
+**4. Compara con tu vecino.** Busca a alguien a quien esa misma celda ya le
+corrió y compara las dos líneas lado a lado. Ver la versión que funciona junto a
+la que no es la forma más rápida de encontrar la diferencia.
+
+**5. Pregúntale a un modelo de lenguaje.** Pega el mensaje de error completo y tu
+línea de código. Para errores de sintaxis y de entorno es apropiado y no hay que
+declararlo. Ver [Postura sobre IA](postura-ia.qmd).
+
+**6. Pregúntame en clase.** Levanta la mano en el momento, no después. Si te
+atoraste tú, es probable que alguien más también.
+
+## Errores comunes
 
 | Mensaje | Causa más frecuente |
 |---|---|

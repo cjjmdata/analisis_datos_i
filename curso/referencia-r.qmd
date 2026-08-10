@@ -118,14 +118,22 @@ sistemáticamente los que ganan más, ese promedio queda sesgado y ningún argum
 de la función lo corrige. Sesión 7.
 :::
 
-### Instalar y cargar paquetes
+### Instalar y activar paquetes
 
 ```r
-install.packages("tidyverse")   # UNA vez en la vida de la computadora
-library(tidyverse)              # CADA vez que abres un cuaderno
+install.packages("tidyverse")   # baja el paquete a la máquina
+library(tidyverse)              # lo activa en tu sesión
 ```
 
-En Colab casi todo ya está instalado; solo hace falta `library()`.
+En tu computadora, `install.packages()` se corre una sola vez y `library()` cada
+vez que abres R.
+
+En Colab la máquina virtual se reinicia entre sesiones, así que lo que instales
+se pierde. Colab trae preinstalados muchos de los paquetes más usados; para los
+demás, la primera celda del cuaderno instala lo que falte. Ver
+[Cómo trabajamos](computo.qmd).
+
+Para ver qué tienes disponible en tu sesión: `rownames(installed.packages())`.
 
 ### Escribir tu propia función
 

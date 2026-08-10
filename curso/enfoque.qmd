@@ -9,8 +9,8 @@ declares en cada entregable.
 
 ## La rutina de las cuatro preguntas
 
-Es el hábito que más se repite. Ante cualquier conjunto de datos, sea el tuyo, el
-mío o uno que te presente un consultor, **antes de calcular nada**:
+Ante cualquier conjunto de datos, sea el tuyo, el mío o uno que te presente un
+consultor, **antes de calcular algo** hay que responder cuatro preguntas:
 
 1. **¿Cuáles son las unidades de observación?** ¿Cada renglón es una persona, un
    hogar, una transacción, un día, un país?
