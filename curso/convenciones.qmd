@@ -58,7 +58,7 @@ Cada objeto debe poder rastrearse hasta su origen **por su nombre**.
 
 **Regla:** un nombre describe *qué contiene*, no *qué paso del proceso es*.
 
-| ✅ Bien | ❌ Mal | Por qué |
+| Bien | Mal | Por qué |
 |---|---|---|
 | `precios_crudos` | `datos1` | El nombre dice qué hay adentro |
 | `precios` | `datos2` | Se sabe qué es sin leer el código |
@@ -101,7 +101,7 @@ defecto**
 
 ### Las reglas
 
-| Regla | ✅ | ❌ |
+| Regla | Correcto | Incorrecto |
 |---|---|---|
 | Sin espacios | `precios-profeco.csv` | `precios profeco.csv` |
 | Sin acentos ni `ñ` ni símbolos | `analisis-tamano.qmd` | `análisis-tamaño.qmd` |
@@ -158,14 +158,14 @@ va en el código, donde queda registrada.
 Siempre **relativas** a la carpeta del proyecto:
 
 ```r
-read_csv("datos/crudos/exportaciones-oec_2025-08-01.csv")   # ✅
+read_csv("datos/crudos/exportaciones-oec_2025-08-01.csv")
 ```
 
 Nunca absolutas ni `setwd()`:
 
 ```r
-setwd("C:/Users/ana/Documents/tarea")                        # ❌
-read_csv("C:/Users/ana/Downloads/datos.csv")                 # ❌
+setwd("C:/Users/ana/Documents/tarea")
+read_csv("C:/Users/ana/Downloads/datos.csv")
 ```
 
 Una ruta absoluta funciona en **una sola computadora**: la tuya. Al entregarlo,
@@ -178,8 +178,8 @@ el documento deja de correr.
 precio_mediano <- median(precios$precio)
 
 # Un espacio alrededor de los operadores
-cv <- sd(x) / mean(x)          # ✅
-cv<-sd(x)/mean(x)              # ❌
+cv <- sd(x) / mean(x)          # con espacios
+cv<-sd(x)/mean(x)              # sin espacios, ilegible
 
 # Pipe nativo |>, no %>%
 datos |>

@@ -20,10 +20,10 @@ automatizadas. Cada ficha declara **qué se comprobó y cuándo**.
 
 | Estado | Significa |
 |---|---|
-| ✅ Descarga verificada | Se descargó el dato programáticamente y llegó completo |
-| 🟡 Portal disponible | El sitio responde; la descarga es manual o no se probó de punta a punta |
-| 🔑 Requiere registro | Funciona, pero necesitas una llave gratuita |
-| ⛔ Bloqueado por script | El portal existe pero rechaza descargas automatizadas |
+| **Verificada** | Se descargó el dato programáticamente y llegó completo |
+| **Portal disponible** | El sitio responde; la descarga es manual o no se probó de punta a punta |
+| **Con registro** | Funciona, pero necesitas una llave gratuita |
+| **Bloqueada** | El portal existe pero rechaza descargas automatizadas |
 
 Última comprobación: **8 de agosto de 2026**.
 
@@ -34,7 +34,7 @@ automatizadas. Cada ficha declara **qué se comprobó y cuándo**.
 Tipo de cambio FIX, TIIE, CETES, inflación, agregados monetarios. Series diarias
 con historia larga.
 
-- **Estado**: 🔑 Requiere registro. La API responde `400` sin token; el token es
+- **Estado**: con registro. La API responde `400` sin token; el token es
   gratuito y se obtiene en el portal de Banxico.
 - **En R**: paquete `siebanxicor` (en CRAN).
 - **Para qué sirve aquí**: el tipo de cambio diario es *la* serie para media
@@ -46,7 +46,7 @@ con historia larga.
 
 Precios diarios de acciones, índices y ETF.
 
-- **Estado**: ✅ **Descarga verificada** para emisoras de la Bolsa Mexicana de
+- **Estado**: **descarga verificada** para emisoras de la Bolsa Mexicana de
   Valores: `BIMBOA.MX`, `WALMEX.MX`, `FEMSAUBD.MX`, `GMEXICOB.MX`,
   `CEMEXCPO.MX`, y el índice `^MXX`. Precios diarios en pesos.
 - **En R**: `leer_emisora("BIMBOA.MX")` de `R/datos.R`, que trae el dato en vivo
@@ -69,7 +69,7 @@ script**: responde con un reto de JavaScript en lugar del CSV, así que
 
 Inflación general y por componentes, mensual y quincenal.
 
-- **Estado**: 🟡 Portal disponible. La API de indicadores de INEGI requiere token
+- **Estado**: portal disponible. La API de indicadores de INEGI requiere token
   gratuito.
 - **En R**: `inegiR` (en CRAN), o descarga manual a CSV.
 - <https://www.inegi.org.mx/temas/inpc/>
@@ -80,7 +80,7 @@ Inflación general y por componentes, mensual y quincenal.
 
 Exportaciones e importaciones por país, producto y año. Interfaz en español.
 
-- **Estado**: 🟡 Portal disponible y navegable. Descarga a CSV desde la interfaz;
+- **Estado**: portal disponible y navegable. Descarga a CSV desde la interfaz;
   la API tiene niveles de acceso de pago.
 - **Para qué sirve aquí**: la distribución de las exportaciones mexicanas por
   destino es fuertemente asimétrica, y es un caso natural para discutir por qué la
@@ -91,7 +91,7 @@ Exportaciones e importaciones por país, producto y año. Interfaz en español.
 
 La base primaria de comercio internacional. Es de donde bebe OEC.
 
-- **Estado**: 🟡 Portal disponible. Consulta gratuita con límites; la API amplia
+- **Estado**: portal disponible. Consulta gratuita con límites; la API amplia
   requiere suscripción.
 - <https://comtradeplus.un.org/>
 
@@ -99,7 +99,7 @@ La base primaria de comercio internacional. Es de donde bebe OEC.
 
 PIB, comercio, inversión extranjera, población, para todos los países.
 
-- **Estado**: ✅ **Descarga verificada.** Sin token, sin registro, devuelve JSON
+- **Estado**: **descarga verificada.** Sin token, sin registro, devuelve JSON
   limpio. Datos actualizados al 13 de julio de 2026.
 - **Prueba directa** (pégala en tu navegador):
   `https://api.worldbank.org/v2/country/MEX/indicator/NY.GDP.MKTP.CD?format=json`
@@ -113,7 +113,7 @@ PIB, comercio, inversión extranjera, población, para todos los países.
 Precios de productos específicos, por establecimiento y ciudad, levantados por
 la Procuraduría Federal del Consumidor.
 
-- **Estado**: ✅ **Descarga verificada.** CSV directo, sin token, bajo licencia
+- **Estado**: **descarga verificada.** CSV directo, sin token, bajo licencia
   **CC-BY-4.0**. Un archivo por quincena, de unos 150 MB.
 - **Es la fuente central del curso.** El subconjunto de clase trae 42,351 precios
   de seis productos de canasta básica, en 63 cadenas comerciales y 30 estados,
@@ -131,7 +131,7 @@ la Procuraduría Federal del Consumidor.
 
 Interés de búsqueda relativo por término, región y tiempo.
 
-- **Estado**: 🟡 `gtrendsR` está en CRAN y funciona, pero Google aplica límites de
+- **Estado**: portal disponible. `gtrendsR` está en CRAN y funciona, pero Google aplica límites de
   tasa agresivos. Descarga una vez y guarda.
 - **Advertencia metodológica**: el valor **no** es volumen de búsquedas, es un
   índice normalizado de 0 a 100 **relativo al periodo consultado**. Cambiar el
@@ -142,7 +142,7 @@ Interés de búsqueda relativo por término, región y tiempo.
 
 Ingreso y gasto de hogares mexicanos, con desglose fino por rubro.
 
-- **Estado**: 🟡 Portal disponible, microdatos descargables.
+- **Estado**: portal disponible, microdatos descargables.
 - **Para qué sirve aquí**: estructura de gasto por decil de ingreso. Segmentación
   con datos reales en vez de personas inventadas.
 - <https://www.inegi.org.mx/programas/enigh/nc/2022/>
@@ -154,7 +154,7 @@ Ingreso y gasto de hogares mexicanos, con desglose fino por rubro.
 Directorio de todos los establecimientos económicos del país: giro, tamaño,
 ubicación.
 
-- **Estado**: 🟡 Portal y API documentados y disponibles. La API requiere token
+- **Estado**: portal y API documentados y disponibles. La API requiere token
   gratuito.
 - **Para qué sirve aquí**: la distribución del tamaño de las empresas mexicanas
   por número de empleados es brutalmente asimétrica. Sirve para tablas de
@@ -166,7 +166,7 @@ ubicación.
 
 Encuesta Nacional de Ocupación y Empleo. Trimestral, con factores de expansión.
 
-- **Estado**: 🟡 Portal disponible, microdatos descargables.
+- **Estado**: portal disponible, microdatos descargables.
 - <https://www.inegi.org.mx/programas/enoe/15ymas/>
 
 ### INEGI · ENAPROCE (productividad y competitividad de empresas) {#enaproce}
@@ -174,14 +174,14 @@ Encuesta Nacional de Ocupación y Empleo. Trimestral, con factores de expansión
 Prácticas de gestión, capacitación, financiamiento y productividad de micro,
 pequeñas y medianas empresas.
 
-- **Estado**: 🟡 Portal disponible (edición 2023).
+- **Estado**: portal disponible (edición 2023).
 - <https://www.inegi.org.mx/programas/enaproce/2023/>
 
 ### INEGI · Censos Económicos {#censos-economicos}
 
 Censo completo de la actividad económica del país.
 
-- **Estado**: 🟡 Portal disponible (edición 2024).
+- **Estado**: portal disponible (edición 2024).
 - **Para qué sirve aquí**: es un **censo**, no una encuesta. Es el contraste
   natural para la sesión 2, cuando se discute población contra muestra.
 - <https://www.inegi.org.mx/programas/ce/2024/>
@@ -190,7 +190,7 @@ Censo completo de la actividad económica del país.
 
 ### INEGI · ENIGH (ingreso) {#enigh-ingreso}
 
-- **Estado**: 🟡 Portal disponible.
+- **Estado**: portal disponible.
 - **Para qué sirve aquí**: trae **factores de expansión reales**, que es lo que
   vuelve honesta la enseñanza de la media ponderada. Sin ellos, la media
   ponderada se enseña con calificaciones inventadas y nadie entiende para qué
@@ -202,7 +202,7 @@ Censo completo de la actividad económica del país.
 
 Catálogo abierto del gobierno federal.
 
-- **Estado**: ✅ **API verificada.** La API de CKAN responde sin token.
+- **Estado**: **API verificada.** La API de CKAN responde sin token.
   79 conjuntos de datos para el término "precios", la mayoría bajo CC-BY-4.0.
 - **Prueba directa**:
   `https://datos.gob.mx/api/3/action/package_search?q=precios`
@@ -211,7 +211,7 @@ Catálogo abierto del gobierno federal.
 
 Listados de Airbnb por ciudad, con precio, tipo, ubicación y reseñas.
 
-- **Estado**: 🟡 Portal disponible. Licencia Creative Commons.
+- **Estado**: portal disponible. Licencia Creative Commons.
 - **Nota**: es el dataset central de *Análisis de Datos II*. Trabajarlo aquí te
   da ventaja el semestre siguiente, pero también te quita la novedad.
 - <https://insideairbnb.com/get-the-data/>

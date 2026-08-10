@@ -48,69 +48,69 @@ Cada punto del programa oficial, con la sesión donde se cubre.
 
 ### 1. Definición y clasificación
 
-| Punto | Sesión | |
+| Punto | Sesión | Estado |
 |---|:--:|:--:|
-| 1.1 Objetivo y ramas de la estadística | 1, 2 | ✅ |
-| 1.2 Población y muestra | 3 | ✅ |
-| 1.3 Tipos de variables y escalas de medición | 4 | ✅ |
+| 1.1 Objetivo y ramas de la estadística | 1, 2 | sí |
+| 1.2 Población y muestra | 3 | sí |
+| 1.3 Tipos de variables y escalas de medición | 4 | sí |
 
 ### 2. Estadísticos descriptivos
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 2.1 Medidas de posición: cuartiles, deciles y percentiles | 10 | ✅ |
-| 2.2.1 Moda y mediana | 12 | ✅ |
-| 2.2.1 Media armónica | sin sesión | ⛔ |
-| 2.2.2 Media aritmética: simple y ponderada | 13 | ✅ |
-| 2.2.3 Media geométrica | 14 | ✅ |
-| 2.2.4 Práctica manual y aplicación con Excel | 10 a 14 | ✅ |
-| 2.3.1 Rango y rango intercuartil | 15 | ✅ |
-| 2.3.2 Varianza y desviación estándar | 15 | ✅ |
-| 2.3.3 Coeficiente de variación | 16 | ✅ |
-| 2.3.4 Práctica manual y aplicaciones con Excel | 15, 16 | ✅ |
-| 2.4 Medidas de forma: sesgo y curtosis | 17 | ✅ |
-| 2.5 Teorema de Chebyshev y regla empírica | 17 | ✅ |
-| 2.6 Aplicaciones con Excel | 18 | ✅ |
+| 2.1 Medidas de posición: cuartiles, deciles y percentiles | 10 | sí |
+| 2.2.1 Moda y mediana | 12 | sí |
+| 2.2.1 Media armónica | fuera del curso | no |
+| 2.2.2 Media aritmética: simple y ponderada | 13 | sí |
+| 2.2.3 Media geométrica | 14 | sí |
+| 2.2.4 Práctica manual y aplicación con Excel | 10 a 14 | sí |
+| 2.3.1 Rango y rango intercuartil | 15 | sí |
+| 2.3.2 Varianza y desviación estándar | 15 | sí |
+| 2.3.3 Coeficiente de variación | 16 | sí |
+| 2.3.4 Práctica manual y aplicaciones con Excel | 15, 16 | sí |
+| 2.4 Medidas de forma: sesgo y curtosis | 17 | sí |
+| 2.5 Teorema de Chebyshev y regla empírica | 17 | sí |
+| 2.6 Aplicaciones con Excel | 18 | sí |
 
 ### 3. Representación tabular y gráfica
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 3.1 Tablas de distribución de frecuencias | 5 | ✅ |
-| 3.2.1 Gráfica de barras | 6 | ✅ |
-| 3.2.1 Gráfica de pastel | 6 | ⚠️ |
-| 3.2.2 Histograma, polígono y ojiva | 8, 9 | ✅ |
-| 3.2.3 Diagrama de caja | 11 | ✅ |
-| 3.3 Aplicaciones con Excel | 18 | ✅ |
+| 3.1 Tablas de distribución de frecuencias | 5 | sí |
+| 3.2.1 Gráfica de barras | 6 | sí |
+| 3.2.1 Gráfica de pastel | 6 | parcial |
+| 3.2.2 Histograma, polígono y ojiva | 8, 9 | sí |
+| 3.2.3 Diagrama de caja | 11 | sí |
+| 3.3 Aplicaciones con Excel | 18 | sí |
 
 ### 4. Introducción a la probabilidad
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 4.1 Probabilidades de eventos simples | 19, 20 | ✅ |
-| 4.2 Probabilidades de eventos compuestos | 21 | ✅ |
-| 4.2.1 Regla aditiva | 22 | ✅ |
-| 4.2.2 Regla multiplicativa | 22, 23 | ✅ |
-| 4.3 Teorema de Bayes | 23 | ✅ |
-| 4.4 Práctica manual y aplicaciones con Excel | 19 a 23 | ✅ |
+| 4.1 Probabilidades de eventos simples | 19, 20 | sí |
+| 4.2 Probabilidades de eventos compuestos | 21 | sí |
+| 4.2.1 Regla aditiva | 22 | sí |
+| 4.2.2 Regla multiplicativa | 22, 23 | sí |
+| 4.3 Teorema de Bayes | 23 | sí |
+| 4.4 Práctica manual y aplicaciones con Excel | 19 a 23 | sí |
 
 ### 5. Distribuciones de probabilidad
 
 | Punto | Sesión | |
 |---|:--:|:--:|
-| 5.1 Variables aleatorias: discretas y continuas | 24 | ✅ |
-| 5.2 Valor esperado | 25 | ✅ |
-| 5.3.1 Distribución binomial | 26 | ✅ |
-| 5.3.2 Distribución Poisson | 27 | ✅ |
-| 5.4.1 Distribución normal | 28 | ✅ |
-| 5.4.2 Aplicaciones con Excel | 29 | ✅ |
+| 5.1 Variables aleatorias: discretas y continuas | 24 | sí |
+| 5.2 Valor esperado | 25 | sí |
+| 5.3.1 Distribución binomial | 26 | sí |
+| 5.3.2 Distribución Poisson | 27 | sí |
+| 5.4.1 Distribución normal | 28 | sí |
+| 5.4.2 Aplicaciones con Excel | 29 | sí |
 
 ## Ajustes de cátedra
 
 El programa admite ajuste. Estos son los que se hicieron, con su justificación.
 Todos preservan el resultado de aprendizaje oficial.
 
-### ⛔ Se elimina: media armónica
+### Se elimina: media armónica
 
 Es la única técnica del programa que se retira.
 
@@ -123,7 +123,7 @@ equivocan sistemáticamente.
 La idea de fondo, *"el tipo de promedio depende de qué se está promediando"*, se
 enseña igual. Solo se enseña con tres medias en vez de cuatro.
 
-### ⚠️ Se reencuadra: gráfica de pastel
+### Se reencuadra: gráfica de pastel
 
 Se explica **qué es y cuándo conviene otra opción**. El curso enseña a leerla, no
 a producirla.
@@ -144,19 +144,19 @@ Experimentation, and Application to the Development of Graphical Methods.
 *Journal of the American Statistical Association*, 79(387), 531–554.
 :::
 
-### 🔁 Se fusiona: forma con Chebyshev y regla empírica
+### Se fusiona: forma con Chebyshev y regla empírica
 
 Medidas de forma (2.4) y las reglas de cobertura (2.5) responden la misma
 pregunta: qué implica la forma de la distribución para el resumen que elegiste.
 Se ven juntas en la sesión 17.
 
-### 🔁 Se fusiona: cuartiles con deciles y percentiles
+### Se fusiona: cuartiles con deciles y percentiles
 
 Son la misma función con distinto argumento: `quantile(x, probs = 0.25)` y
 `quantile(x, probs = 0.10)`. Enseñarlos por separado repite la mecánica sin
 agregar concepto, así que ocupan una sesión y no dos.
 
-### 🔁 Se moderniza: la ojiva
+### Se moderniza: la ojiva
 
 Se cubre el concepto de **frecuencia acumulada** y su lectura como percentiles,
 dibujado con la función de distribución empírica, que es la versión que usa el
@@ -164,21 +164,21 @@ software actual y la que conecta con la sesión de percentiles.
 
 El nombre clásico se menciona para que lo reconozcan en un libro de texto.
 
-### 🔁 Se comprime: reglas de conteo
+### Se comprime: reglas de conteo
 
 Permutaciones y combinaciones se cubren en una sesión en lugar de dos, enfocadas
 en **por qué** hace falta contar, que es el supuesto de resultados igualmente
 probables, más que en ejercitar `nPr` y `nCr`. La sesión liberada se destina al
 **teorema de Bayes**, que tiene mucho más valor para un tomador de decisiones.
 
-### ➕ Se agrega: datos faltantes (sesión 7)
+### Se agrega: datos faltantes (sesión 7)
 
 Es el problema más común de los datos reales. Una tabla de frecuencias con `NA`
 silencioso produce porcentajes que no suman lo que deberían, y un promedio
 calculado sobre los casos completos responde una pregunta distinta a la que se
 hizo.
 
-### ➕ Se agrega: paradoja de Simpson (sesión 18)
+### Se agrega: paradoja de Simpson (sesión 18)
 
 Una relación entre dos variables puede invertirse al considerar una tercera. Es
 la puerta de entrada al **pensamiento multivariado** que pide la revisión 2016 de

@@ -1,223 +1,119 @@
 ---
 title: "Enfoque del curso"
-subtitle: "Por qué la clase está diseñada así"
+subtitle: "Qué se espera de ti y cómo se trabaja"
 lang: es
 ---
 
-Esta página explica **por qué** el curso está armado como está. Ayuda a entender
-qué se te pide.
-
-El diseño descansa en tres marcos: **diseño inverso**, las recomendaciones
-**GAISE** de la American Statistical Association, y cinco **principios de
-diseño** para cursos introductorios con estudiantes que no programan.
-
-## Marco 1 · Diseño inverso
-
-Primero se decide a dónde hay que llegar; después se decide cómo llegar.
-
-1. Identificar el **resultado deseado**: qué análisis debe poder hacer el alumno.
-2. Determinar la **evidencia aceptable**: cómo se va a saber que lo logró.
-3. Planear la **instrucción**: recién entonces, qué se enseña y en qué orden.
-
-Aquí el [portafolio](../portafolio/index.qmd) es el resultado deseado, y el
-temario se recorre como la lista de bloques necesarios para construirlo.
-
-::: {.aside}
-Wiggins, G. y McTighe, J. (2005). *Understanding by Design*. ASCD.
-:::
-
-## Marco 2 · GAISE
-
-**Guidelines for Assessment and Instruction in Statistics Education**, American
-Statistical Association, 2005, revisadas en 2016. Es el consenso profesional
-sobre cómo se enseña un primer curso de estadística universitario.
-
-| # | Recomendación | Cómo se traduce aquí |
-|:--:|---|---|
-| 1 | Enseñar **pensamiento estadístico** | Cada tema arranca de una pregunta de decisión, no de una fórmula |
-| 2 | Enfocarse en el **entendimiento conceptual** | Preguntas que se responden razonando, sin calcular |
-| 3 | Integrar **datos reales con contexto y propósito** | El catálogo: INEGI, Banxico, Profeco, OEC, Banco Mundial |
-| 4 | Fomentar el **aprendizaje activo** | La encuesta del grupo, simulaciones, discusión entre carreras |
-| 5 | Usar **tecnología para explorar conceptos**, no solo para calcular | Simular antes de derivar |
-| 6 | Usar la **evaluación para mejorar el aprendizaje** | La rutina de cuatro preguntas, aplicada a todo |
-
-La revisión de 2016 agregó dos énfasis que este curso toma en serio:
-
-- Enseñar estadística como **proceso investigativo**, no como catálogo de
-  técnicas.
-- Dar experiencia con **pensamiento multivariado**: explorar relaciones entre
-  varias variables a la vez, no una por una.
-
-::: {.callout-note}
-## Una tensión que vale la pena declarar
-
-GAISE recomienda enseñar el proceso, no el catálogo. El programa oficial de
-MAT1409 es, en su forma, un catálogo: cuatro tipos de media, tres medidas de
-dispersión, dos distribuciones discretas.
-
-No se puede ignorar el programa, ni se debería: cada técnica que pide es
-defendible. Lo que sí se puede es **envolverla** en el proceso. Las cuatro medias
-no se enseñan como cuatro fórmulas que memorizar, sino como cuatro respuestas a
-la pregunta *"¿qué significa 'el promedio' aquí?"*, cada una válida en un
-contexto distinto y ninguna válida en todos.
-:::
-
-### Los nueve objetivos de GAISE
-
-Al terminar un primer curso, un alumno debería: **1)** ser consumidor crítico;
-**2)** aplicar el proceso investigativo; **3)** producir e interpretar gráficas y
-resúmenes numéricos; **4)** explicar el papel de la **variabilidad**; **5)**
-explicar el papel de la **aleatoriedad**; **6)** tener experiencia con modelos;
-**7)** aplicar inferencia; **8)** interpretar salidas de software; **9)** tener
-conciencia de los problemas **éticos** de la práctica estadística.
-
-Este curso cubre a fondo del 1 al 5, más el 8 y el 9. El 6 lo toca al final con
-distribuciones. **El 7, la inferencia, es el objeto de Análisis de Datos II**, y
-por eso probabilidad ocupa la segunda mitad del semestre: es el puente.
-
-## Marco 3 · Cinco principios de diseño
-
-Adaptados de Çetinkaya-Rundel (2023), para cursos introductorios con estudiantes
-que nunca han programado.
-
-### 🍒 Cuidar el primer día
-
-El primer día se abre un enlace y se corre código en 30 segundos. Ver
-[Cómo trabajamos](computo.qmd).
-
-La primera experiencia con la herramienta es escribir algo y ver que pasa algo
-interesante.
-
-### 🍰 Empezar por el pastel
-
-Si estuvieras en una clase de repostería, ¿qué te daría mejor idea de a dónde
-vas: la lista de ingredientes, o la foto del pastel terminado?
-
-Cada bloque abre con el **resultado**: un análisis real, funcionando, sobre datos
-que importan. Después se desarma para ver de qué está hecho. No al revés.
-
-En las primeras sesiones vas a correr código completo antes de conocer cada una
-de sus partes. Las vas a desarmar en las siguientes semanas, línea por línea.
-
-### 🍼 Saltarse los pasos de bebé
-
-Es más fácil interesarse en cocinar un platillo completo que en picar cebolla
-perfectamente.
-
-El riesgo está en pasar del ejemplo trivial al ejemplo completo sin nada en
-medio, como el meme de *"cómo dibujar un búho: paso 1, dos círculos; paso 2, el
-resto del búho"*. Por eso el código se presenta **por capas**, agregando una
-línea a la vez y viendo qué cambia en el resultado.
-
-### 🥦 Esconder las verduras
-
-La técnica entra al servicio de algo que alguien quiere saber: en vez de "hoy
-vemos tablas de frecuencia", "hoy averiguamos si la tienda de la esquina te está
-cobrando de más, con datos de Profeco".
-
-### 🌲 Aprovechar el ecosistema
-
-Herramientas reales, no herramientas de juguete que solo existen en cursos
-introductorios. Lo que aprendas aquí (R, Quarto, tablas, gráficas) se usa en la
-industria y te sirve el semestre que entra en Análisis de Datos II.
-
-## Cómo se construye el código de clase
-
-Consecuencia práctica de los principios 🍰 y 🍼. Todo bloque de código de una
-sesión se parte en tres:
-
-| Parte | Qué es | Qué se hace con ella |
-|---|---|---|
-| **Preparación** | Necesaria, pero lejos del objetivo de hoy | Se da hecha, con nombre |
-| **Guardado** | Ni necesaria ni relacionada con hoy | Se elimina; aparecerá en su sesión |
-| **Protagonista** | El corazón de la lección | Se construye **línea por línea** en pantalla |
-
-Después la parte protagonista se presenta **por capas**: se corre con una línea,
-se ve el resultado, se agrega la siguiente, se ve qué cambió. Así se entiende qué
-hace cada pieza en vez de recibir quince líneas de golpe.
+Esta página describe la forma de trabajo del curso: qué hábito vas a repetir en
+cada sesión, cómo son las preguntas de examen, y qué se te va a pedir que
+declares en cada entregable.
 
 ## La rutina de las cuatro preguntas
 
-Es el hábito que más se va a repetir. **Ante cualquier conjunto de datos, sea el
-tuyo, el mío o uno que te enseñe un consultor, antes de calcular nada:**
+Es el hábito que más se repite. Ante cualquier conjunto de datos, sea el tuyo, el
+mío o uno que te presente un consultor, **antes de calcular nada**:
 
 1. **¿Cuáles son las unidades de observación?** ¿Cada renglón es una persona, un
    hogar, una transacción, un día, un país?
-2. **¿Cuáles son las variables? ¿Categóricas o numéricas?** Y si hay una relación
-   en juego, ¿cuál explica y cuál responde?
-3. **¿Hubo aleatorización?** ¿En la selección de la muestra, en la asignación a
-   grupos, en ambas, o en ninguna?
+2. **¿Cuáles son las variables, y cuáles son categóricas y cuáles numéricas?**
+   Si hay una relación en juego, ¿cuál explica y cuál responde?
+3. **¿Hubo aleatorización?** En la selección de la muestra, en la asignación a
+   grupos, en ambas, o en ninguna.
 4. **¿Es un estudio observacional o un experimento?**
 
-Las cuatro se contestan **antes** de tocar el teclado. Las preguntas 3 y 4
-determinan qué se puede concluir, y muchas veces la respuesta honesta será *"con
-estos datos, no mucho"*. Aprender a decir eso es contenido del curso.
+Las cuatro se contestan antes de tocar el teclado. Las preguntas 3 y 4 determinan
+qué se puede concluir, y muchas veces la respuesta honesta será *"con estos datos,
+no mucho"*. Decir eso con precisión es parte del contenido.
 
 ::: {.a-mano}
-Adaptadas de las recomendaciones de evaluación de GAISE (Rossman, 2021). Van a
-aparecer en los exámenes y son la primera sección de tu portafolio.
+Las cuatro preguntas aparecen en los exámenes y son la primera sección de tu
+portafolio.
 :::
 
-## Entender sin calcular
+## Preguntas que se responden sin calcular
 
-Buena parte de la evaluación son preguntas que **no se responden con la
-calculadora**. Del tipo:
+Buena parte de la evaluación son preguntas conceptuales. Del tipo:
 
 ::: {.friccion}
 **1.** Ana registra la edad de los clientes de la cafetería del campus entre
-11 am y 2 pm. Beto registra la edad de los clientes de un restaurante de carretera
-el mismo día.
+11 am y 2 pm. Beto registra la edad de los clientes de un restaurante de
+carretera, el mismo día.
 
-¿Quién tendrá la **desviación estándar** más grande? Explica sin calcular nada.
+¿Quién observará edades más dispersas? Explica sin calcular nada.
 :::
 
 ::: {.friccion}
-**2.** ¿Qué es más grande: el **peso promedio** de 10 personas al azar o el de
-1,000 gatos al azar?
+**2.** ¿Qué es más grande: el peso promedio de 10 personas al azar o el de 1,000
+gatos al azar?
 
-¿Y qué es más grande: la **desviación estándar** del peso de 1,000 personas o la
-del peso de 10 gatos?
+¿Y qué es más grande: la desviación estándar del peso de 1,000 personas o la del
+peso de 10 gatos?
 :::
 
 ::: {.friccion}
-**3.** Un titular dice que el apoyo a una política pasó de **60% a 75%**.
-¿Eso es un aumento de 15%? Justifica.
+**3.** Un titular dice que el apoyo a una política pasó de 60% a 75%. ¿Eso es un
+aumento de 15%? Justifica.
 :::
 
-La primera separa *dispersión* de *cantidad de datos*. La segunda separa *tamaño
-de muestra* de *variabilidad de la población*, y ninguna de las dos cantidades
-depende de cuántos midas. La tercera separa **puntos porcentuales** de **cambio
-porcentual**: de 60 a 75 son 15 puntos porcentuales y **25 por ciento** de
-aumento. Son dos cantidades distintas y el titular no dice cuál está usando.
+La primera separa **dispersión** de **cantidad de datos**. La segunda separa
+**tamaño de muestra** de **variabilidad de la población**, y ninguna de las dos
+cantidades depende de cuántos midas. La tercera separa **puntos porcentuales** de
+**cambio porcentual**: de 60 a 75 son 15 puntos porcentuales y 25 por ciento de
+aumento, dos cantidades distintas que el titular no distingue.
 
-Se responden razonando sobre qué mide cada cantidad.
+Las tres se responden razonando sobre qué mide cada cantidad.
 
-## Simular antes de derivar
+## Cómo transcurre una sesión
 
-Donde sea posible, la secuencia es: **simular** el fenómeno → **reconocer** el
-patrón → **derivar** la fórmula que lo explica.
+**Primero se simula, después se deriva.** Donde el tema lo permite, la secuencia
+es: simular el fenómeno, reconocer el patrón, y entonces sí, la fórmula que lo
+explica. La fórmula llega como confirmación de algo que ya viste en pantalla.
 
-La fórmula llega como confirmación de algo que ya viste. Es la recomendación 5
-de GAISE, y la razón de usar R en lugar de una hoja de cálculo: simular diez mil
-veces algo cuesta una línea.
+Es la razón de usar R en lugar de una hoja de cálculo: simular diez mil veces
+algo cuesta una línea.
+
+**Primero a mano, después la función.** Cada estadístico se calcula traduciendo
+la fórmula a operaciones elementales antes de usar la función que lo resuelve en
+una línea. Vas a ver ese recuadro en todas las sesiones.
+
+La razón es práctica: `mean()` funciona siempre y nunca te avisa cuándo no
+debiste usarla. Quien sabe qué hay adentro lo nota.
+
+**El código se construye por capas.** Se corre con una línea, se ve el resultado,
+se agrega la siguiente y se ve qué cambió. En las primeras sesiones vas a
+ejecutar análisis completos antes de conocer cada una de sus partes; las vas a
+desarmar en las semanas siguientes.
+
+## Los límites, siempre
+
+Cada análisis que entregues cierra diciendo hasta dónde llegan los datos. Vas a
+ver el recuadro **Lo que este número no dice** en todas las sesiones, y la
+sección equivalente es obligatoria en cada capa de tu portafolio.
+
+Un entregable que concluye sin declarar qué queda fuera del alcance de los datos
+está incompleto, aunque los cálculos estén perfectos.
 
 ## Ética
 
-Noveno objetivo de GAISE. Aparece en tres lugares concretos:
+Aparece en tres lugares concretos del curso:
 
-- **La encuesta del grupo** se levanta anónima desde la captura, y se explica
-  por qué desidentificar después es distinto.
-- **La gráfica que engaña** sin mentir: ejes truncados, escalas manipuladas,
-  categorías agrupadas convenientemente. Bloque 3.
-- **La [postura sobre IA](postura-ia.qmd)**: entregar resultados sin verificar
-  es un problema ético, además de técnico.
+- **La encuesta del grupo** se levanta anónima desde la captura. Se explica por
+  qué desidentificar después es distinto de no recoger el dato.
+- **La gráfica que engaña sin mentir**: ejes truncados, escalas manipuladas,
+  categorías agrupadas convenientemente. Unidad 2.
+- **El uso de IA**: entregar resultados sin verificar es un problema ético,
+  además de técnico. Ver [Postura sobre IA](postura-ia.qmd).
 
-## Referencias
+## De dónde viene este diseño
 
-- ASA (2016). *GAISE College Report*. <https://www.amstat.org/education/gaise>
-- Rossman, A. (2021). *Teaching Introductory Statistics with GAISE
-  Recommendations*. Preparing to Teach.
-- Çetinkaya-Rundel, M. (2023). *Teaching Intro Data Science and Assessing
-  Learning*. Preparing to Teach. <https://preparingtoteach.org/>
-- Wiggins, G. y McTighe, J. (2005). *Understanding by Design*. ASCD.
-- Rossman, A. *Ask Good Questions* (blog). <https://askgoodquestions.blog>
+El curso sigue las recomendaciones **GAISE** de la American Statistical
+Association, que son el consenso profesional sobre cómo se enseña un primer
+curso de estadística universitario.
+
+De ahí vienen tres decisiones que vas a notar: los datos son reales y con
+contexto, las gráficas van antes que los promedios, y la evaluación pesa más
+sobre la interpretación que sobre el cálculo.
+
+::: {.aside}
+ASA (2016). *GAISE College Report*. <https://www.amstat.org/education/gaise>
+:::
