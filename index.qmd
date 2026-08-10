@@ -6,8 +6,8 @@ toc: false
 ---
 
 Este sitio reúne las presentaciones, los datos y los recursos del curso. El
-enfoque combina el programa oficial con una postura explícita sobre qué cambia,
-y qué sigue igual, cuando la ejecución de un análisis se puede delegar a una
+enfoque combina el programa oficial con una postura explícita sobre qué cambia y
+qué sigue igual cuando la ejecución de un análisis se puede delegar a una
 máquina.
 
 ::: {.a-mano}
@@ -23,14 +23,13 @@ El curso recorre el temario en el orden en que ocurre un análisis real:
 | | Unidad | Idea | Sesiones |
 |:--:|---|---|:--:|
 | 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo entre manos | 4 |
-| 2 | **Ver** | Antes de resumir una variable, hay que verla completa | 5 |
+| 2 | **Ver los datos** | Antes de resumir una variable, hay que verla completa | 5 |
 | 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde | 9 |
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió | 5 |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 7 |
 
-Las gráficas van antes que los promedios. Cuando llegues a la media ya vas a
+Las gráficas van antes que los estadísticos. Cuando llegues a la media ya vas a
 saber dibujar la distribución, y la media va a ser una línea vertical sobre ella.
-Cuando llegues a los cuartiles, la caja del diagrama va a tener sentido.
 
 El programa oficial se cubre completo. El mapeo punto por punto está en
 [Programa y cobertura](curso/programa.qmd).
@@ -43,17 +42,14 @@ auto-encuesta: ustedes son la población. A partir de la unidad 2 entra
 mismo producto, la misma marca, el mismo día, a precios distintos según la
 tienda y el estado.
 
-**Fuera de clase, tu serie.** Cada quien adopta una serie de datos reales del
-[catálogo](datos/catalogo.qmd), elegida según su carrera, y le aplica cada
-técnica que se ve en clase. Ese cuaderno, publicado en tu repositorio de GitHub, es tu
-[portafolio](portafolio/index.qmd).
+**Fuera de clase, tu serie.** Eliges una serie de datos reales del
+[catálogo](datos/catalogo.qmd), afín a tu carrera, y le aplicas cada técnica que
+se ve en clase. El cuaderno donde lo haces, publicado en tu repositorio de
+[GitHub](https://github.com/), es tu [portafolio](portafolio/index.qmd).
 
-Los grupos son mixtos entre carreras. Comparar cómo se distribuye una serie de
-precios accionarios contra una de exportaciones contra una de ingreso de hogares
-es una discusión que solo se puede tener con esa mezcla.
-
-**R se aprende sobre la marcha.** Cada herramienta entra en la sesión donde hace
-falta para responder una pregunta estadística. Ver
+**Aprender haciendo.** R es un lenguaje de programación para análisis de datos y
+se aprende usándolo: cada herramienta entra en la sesión donde hace falta para
+responder una pregunta estadística. Ver
 [Enfoque del curso](curso/enfoque.qmd).
 
 ## Las sesiones
@@ -72,7 +68,7 @@ falta para responder una pregunta estadística. Ver
 | | **Unidad 2 · Ver los datos** | | |
 | 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
 | 6 | Variables categóricas: la gráfica de barras | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
-| 7 | Datos faltantes: lo que falta también informa | `is.na`, `drop_na` | |
+| 7 | Datos faltantes: lo que falta también informa | `is.na`, `drop_na` | agregado |
 | 8 | Histograma: la forma de una variable numérica | `geom_histogram` | 3.2.2 |
 | 9 | El ancho del intervalo, polígono y frecuencia acumulada | `binwidth`, `geom_freqpoly`, `stat_ecdf` | 3.2.2 |
 | | **Unidad 3 · Resumir y comparar** | | |
@@ -98,7 +94,7 @@ falta para responder una pregunta estadística. Ver
 | 27 | Distribución Poisson | `dpois`, `ppois` | 5.3.2 |
 | 28 | Distribución normal: la curva y la estandarización | `dnorm`, `pnorm`, `qnorm` | 5.4.1 |
 | 29 | Cierre: ¿tu variable se parece a alguna? | todo lo anterior | 5.4.2 |
-| 30 | Repaso e integración | todo lo anterior | |
+| 30 | Repaso e integración | todo lo anterior | integración |
 
 :::
 
