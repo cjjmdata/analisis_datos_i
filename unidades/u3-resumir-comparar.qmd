@@ -87,9 +87,8 @@ Cuatro puntos donde el resultado esperado y el observado dejan de coincidir.
 **Sesión 10. El cuartil que no coincide.** Calculas $Q_1$ con la fórmula de
 posición $\frac{n+1}{4}$ y luego con `quantile()`. Dan números distintos. Ninguno
 está mal: hay al menos nueve definiciones de cuantil, y R usa una por omisión,
-Excel otra y el libro de texto una tercera. Es la primera vez que se hace evidente
-que **el software toma decisiones metodológicas por ti**, y es la lección más
-transferible del semestre.
+Excel otra y el libro de texto una tercera. **El software toma decisiones
+metodológicas por ti**, y a partir de esta sesión te toca saber cuáles.
 
 **Sesión 13. El ponderador que mueve el país.** Se calcula el ingreso promedio de
 ENIGH con y sin factor de expansión. Los dos números son correctos; responden

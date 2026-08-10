@@ -40,7 +40,7 @@ website:
           - href: index.qmd
             text: Inicio
           - href: curso/programa.qmd
-            text: Programa y calendario
+            text: Programa y cobertura
           - href: curso/enfoque.qmd
             text: Enfoque del curso
           - href: curso/evaluacion.qmd
