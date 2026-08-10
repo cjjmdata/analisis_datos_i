@@ -73,8 +73,8 @@ Un cuaderno de Colab es una secuencia de **celdas**, de dos tipos:
 Para correr una celda de código: clic en ella y **Ctrl + Enter** (o el botón de
 ▶). El resultado aparece justo debajo.
 
-Colab guarda tu trabajo en Drive de forma automática mientras tengas conexión, y
-sincroniza en cuanto vuelve si se cae.
+Colab guarda tu trabajo en Drive de forma automática mientras haya conexión, y
+sincroniza al recuperarla si se interrumpe.
 
 ## Dos comportamientos del entorno
 
@@ -174,8 +174,8 @@ install.packages(c("tidyverse", "readxl", "scales", "knitr", "rmarkdown"))
 Vas a estar tecleando código en clase, así que los errores son parte del trabajo.
 Este es el orden para resolverlos:
 
-**1. Lee el mensaje completo.** Las palabras, no el color. R te dice tres cosas:
-en qué línea se detuvo, qué esperaba encontrar y qué encontró en su lugar.
+**1. Lee el mensaje completo.** Las palabras, no el color. R indica en qué línea
+se detuvo, qué esperaba encontrar y qué encontró en su lugar.
 
 **2. Distingue error de advertencia.**
 

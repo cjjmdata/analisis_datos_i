@@ -13,9 +13,9 @@ empieza a servir para decidir algo.
 Es la unidad más larga, nueve sesiones y casi un tercio del curso. Aquí se construye el
 vocabulario que usa todo lo demás, incluida la materia siguiente.
 
-Toda esta unidad se apoya en la anterior. Cada estadístico se dibuja sobre el
-histograma que ya sabes construir: la media como una línea vertical, los cuartiles
-como la caja del diagrama, el sesgo como la asimetría que ya viste a ojo.
+La unidad se apoya en la anterior. Cada estadístico se dibuja sobre el histograma
+que ya sabes construir: la media como una línea vertical, los cuartiles como la
+caja del diagrama, el sesgo como la asimetría de la distribución.
 
 ## Sesiones
 
@@ -80,9 +80,7 @@ en la mezcla: cada cadena tiene distinta proporción de productos caros y barato
 Es la puerta al pensamiento multivariado que pide la revisión 2016 de GAISE, y el
 mejor argumento del curso para la sección *lo que este número no dice*.
 
-## Los cuatro momentos de fricción
-
-Cuatro puntos donde el resultado esperado y el observado dejan de coincidir.
+## Donde el resultado esperado y el observado no coinciden
 
 **Sesión 10. El cuartil que no coincide.** Calculas $Q_1$ con la fórmula de
 posición $\frac{n+1}{4}$ y luego con `quantile()`. Dan números distintos. Ninguno

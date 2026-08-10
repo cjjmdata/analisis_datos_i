@@ -6,8 +6,8 @@ lang: es
 
 ## De qué se trata
 
-Mostrar una distribución completa antes de resumirla en un número. Una tabla de
-frecuencias y un histograma dicen cosas que ninguna media puede decir.
+Una distribución se muestra completa antes de resumirla en un número. Una tabla
+de frecuencias y un histograma comunican información que ninguna media contiene.
 
 Esta unidad va **antes** que los estadísticos descriptivos. Cuando llegues a la
 media vas a poder dibujarla como una línea vertical sobre una distribución que ya

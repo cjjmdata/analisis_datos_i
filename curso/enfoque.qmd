@@ -3,14 +3,13 @@ title: "Enfoque del curso"
 lang: es
 ---
 
-Esta página describe la forma de trabajo del curso: qué hábito vas a repetir en
-cada sesión, cómo son las preguntas de examen, y qué se te va a pedir que
-declares en cada entregable.
+La forma de trabajo del curso: el hábito que se repite en cada sesión, el tipo de
+pregunta que aparece en los exámenes, y lo que cada entregable debe declarar.
 
 ## La rutina de las cuatro preguntas
 
-Ante cualquier conjunto de datos, sea el tuyo, el mío o uno que te presente un
-consultor, **antes de calcular algo** hay que responder cuatro preguntas:
+Todo conjunto de datos, sea el tuyo, el mío o uno que te presente un consultor,
+admite cuatro preguntas **antes de cualquier cálculo**:
 
 1. **¿Cuáles son las unidades de observación?** ¿Cada renglón es una persona, un
    hogar, una transacción, un día, un país?

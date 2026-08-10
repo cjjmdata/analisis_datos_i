@@ -319,7 +319,7 @@ Las gráficas van antes que las medidas de posición y de tendencia central.
 Cuando llegues a ellas ya vas a saber dibujar la distribución sobre la que se
 calculan.
 
-## Tres cosas prácticas {.smaller}
+## Cómo se trabaja {.smaller}
 
 **Programamos en R, desde el navegador.** El curso corre en Colab y cada
 herramienta entra en la sesión donde hace falta para responder una pregunta.

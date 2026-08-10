@@ -157,9 +157,9 @@ ubicación.
 - **Estado**: portal y API documentados y disponibles. La API requiere token
   gratuito.
 - **Para qué sirve aquí**: la distribución del tamaño de las empresas mexicanas
-  por número de empleados es brutalmente asimétrica. Sirve para tablas de
-  frecuencias, histogramas y para discutir por qué "la empresa promedio" es una
-  ficción estadística.
+  por número de empleados es muy asimétrica, con una mayoría de microempresas y
+  una cola larga. Sirve para tablas de frecuencias, histogramas y para discutir
+  por qué "la empresa promedio" es una ficción estadística.
 - <https://www.inegi.org.mx/app/mapa/denue/default.aspx>
 
 ### INEGI · ENOE (empleo y salarios) {#enoe}

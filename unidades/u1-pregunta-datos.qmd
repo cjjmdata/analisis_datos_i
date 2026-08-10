@@ -6,12 +6,11 @@ lang: es
 
 ## De qué se trata
 
-Antes de calcular nada hay que decidir tres cosas: **qué queremos saber**,
-**sobre quién** y **qué tipo de dato tenemos entre manos**. La unidad es corta y
-decide la calidad de todo lo que sigue.
+Un flujo de análisis de datos comienza por definir **qué queremos saber**,
+**sobre quién** y **qué tipo de dato está disponible**.
 
-Los errores graves en análisis de datos suelen venir de haber calculado algo que
-no correspondía, sobre un grupo que no era el que interesaba.
+Los errores en análisis de datos suelen darse por calcular algo que no
+corresponde con los datos disponibles, o sobre un grupo que no es el de interés.
 
 ## Sesiones
 
@@ -36,16 +35,14 @@ no correspondía, sobre un grupo que no era el que interesaba.
 
 ## Las ideas que hay que entender de verdad
 
-**La escala de medición manda sobre el cálculo.** Es la idea de la unidad que más
-se usa después. R calcula la media de un código postal sin protestar: la máquina
-no sabe qué representan tus números, y tú sí. En cuanto una variable está
-codificada como número, todas las operaciones quedan técnicamente disponibles y
-casi ninguna es válida.
+**La escala de medición determina qué cálculos son válidos.** R calcula la media
+de un código postal sin advertir nada: el software no distingue qué representan
+los números. En cuanto una variable se codifica como número, todas las
+operaciones quedan técnicamente disponibles y casi ninguna es interpretable.
 
-**Una muestra bien tomada sabe del todo; una muestra grande mal tomada no.**
-El mecanismo de selección importa mucho más que el tamaño, y por eso un ejercicio
-con 30 alumnos puede enseñar más que un archivo de un millón de filas recogido
-por conveniencia.
+**El mecanismo de selección pesa más que el tamaño de la muestra.** Una muestra
+pequeña con selección aleatoria describe a su población; una grande recogida por
+conveniencia, no necesariamente.
 
 **Un censo y una muestra son objetos distintos, con problemas distintos.** Los [Censos Económicos](../datos/catalogo.qmd#censos-economicos) sirven
 para ver la diferencia con datos mexicanos reales.

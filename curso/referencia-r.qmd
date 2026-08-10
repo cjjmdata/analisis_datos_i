@@ -1,21 +1,18 @@
 ---
 title: "Referencia de R y Markdown"
-subtitle: "Para consultar, no para estudiar de corrido"
+subtitle: "Material de consulta"
 lang: es
 ---
 
 ::: {.nota}
-Manual de consulta. Cada herramienta de R se enseña en la sesión donde hace falta
-para responder una pregunta estadística; aquí queda todo junto para cuando
-necesites recordar algo o quieras ir más allá.
-
-Lo que aparece aquí y no en ninguna sesión está por si te da curiosidad.
+Cada herramienta de R se enseña en la sesión donde hace falta para responder una
+pregunta estadística. Esta página las reúne todas para consulta.
 :::
 
-## Markdown en cuatro minutos
+## Markdown
 
-Markdown da formato a texto plano. Lo usan las celdas de texto de Colab y tu
-portafolio. Con esto te alcanza para todo el semestre:
+Markdown da formato a texto plano. Lo usan las celdas de texto de Colab y el
+portafolio. Con estos elementos se cubre todo el material del curso:
 
 ```markdown
 # Título          ## Subtítulo          ### Sub-subtítulo
@@ -32,16 +29,16 @@ portafolio. Con esto te alcanza para todo el semestre:
 
 ## Fórmulas con LaTeX
 
-Las fórmulas se escriben en LaTeX, dentro de celdas de texto. Lo vas a necesitar
-en cada capa de tu portafolio, donde la fórmula va antes del cálculo.
+Las fórmulas se escriben en LaTeX, dentro de celdas de texto. Cada capa del
+portafolio incluye la fórmula antes del cálculo.
 
-Hay dos formas de escribirla:
+Hay dos formas de componerla:
 
 - Entre **un** signo de pesos queda dentro del renglón: `$\bar{x}$` produce
   $\bar{x}$.
 - Entre **dos** queda centrada y en su propio renglón: `$$\bar{x}$$`.
 
-### Las piezas que vas a usar
+### Elementos de sintaxis
 
 | Para escribir | Se teclea | Se ve |
 |---|---|:--:|
@@ -73,7 +70,7 @@ Cópialas y ajústalas a tu serie.
 | Puntaje z | `$$z = \frac{x - \mu}{\sigma}$$` |
 | Probabilidad condicional | `$$P(A \mid B) = \frac{P(A \cap B)}{P(B)}$$` |
 
-Así se ven las dos primeras:
+Las dos primeras, ya compuestas:
 
 $$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
 \qquad\qquad
@@ -103,18 +100,18 @@ Es una causa frecuente de `object not found`.
 
 ### Vectores
 
-Un vector es una secuencia de valores del mismo tipo. Es la estructura que más vas
-a usar: una columna de datos es un vector.
+Un vector es una secuencia de valores del mismo tipo. Es la estructura más
+frecuente en análisis de datos: una columna de una tabla es un vector.
 
 ```r
 estaturas <- c(1.62, 1.75, 1.58, 1.81, 1.69)   # c() = combinar
 length(estaturas)     # cuántos elementos
-estaturas * 100       # opera sobre TODOS a la vez
+estaturas * 100       # opera sobre todos los elementos
 estaturas[2]          # el segundo elemento
 ```
 
-La idea, **R opera sobre el vector completo sin que tengas que repetir
-nada**, es la que sustituye a los ciclos que usan otros lenguajes.
+**R opera sobre el vector completo en una sola instrucción.** Esa propiedad
+sustituye a los ciclos que otros lenguajes necesitan para recorrer los datos.
 
 ### Tablas de datos
 
@@ -130,11 +127,11 @@ datos$precio         # una columna, como vector
 ```
 
 ::: {.callout-warning}
-Usa `read_csv()` de `readr`, no `read.csv()` de base R. `read.csv()` maneja mal
-los acentos y te va a llenar el archivo de `Ã±`.
+Usa `read_csv()` de `readr`, no `read.csv()` de base R. `read.csv()` interpreta
+mal la codificación de los acentos y los devuelve como `Ã±`.
 
-Y nunca abrevies el nombre de una columna con `$`: `datos$prec` puede funcionar
-por coincidencia parcial y romperse en silencio el día que exista otra columna que
+Tampoco abrevies el nombre de una columna con `$`: `datos$prec` funciona por
+coincidencia parcial, y deja de funcionar el día que exista otra columna que
 empiece igual.
 :::
 
@@ -150,8 +147,8 @@ precio > 100 | precio < 20       # cualquiera  (O)
 filter(datos, precio > 100 & tienda == "Norte")
 ```
 
-`==` con dos signos es comparación; `=` con uno es otra cosa. Confundirlos es
-normal al principio.
+`==` con dos signos compara dos valores y devuelve verdadero o falso. `=` con uno
+asigna, igual que `<-`.
 
 ### Valores faltantes
 
@@ -187,8 +184,7 @@ Para ver qué tienes disponible en tu sesión: `rownames(installed.packages())`.
 
 ### Escribir tu propia función
 
-La vas a necesitar en la sesión 17, para el coeficiente de sesgo. Está aquí por
-si la quieres antes:
+Aparece en la sesión 17, con el coeficiente de sesgo. La sintaxis es:
 
 ```r
 coeficiente_variacion <- function(x) {
@@ -239,7 +235,7 @@ ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
 
 ## Cuando algo falle
 
-| Mensaje | Causa casi siempre |
+| Mensaje | Causa más frecuente |
 |---|---|
 | `could not find function "..."` | Falta `library()` |
 | `object '...' not found` | La celda que lo define no se ha corrido, o hay error de mayúsculas o acentos |
@@ -247,12 +243,11 @@ ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
 | Los acentos salen como `Ã±` | Usa `read_csv()`, no `read.csv()` |
 | `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
 
-::: {.nota}
-El último es el más frecuente. R señala **dónde se dio cuenta** del problema, que
-casi nunca es **dónde está**: suele estar en la línea anterior. Mira hacia arriba.
-:::
+Con `unexpected symbol`, R señala **dónde se dio cuenta** del problema, que casi
+nunca es **dónde está**: suele estar en la línea anterior.
 
-Más detalle en [Cómo trabajamos](computo.qmd).
+El procedimiento completo para resolver errores está en
+[Cómo trabajamos](computo.qmd).
 
 ## Para ir más allá
 
@@ -265,6 +260,6 @@ transformación de datos, importación y comunicación de resultados. El mapeo d
 capítulos por unidad está en [Recursos](../recursos/index.qmd).
 
 **[ggplot2: Elegant Graphics for Data Analysis, 3ª edición](https://ggplot2-book.org/)**
-· Wickham, Navarro y Pedersen. La referencia completa de `ggplot2`. Ve aquí
-cuando quieras controlar un detalle de una gráfica que R4DS no cubre: escalas,
-temas, anotaciones, posición de leyendas.
+· Wickham, Navarro y Pedersen. La referencia completa de `ggplot2`. Cubre el
+nivel de detalle que R4DS no alcanza: escalas, temas, anotaciones y posición de
+leyendas.

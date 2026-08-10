@@ -21,8 +21,8 @@ El curso recorre el temario en el orden en que ocurre un análisis real:
 
 | | Unidad | Idea | Sesiones |
 |:--:|---|---|:--:|
-| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo entre manos | 4 |
-| 2 | **Ver los datos** | Antes de resumir una variable, hay que verla completa | 5 |
+| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y con qué datos | 4 |
+| 2 | **Ver los datos** | Una variable se resume después de verla completa | 5 |
 | 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde | 9 |
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió | 5 |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve | 7 |
