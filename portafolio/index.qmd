@@ -1,49 +1,89 @@
 ---
 title: "Portafolio de carrera"
-subtitle: "Una serie de datos, dieciséis semanas, tu carrera"
+subtitle: "Tu cuaderno del semestre, publicado"
 lang: es
 ---
 
-## La idea
+## Qué es
 
-En clase todos analizamos los mismos datos. Fuera de clase, **cada quien analiza
-los suyos**.
+El portafolio es **el cuaderno de Colab con el que trabajas todo el semestre**,
+publicado en tu repositorio de GitHub.
 
-Eliges una serie del [catálogo](../datos/catalogo.qmd) en las primeras dos
-semanas y le aplicas cada técnica que se ve en clase, en la semana en que se ve.
-Al final del semestre tienes un documento que recorre todo el programa sobre
-datos que te importan, en el lenguaje de tu carrera.
+No hay un entregable aparte que se arma al final. El cuaderno crece sesión a
+sesión, y al cierre del semestre esa misma libreta es el trabajo que entregas.
 
-## Por qué así y no con ejercicios sueltos
+En clase todos analizamos los mismos datos. Fuera de clase, cada quien analiza
+**su serie**: la eliges del [catálogo](../datos/catalogo.qmd) en las primeras dos
+semanas y le aplicas cada técnica en la semana en que se ve.
 
-Tres razones, y vale la pena que las entiendas porque explican cómo se califica.
+## Por qué así
 
-**Porque los grupos son mixtos.** En este salón hay gente de Mercadotecnia, de
+**Los grupos son mixtos.** En este salón hay gente de Mercadotecnia, de
 Administración, de Finanzas y de Negocios Internacionales. Un caso diseñado para
 un perfil le habla a la cuarta parte del salón.
 
-**Porque la técnica se entiende cuando la transfieres.** Calcular un coeficiente
-de variación sobre los datos del profesor demuestra que sabes teclear. Calcularlo
-sobre una serie que tú elegiste, y explicar por qué ese número tiene o no
-sentido para *esa* serie, demuestra otra cosa.
+**La técnica se entiende cuando la transfieres.** Calcular un coeficiente de
+variación sobre una serie que tú elegiste, y explicar por qué ese número tiene o
+no sentido para *esa* serie, exige entender qué mide.
 
-**Porque la mezcla es el mejor material de discusión que tenemos.** Cuando
-lleguemos a asimetría, alguien va a traer una serie de rendimientos accionarios
-casi simétrica y alguien más una de exportaciones por destino brutalmente
-sesgada. Esa comparación se hace con datos que ustedes trajeron.
+**La mezcla es material de discusión.** Cuando lleguemos a asimetría, alguien va
+a traer una serie de rendimientos casi simétrica y alguien más una de
+exportaciones por destino muy sesgada. Esa comparación se hace con datos que
+ustedes trajeron.
 
-## Cómo se arma
+## Cómo crece
 
-El portafolio crece por capas. Cada bloque agrega una sección; no se reescribe
-lo anterior.
+Una sección por unidad. Lo anterior se conserva.
 
-| Después del bloque | Agregas |
+| Después de la unidad | Agregas |
 |---|---|
-| 1 · Definición y clasificación | Ficha de la fuente. Unidad de observación. Escala de medición de cada variable |
-| 2 · Estadísticos descriptivos | Posición, tendencia central, dispersión y forma de tu serie, cada una interpretada además de calculada |
-| 3 · Representación | Tabla de frecuencias y las gráficas que tu tipo de variable admite |
-| 4 · Probabilidad | Un evento relevante de tu dominio, formalizado y con su probabilidad estimada |
-| 5 · Distribuciones | ¿Tu variable se parece a alguna distribución conocida? Argumenta a favor y en contra |
+| 1 · La pregunta y los datos | Ficha de la fuente, unidad de observación, escala de medición de cada variable, y las cuatro preguntas contestadas |
+| 2 · Ver los datos | Tabla de frecuencias, las gráficas que tu tipo de variable admite, y qué hiciste con los datos faltantes |
+| 3 · Resumir y comparar | Posición, centro, dispersión y forma, cada una interpretada; comparación entre al menos dos grupos |
+| 4 · Anticipar | Un evento relevante de tu dominio, formalizado, con su probabilidad estimada |
+| 5 · Modelar | ¿Tu variable se parece a alguna distribución conocida? Argumento a favor y en contra |
+
+## Dónde vive
+
+Tu cuaderno se publica en **GitHub**, desde Colab, sin instalar nada y sin usar
+la terminal.
+
+### Lo que necesitas, una sola vez
+
+1. Una cuenta en <https://github.com>
+2. Un repositorio nuevo, público, llamado `analisis-datos-i`
+
+Los dos son formularios web. Lo montamos en la sesión 4, cuando ya tengas la
+primera sección escrita.
+
+### Cada vez que avances
+
+En Colab: **Archivo → Guardar una copia en GitHub**. Eliges tu repositorio,
+escribes un mensaje que diga qué agregaste, y aceptas.
+
+GitHub muestra los cuadernos ya formateados, con sus gráficas y resultados, así
+que la liga de tu repositorio es la entrega.
+
+::: {.a-mano}
+El mensaje del commit describe **qué cambió**, en pocas palabras.
+
+`Agrego tabla de frecuencias y gráfica de barras` sirve. `cambios`, `avance` y
+`v2` no dicen nada dentro de tres semanas.
+:::
+
+### Lo que te queda
+
+Al final del semestre tienes una liga pública con tu análisis completo sobre
+datos reales de tu área. Sirve para una entrevista.
+
+Y llegas a Análisis de Datos II con cuenta de GitHub y un repositorio propio, que
+es donde arranca esa materia con Positron.
+
+::: {.callout-important}
+Tu repositorio es público. Antes de subir algo, revisa que no contenga datos de
+personas identificables ni información que no puedas compartir. Si tu serie los
+tiene, habla conmigo: casi siempre existe una versión agregada que sirve igual.
+:::
 
 ## Qué se evalúa
 
@@ -53,11 +93,11 @@ En orden de peso:
    número **para tu serie**, con sus unidades y su contexto.
 2. **Los límites.** Cada sección cierra diciendo hasta dónde llegan los datos.
    Una sección sin límites está incompleta, aunque los cálculos estén perfectos.
-3. **La coherencia acumulada.** Si en el bloque 2 dijiste que tu variable es
-   fuertemente asimétrica y en el bloque 5 la modelas como normal sin comentarlo,
-   eso es una contradicción y cuenta como error.
-4. **La reproducibilidad.** Tu código corre de principio a fin en una sesión
-   limpia de R.
+3. **La coherencia acumulada.** Si en la unidad 3 dijiste que tu variable es
+   fuertemente asimétrica y en la unidad 5 la modelas como normal sin comentarlo,
+   eso cuenta como error.
+4. **La reproducibilidad.** Tu cuaderno corre de principio a fin con
+   *Entorno de ejecución → Reiniciar y ejecutar todo*.
 5. **El cálculo.** Es un requisito de entrada.
 
 ::: {.no-dice}
@@ -65,26 +105,28 @@ Veinte gráficas impecables sin una frase que diga qué significan no aprueban.
 Producir la gráfica es la parte que ya no es escasa.
 :::
 
+## Requisitos técnicos
+
+**El cuaderno se basta solo.** Empieza descargando sus propios datos desde la
+fuente o desde tu repositorio, y corre completo en una sesión limpia de Colab.
+La máquina virtual se reinicia cada vez, así que el cuaderno tiene que traer su
+dato de origen en cada ejecución. Es la
+[regla del flujo completo](../curso/convenciones.qmd) aplicada por el entorno.
+
+**Sin rutas de tu computadora.** Nada de `C:/Users/...` ni de archivos que solo
+existen en tu Drive personal.
+
+**Código comentado en español**, siguiendo las
+[convenciones](../curso/convenciones.qmd).
+
+**Cita de la fuente** conforme a su licencia.
+
 ## Uso de IA
 
 Permitido y regulado. Las reglas completas están en
 [Postura sobre IA](../curso/postura-ia.qmd). El resumen:
 
 - Puedes usarla para escribir y depurar código.
-- Debes declararla, con lo que preguntaste y qué hiciste con la respuesta.
-- No puedes usarla para redactar las interpretaciones ni los límites: es
-  exactamente lo que se está evaluando.
-- Eres responsable de todo lo que entregues, incluido lo que no revisaste.
-
-## Requisitos técnicos
-
-- Documento Quarto (`.qmd`) que renderiza a HTML o PDF sin errores.
-- Los datos van en una carpeta `datos/` junto al documento. Nada de rutas
-  absolutas ni de `setwd()`.
-- Código comentado en español.
-- Cita de la fuente conforme a su licencia.
-
-::: {.callout-important}
-Si tu serie contiene datos de personas identificables, no la subas. Habla
-conmigo antes: casi siempre existe una versión agregada que sirve igual.
-:::
+- La declaras, con lo que preguntaste y qué hiciste con la respuesta.
+- Las interpretaciones y los límites los redactas tú: es lo que se evalúa.
+- Respondes por todo lo que entregues, incluido lo que no revisaste.

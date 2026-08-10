@@ -19,6 +19,8 @@ sesión, sin haber configurado nada antes.
 
 1. Una **cuenta de Google** (la institucional sirve).
 2. Un navegador.
+3. Una **cuenta de GitHub**, gratuita, para publicar tu portafolio. La creamos
+   en la sesión 4; puedes adelantarte en <https://github.com>.
 
 Comprueba que puedes abrir <https://colab.research.google.com> antes de la
 primera sesión. Si abre, estás listo.

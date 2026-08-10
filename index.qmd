@@ -45,7 +45,7 @@ tienda y el estado.
 
 **Fuera de clase, tu serie.** Cada quien adopta una serie de datos reales del
 [catálogo](datos/catalogo.qmd), elegida según su carrera, y le aplica cada
-técnica que se ve en clase. Al final del semestre eso es tu
+técnica que se ve en clase. Ese cuaderno, publicado en tu repositorio de GitHub, es tu
 [portafolio](portafolio/index.qmd).
 
 Los grupos son mixtos entre carreras. Comparar cómo se distribuye una serie de
@@ -68,7 +68,7 @@ falta para responder una pregunta estadística. Ver
 | 1 | [Presentación del curso: ¿qué es la estadística?](slides/u1/s01_que_es_la_estadistica.qmd) | | 1.1 |
 | 2 | Tu primer análisis: el cuaderno y los datos | correr código, `read_csv` | 1.1 |
 | 3 | Población y muestra | `nrow`, `slice_sample` | 1.2 |
-| 4 | Variables, escalas y la rutina de las cuatro preguntas | `glimpse`, `factor` | 1.3 |
+| 4 | Variables, escalas y las cuatro preguntas; se monta el repositorio | `glimpse`, `factor` | 1.3 |
 | | **Unidad 2 · Ver los datos** | | |
 | 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
 | 6 | Variables categóricas: la gráfica de barras | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
