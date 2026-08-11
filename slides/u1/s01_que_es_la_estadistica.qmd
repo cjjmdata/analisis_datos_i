@@ -61,10 +61,10 @@ Al terminar esta sesión vas a poder:
 
 1. **Enunciar** el objetivo de la estadística y el tipo de decisiones que apoya.
 2. **Ubicar** a la estadística dentro del proceso completo de análisis de datos.
-3. **Distinguir** la rama descriptiva de la inferencial, y clasificar una
-   pregunta concreta en una de las dos.
-4. **Justificar** por qué la rama la determina la pregunta y no el tamaño de los
-   datos.
+3. **Clasificar** una pregunta concreta según la rama que exige, y reconocer
+   cuándo no corresponde a ninguna de las dos.
+4. **Justificar** por qué la rama depende del alcance de la conclusión y del
+   diseño con que se obtuvieron los datos, y no de su tamaño.
 
 ::: {style="font-size:0.6em; color:#6C7A7B;"}
 Programa MAT1409 · 1.1 Objetivo y ramas de la estadística
@@ -316,53 +316,6 @@ analizar datos**, y para **tomar decisiones** cuando la información es incomple
 La primera parte describe los datos observados. La segunda permite afirmar algo
 sobre lo que no se observó.
 
-## Qué preguntas responde {.smaller}
-
-::: {.friccion}
-Cuatro preguntas reales. ¿Cuáles se pueden contestar con los datos que ya se
-tienen, y cuáles exigen concluir sobre algo que no se midió?
-:::
-
-. . .
-
-| Pregunta | Qué exige |
-|---|---|
-| ¿Este medicamento nuevo funciona mejor que el actual? | Concluir sobre pacientes futuros |
-| ¿Los términos de búsqueda anticipan una temporada de gripe? | Concluir sobre la población |
-| ¿Qué tan confiable es la encuesta más reciente? | Concluir a partir de 1,200 entrevistas |
-| ¿Qué película recomendarle a este usuario? | Describir su historial y el de usuarios parecidos |
-
-. . .
-
-Las tres primeras necesitan **inferencia**. La cuarta se resuelve describiendo lo
-observado.
-
-## Cuando el modelo deja de funcionar {.smaller}
-
-Google Flu Trends estimaba la incidencia de gripe a partir de términos de
-búsqueda. Publicado en 2009, funcionó durante varias temporadas.
-
-. . .
-
-En la temporada 2012-2013 **sobreestimó los casos al doble** de lo que reportaron
-los Centros para el Control de Enfermedades. El servicio se descontinuó en 2015.
-
-. . .
-
-::: {.no-dice}
-Lazer y colegas analizaron el fallo. Entre las causas: el modelo se ajustó a
-correlaciones de búsqueda que cambiaron con el tiempo, y el propio buscador
-modificó sus sugerencias, alterando lo que la gente tecleaba.
-
-Un modelo que funciona con los datos de ayer puede dejar de funcionar cuando el
-fenómeno que mide cambia.
-:::
-
-::: {style="font-size:0.5em; color:#6C7A7B;"}
-Lazer, D., Kennedy, R., King, G. y Vespignani, A. (2014). The Parable of Google
-Flu: Traps in Big Data Analysis. *Science*, 343(6176), 1203-1205.
-:::
-
 ## Las dos ramas {.smaller}
 
 ::::{.columns}
@@ -418,11 +371,136 @@ ejercicio pasa a ser inferencia. El mes siguiente no es una muestra aleatoria de
 mes registrado.
 
 ::: {.no-dice}
-La rama la determina la **pregunta**, no el tamaño de los datos.
+La rama la determina el **alcance de la conclusión**, no el tamaño de los datos.
 
 Millones de registros siguen siendo descriptiva si el análisis se limita a
 describirlos. Treinta observaciones ya son inferencia si la conclusión habla de
 algo que no se midió.
+:::
+
+## Qué preguntas responde {.smaller}
+
+::: {.friccion}
+Cuatro preguntas reales. ¿Cuáles se contestan describiendo los datos que ya se
+tienen, y cuáles exigen concluir sobre algo que no se midió?
+:::
+
+. . .
+
+1. ¿Este medicamento nuevo funciona mejor que el actual?
+2. ¿Los términos de búsqueda anticipan una temporada de gripe?
+3. ¿Qué tan confiable es la encuesta más reciente?
+4. ¿Qué película recomendarle a este usuario?
+
+. . .
+
+::: {.nota}
+Ninguna de las cuatro se clasifica con solo leerla. La respuesta depende de
+**sobre quién se quiere concluir** y de **cómo se obtuvieron los datos**.
+
+Las dos láminas siguientes trabajan la 3 y la 4.
+:::
+
+## La encuesta: las mismas 1,200 entrevistas {.smaller}
+
+Un medio publica una encuesta con 1,200 entrevistas y un margen de error de
+±2.8%.
+
+::: {.friccion}
+¿Sobre quién puede concluir?
+:::
+
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+**Con muestreo probabilístico**
+
+Cada persona de la población tuvo una probabilidad conocida y mayor que cero de
+ser seleccionada.
+
+El error de muestreo se puede calcular y la conclusión se extiende a la
+población: **inferencia**.
+:::
+
+:::{.column width="50%"}
+**Sin muestreo probabilístico**
+
+Panel en línea, cuotas sin selección aleatoria, intercepción en la calle.
+
+Los resultados describen a las 1,200 personas que contestaron. Extenderlos exige
+supuestos que el diseño no respalda: **descriptiva**.
+:::
+
+::::
+
+. . .
+
+::: {.no-dice}
+El margen de error se calcula suponiendo muestreo probabilístico. Publicarlo sin
+ese diseño da una cifra sin sustento.
+
+El término "confiable" agrupa además dos propiedades distintas: la
+**precisión**, que es lo único que cuantifica el margen de error, y el **sesgo**
+de cobertura, de no respuesta y de medición, que el margen de error no detecta.
+:::
+
+## Describir, inferir, predecir {.smaller}
+
+| | Qué hace | Alcance de la conclusión |
+|---|---|---|
+| **Describir** | Resume lo observado | El conjunto que se midió |
+| **Inferir** | Extiende de la muestra a la población | La población |
+| **Predecir** | Estima un valor que todavía no se observa | Una unidad individual |
+
+. . .
+
+Recomendar una película es **predecir**: estimar si a este usuario le va a gustar
+un título que todavía no ha visto. El historial entra como insumo del modelo, y
+el resultado es una estimación sobre una película ausente de ese historial.
+
+. . .
+
+::: {.nota}
+Los sistemas de recomendación cruzan el historial del usuario con el de usuarios
+de comportamiento parecido, que es la familia del **filtrado colaborativo**. Los
+sistemas actuales suman otros modelos, entre ellos ensambles de árboles de
+decisión como **Random Forest** (Breiman, 2001) y redes neuronales. Netflix no
+publica la configuración que usa hoy.
+
+Este curso cubre **describir**, y la probabilidad sobre la que se apoyan los
+otros dos verbos. **Inferir** es Análisis de Datos II.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Breiman, L. (2001). Random Forests. *Machine Learning*, 45(1), 5-32.
+:::
+
+## Cuando el modelo deja de funcionar {.smaller}
+
+Google Flu Trends estimaba la incidencia de gripe a partir de términos de
+búsqueda. Publicado en 2009, funcionó durante varias temporadas.
+
+. . .
+
+En la temporada 2012-2013 **sobreestimó los casos al doble** de lo que reportaron
+los Centros para el Control de Enfermedades. El servicio se descontinuó en 2015.
+
+. . .
+
+::: {.no-dice}
+Lazer y colegas analizaron el fallo. Entre las causas: el modelo se ajustó a
+correlaciones de búsqueda que cambiaron con el tiempo, y el propio buscador
+modificó sus sugerencias, alterando lo que la gente tecleaba.
+
+Un modelo que funciona con los datos de ayer puede dejar de funcionar cuando el
+fenómeno que mide cambia.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Lazer, D., Kennedy, R., King, G. y Vespignani, A. (2014). The Parable of Google
+Flu: Traps in Big Data Analysis. *Science*, 343(6176), 1203-1205.
 :::
 
 # Cómo trabaja el curso {background-color="#24494C"}
