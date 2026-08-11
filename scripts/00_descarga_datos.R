@@ -71,7 +71,7 @@ anio_max <- 2025
 #  - La pausa entre peticiones no es cortesía: sin ella la API estrangula la
 #    ráfaga y devuelve series vacías. Sin reintentos se perdieron 4 países y
 #    el 64% de una serie, y el archivo resultante parecía correcto.
-bajar_serie <- function(iso, codigo, intentos = 3) {
+bajar_serie <- function(iso, codigo, intentos = 4) {
   url <- sprintf(
     paste0("https://api.worldbank.org/v2/country/%s/indicator/%s",
            "?format=json&per_page=500&date=%d:%d"),
@@ -93,7 +93,11 @@ bajar_serie <- function(iso, codigo, intentos = 3) {
         ) |> filter(!is.na(valor)))
       }
     }
-    Sys.sleep(intento)
+    # Backoff de 5 s, 10 s, 15 s. Cuando la API estrangula, la espera se mide en
+    # segundos: reintentar al segundo cae en el mismo bloqueo. Medido: en ráfaga
+    # sin pausa, las primeras 11 peticiones tardan 0.14 s y a partir de la
+    # doceava suben a 20 s o expiran.
+    Sys.sleep(5 * intento)
   }
 
   NULL  # agotados los intentos; el llamador lo detecta

@@ -32,23 +32,19 @@ library(knitr)
 # Todas las cifras de esta sesión salen de aquí.
 paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
 
-# La columna en dólares se deriva de tres indicadores publicados:
-# NE.EXP.GNFS.ZS (% del PIB), NY.GDP.PCAP.CD y SP.POP.TOTL.
-#
-# Se verificó contra NE.EXP.GNFS.CD, que es el mismo concepto publicado por el
-# Banco Mundial: coinciden en el orden de 1e-13. Conviene bajar ese indicador
-# directo para que la cifra sea contrastable sin rehacer el cálculo; está ya en
-# scripts/00_descarga_datos.R y entra en el próximo snapshot.
+# Las dos columnas son indicadores publicados, no derivados: NE.EXP.GNFS.ZS
+# (% del PIB) y NE.EXP.GNFS.CD (US$ corrientes). Un valor publicado se contrasta
+# contra la web del Banco Mundial; uno calculado obliga a rehacer la cuenta.
 #
 # El último año con dato no es el mismo en los cuatro países, así que la tabla
 # lo declara por fila en vez de anunciar un año único al pie.
 comparacion <- paises |>
   filter(pais %in% c("México", "China", "Estados Unidos", "Brasil"),
-         !is.na(exportaciones_pc), !is.na(pib_per_capita), !is.na(poblacion)) |>
+         !is.na(exportaciones_pc), !is.na(exportaciones_usd)) |>
   group_by(pais) |>
   filter(anio == max(anio)) |>
   ungroup() |>
-  mutate(exp_bdd = pib_per_capita * poblacion / 1e12 * exportaciones_pc / 100) |>
+  mutate(exp_bdd = exportaciones_usd / 1e12) |>   # billones de USD
   arrange(desc(exportaciones_pc))
 
 val <- function(p, col) comparacion[[col]][comparacion$pais == p]
@@ -108,8 +104,8 @@ México.
 :::
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}
-Banco Mundial, indicadores `NE.EXP.GNFS.ZS`, `NY.GDP.PCAP.CD` y `SP.POP.TOTL`.
-Último año disponible por país, que no coincide entre ellos.
+Banco Mundial, indicadores `NE.EXP.GNFS.ZS` y `NE.EXP.GNFS.CD`. Último año
+disponible por país, que no coincide entre ellos.
 :::
 
 ## Cada columna responde una pregunta distinta {.smaller}
