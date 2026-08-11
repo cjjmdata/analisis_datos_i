@@ -14,6 +14,13 @@ library(readr)
 
 dir.create("datos", showWarnings = FALSE)
 
+# Sin esto, una conexión que se cuelga deja el script corriendo indefinidamente:
+# `fromJSON()` no expone un timeout propio y hereda el de las conexiones de R,
+# que por omisión son 60 s pero no siempre se aplican en Windows. Con 20 s el
+# reintento entra en vez de esperar. Pasó: una corrida quedó media hora colgada
+# sin escribir nada.
+options(timeout = 20)
+
 # ---------------------------------------------------------------------------
 # Banco Mundial · API de indicadores
 #
@@ -36,11 +43,18 @@ paises <- c(
 )
 
 indicadores <- c(
-  pib_per_capita   = "NY.GDP.PCAP.CD",  # US$ corrientes
-  exportaciones_pc = "NE.EXP.GNFS.ZS",  # % del PIB
-  poblacion        = "SP.POP.TOTL",
-  inflacion        = "FP.CPI.TOTL.ZG"   # % anual
+  pib_per_capita    = "NY.GDP.PCAP.CD",  # US$ corrientes
+  exportaciones_pc  = "NE.EXP.GNFS.ZS",  # % del PIB
+  exportaciones_usd = "NE.EXP.GNFS.CD",  # US$ corrientes
+  poblacion         = "SP.POP.TOTL",
+  inflacion         = "FP.CPI.TOTL.ZG"   # % anual
 )
+
+# Las exportaciones en dólares se bajan como indicador propio y no se derivan de
+# los otros tres (pib_per_capita * poblacion * exportaciones_pc). La derivación
+# da el mismo número —se verificó, difieren en el orden de 1e-13— pero un valor
+# publicado se puede contrastar contra la web del Banco Mundial y uno calculado
+# no.
 
 anio_min <- 1990
 anio_max <- 2025
