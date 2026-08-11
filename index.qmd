@@ -36,7 +36,7 @@ corre hacia la cola larga.
 El programa oficial se cubre completo. El mapeo punto por punto está en
 [Programa y cobertura](curso/programa.qmd).
 
-## Cómo funciona el curso
+## Cómo funciona el curso {.rojo}
 
 **En clase, todos los mismos datos.** En la primera sesión el grupo se
 auto-encuesta: ustedes son la población. A partir de la unidad 2 entra
