@@ -316,6 +316,38 @@ analizar datos**, y para **tomar decisiones** cuando la información es incomple
 La primera parte describe los datos observados. La segunda permite afirmar algo
 sobre lo que no se observó.
 
+## Tres cifras de todos los días {.smaller}
+
+::: {.friccion}
+El colesterol de un análisis clínico, el rating de un programa de televisión y la
+tasa de desocupación que publica el INEGI. ¿Qué tienen en común?
+:::
+
+. . .
+
+| Cifra | Sobre qué se calcula |
+|---|---|
+| Colesterol | Unos mililitros, de los cinco litros de sangre del cuerpo |
+| Rating de televisión | Los hogares con medidor, de todos los que tienen televisión |
+| Tasa de desocupación | Las viviendas que visita la ENOE, de todas las del país |
+
+. . .
+
+Ninguna se mide sobre el total. Las tres se calculan sobre una **parte** y se
+usan para decidir sobre el **todo**.
+
+::: {.nota}
+El INEGI describe el diseño de la ENOE como "probabilístico, por lo cual los
+resultados obtenidos de la encuesta se generalizan a toda la población".
+
+La generalización se sostiene en cómo se eligió la parte.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Los tres ejemplos son de Sosa Escudero (2022). Definición del diseño: INEGI,
+*ENOE N. Diseño muestral*, 2021.
+:::
+
 ## Las dos ramas {.smaller}
 
 ::::{.columns}
@@ -398,7 +430,7 @@ tienen, y cuáles exigen concluir sobre algo que no se midió?
 Ninguna de las cuatro se clasifica con solo leerla. La respuesta depende de
 **sobre quién se quiere concluir** y de **cómo se obtuvieron los datos**.
 
-Las dos láminas siguientes trabajan la 3 y la 4.
+Las láminas que siguen trabajan la 3 y la 4.
 :::
 
 ## La encuesta: las mismas 1,200 entrevistas {.smaller}
@@ -446,6 +478,81 @@ El término "confiable" agrupa además dos propiedades distintas: la
 de cobertura, de no respuesta y de medición, que el margen de error no detecta.
 :::
 
+## Dos millones de respuestas {.smaller}
+
+Estados Unidos, 1936. La revista *Literary Digest* había acertado el ganador de
+las cinco elecciones presidenciales anteriores. Envió más de **10 millones** de
+boletas y recibió más de **2.3 millones** de respuestas.
+
+::: {.friccion}
+Con ese número de respuestas, ¿qué tanto se puede equivocar?
+:::
+
+. . .
+
+| | Landon | Roosevelt |
+|---|:--:|:--:|
+| Pronóstico de la revista | **55 %** | 41 % |
+| Resultado de la elección | 37 % | **61 %** |
+
+. . .
+
+::: {.no-dice}
+A 2.3 millones de respuestas le corresponde un margen de error por muestreo de
+±0.06 puntos. El error sobre el voto de Roosevelt fue de **20 puntos**, unas
+trescientas veces esa cifra.
+
+Ese margen mide el azar de la selección. No mide a quién se le preguntó ni quién
+decidió contestar.
+:::
+
+## Por qué falló {.smaller}
+
+Squire reconstruyó el caso con una encuesta de Gallup de 1937 que preguntó quién
+había recibido la boleta y quién la había devuelto.
+
+| Grupo | Roosevelt | Landon |
+|---|:--:|:--:|
+| Recibieron la boleta | 55 % | 44 % |
+| **La devolvieron** | 48 % | **51 %** |
+| No la devolvieron | 69 % | 30 % |
+
+. . .
+
+::: {.no-dice}
+Las boletas salieron de registros de automóviles y directorios telefónicos, un
+marco sesgado hacia los hogares con más ingreso. Aun así, entre quienes las
+recibieron Roosevelt iba adelante: ese sesgo por sí solo no explica el error.
+
+Contestó menos del 25%, y quienes contestaron favorecían a Landon. El pronóstico
+lo produjeron los dos sesgos juntos.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Squire, P. (1988). Why the 1936 Literary Digest Poll Failed. *Public Opinion
+Quarterly*, 52(1), 125-133.
+:::
+
+## Tres mil contra dos millones {.smaller}
+
+Gallup replicó el procedimiento de la revista con una muestra de **3 000
+personas**, y anticipó lo que diría la encuesta de 2.3 millones antes de que se
+publicara.
+
+. . .
+
+::: {.no-dice}
+Con 3 000 casos bien seleccionados se puede reproducir el resultado de un
+levantamiento casi ochocientas veces más grande, incluidos sus errores.
+
+Agregar respuestas reduce el azar de la selección. No corrige un marco que deja
+gente fuera ni una no respuesta que no es pareja entre grupos.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Squire (1988), nota 3, citando a Freedman, Pisani y Purves (1978), p. 303.
+:::
+
 ## Describir, inferir, predecir {.smaller}
 
 | | Qué hace | Alcance de la conclusión |
@@ -482,6 +589,12 @@ Breiman, L. (2001). Random Forests. *Machine Learning*, 45(1), 5-32.
 Google Flu Trends estimaba la incidencia de gripe a partir de términos de
 búsqueda. Publicado en 2009, funcionó durante varias temporadas.
 
+::: {.nota}
+El modelo se ajustó con **128 semanas de datos por región**, eligiendo entre 50
+millones de consultas candidatas. Google evaluó 450 millones de modelos y se
+quedó con las 45 consultas de mayor correlación.
+:::
+
 . . .
 
 En la temporada 2012-2013 **sobreestimó los casos al doble** de lo que reportaron
@@ -495,12 +608,16 @@ correlaciones de búsqueda que cambiaron con el tiempo, y el propio buscador
 modificó sus sugerencias, alterando lo que la gente tecleaba.
 
 Un modelo que funciona con los datos de ayer puede dejar de funcionar cuando el
-fenómeno que mide cambia.
+fenómeno que mide cambia. En la formulación de Box, todos los modelos están
+equivocados y algunos son útiles; la pregunta operativa es bajo qué condiciones.
 :::
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}
-Lazer, D., Kennedy, R., King, G. y Vespignani, A. (2014). The Parable of Google
-Flu: Traps in Big Data Analysis. *Science*, 343(6176), 1203-1205.
+Ginsberg, J. *et al.* (2009). Detecting influenza epidemics using search engine
+query data. *Nature*, 457, 1012-1014. · Lazer, D., Kennedy, R., King, G. y
+Vespignani, A. (2014). The Parable of Google Flu: Traps in Big Data Analysis.
+*Science*, 343(6176), 1203-1205. · Box, G. E. P. (1979). Robustness in the
+strategy of scientific model building.
 :::
 
 # Cómo trabaja el curso {background-color="#24494C"}

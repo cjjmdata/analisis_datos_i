@@ -61,13 +61,22 @@ las que vas a seguir usando en Análisis de Datos II.
 Textos sobre **qué significa medir** y cómo se abusa de los números. Se discuten
 en clase.
 
-- **Escudero, S. W. (2019).** *¿Cuán grande es una pizza grande? Prácticas,
-  mediciones y estándares.* En *Qué es (y qué no es) la estadística*. Siglo XXI.
-  → Unidad 1. Por qué la medición es una decisión, no un dato.
+- **Sosa Escudero, W. (2022).** *Qué (y qué no es) la estadística.* 2ª ed.
+  ampliada. Siglo XXI.
+  → Cap. 6, *¿Cuán grande es una pizza grande?*, para la unidad 1: por qué la
+  medición es una decisión y no un dato. La introducción, sobre qué tienen en
+  común el rating, el colesterol y la tasa de desempleo, se discute en la
+  sesión 1.
 
-- **Escudero, W. S. (2020).** *Sobrecensos, muestras y poblaciones.* En *El lado
-  oscuro de la econometría*. Alianza Editorial.
-  → Unidad 1, sesión 3. Población contra muestra.
+- **Sosa Escudero, W. (2019).** *Big data.* Siglo XXI.
+  → Cap. 1 para Google Flu Trends y cap. 6 para el caso *Literary Digest*, ambos
+  en la sesión 1. Cap. 4, sobre sistemas de recomendación, para la distinción
+  entre describir, inferir y predecir.
+
+- **Sosa Escudero, W. (2015).** *El lado oscuro de la econometría.* Temas Grupo
+  Editorial.
+  → *La pregunta del terror. Sobre censos, muestras y poblaciones*, p. 69, para
+  la unidad 1, sesión 3.
 
 - **Knaflic, C. N.** *Storytelling with Data.*
   → Unidad 2. Cómo se comunica un hallazgo, y cómo se distorsiona.
