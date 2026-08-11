@@ -52,6 +52,7 @@ comparacion <- ultimo |>
 val <- function(p, col) comparacion[[col]][comparacion$pais == p]
 
 razon_absoluta <- val("China", "exp_bdd") / val("México", "exp_bdd")
+anio_dato <- max(comparacion$anio)
 ```
 
 # Una pregunta para empezar {background-color="#24494C"}
@@ -61,12 +62,12 @@ razon_absoluta <- val("China", "exp_bdd") / val("México", "exp_bdd")
 Cuatro economías: **México · China · Estados Unidos · Brasil**
 
 ::: {.friccion}
-Ordénalas de mayor a menor según **cuánto exportan**.
+Ordénalas de mayor a menor según cuánto exportan.
 
 Escribe tu orden antes de avanzar.
 :::
 
-## Depende de qué preguntaste {.smaller}
+## Depende de qué se preguntó {.smaller}
 
 ```{r}
 #| label: tabla-exportaciones
@@ -81,11 +82,15 @@ comparacion |>
 ```
 
 ::: {.nota}
-Las dos columnas salen del mismo dato y dan órdenes distintos.
+Las dos columnas provienen del mismo dato y producen órdenes distintos.
 
 Como proporción de su economía, México exporta casi el doble que China. En
 dólares, China exporta **`r sprintf("%.1f", razon_absoluta)` veces más** que
 México.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Banco Mundial, datos de `r anio_dato`.
 :::
 
 ## Cada columna responde una pregunta distinta {.smaller}
@@ -111,25 +116,25 @@ China: enorme. México: modesto.
 ::::
 
 ::: {.no-dice}
-Decir *"México exporta más que China"* sin decir respecto a qué es una frase que
-se puede defender o demoler según convenga.
+La afirmación *"México exporta más que China"* admite defensa o refutación según
+el denominador que se elija, y ninguna de las dos columnas lo declara por sí
+sola.
 
-El número está bien. El problema es de quien elige el denominador y se lo calla.
+Los dos números son correctos. La omisión está en no decir respecto a qué.
 :::
 
-## Lo que hicimos {.smaller}
+## Los tres pasos {.smaller}
 
-1. **Medir bien.** Elegir qué magnitud responde la pregunta, y respecto a qué.
-   Ahí empiezan casi todos los errores caros.
+1. **Medir.** Elegir qué magnitud responde la pregunta, y respecto a qué.
 2. **Calcular.** Una división.
 3. **Interpretar y acotar.** Qué implica el número y qué queda fuera de su
    alcance.
 
 ::: {.nota}
-La aritmética era de secundaria. Lo difícil fue saber qué había que calcular y
-hasta dónde llega la respuesta.
+La aritmética del ejemplo es de secundaria. La dificultad estuvo en determinar
+qué magnitud correspondía y hasta dónde llega la respuesta.
 
-Eso es la materia, y es la parte que no se delega.
+Esos dos pasos son el contenido de la materia.
 :::
 
 # El proceso completo {background-color="#24494C"}
@@ -151,15 +156,15 @@ Para qué sirve:
 - Fomentar la innovación
 
 ::: {.nota}
-Fíjate en la coma. Todo este curso vive ahí.
+La segunda parte de la primera línea define el alcance del curso.
 
-Un análisis deja ver cuánta incertidumbre queda. Quien ofrezca certeza está
-vendiendo otra cosa.
+Un análisis permite estimar cuánta incertidumbre queda. Un resultado presentado
+como certeza omite esa estimación.
 :::
 
 ## Las cinco etapas {.smaller}
 
-| | Etapa | Qué pasa ahí |
+| | Etapa | Qué ocurre |
 |:--:|---|---|
 | 1 | **Recopilación** | Bases de datos, archivos, APIs, web scraping, encuestas, redes sociales |
 | 2 | **Limpieza** | Errores, inconsistencias, duplicados, valores perdidos |
@@ -168,11 +173,11 @@ vendiendo otra cosa.
 | 5 | **Visualización** | Comunicar el hallazgo de forma que se entienda |
 
 ::: {.no-dice}
-Las etapas 1 a 3 se llevan la mayor parte del tiempo real de un proyecto.
+Todo entregable de este curso documenta de dónde salió el dato y qué se le hizo,
+es decir, las etapas 1 a 3.
 
-Todo lo que entregues en este curso incluye de dónde salió el dato y qué le
-hiciste. Un análisis que arranca de un archivo ya limpio, sin decir de dónde
-vino, se tiene que creer a ciegas.
+Un análisis que parte de un archivo ya limpio, sin declarar su origen, no se
+puede verificar.
 :::
 
 ## Un caso: Starbucks {.smaller}
@@ -186,7 +191,7 @@ vino, se tiene que creer a ciegas.
 - Patrones de flujo de personas
 - Proximidad de otras tiendas
 
-El modelo predice el impacto de la nueva ubicación, incluso sobre sus propias
+El modelo estima el impacto de la nueva ubicación, incluso sobre sus propias
 sucursales.
 :::
 
@@ -201,8 +206,8 @@ sucursales.
 ::::
 
 ::: {.no-dice}
-El modelo predice cuánto vendería una tienda nueva. La decisión de abrirla
-depende de la renta, del contrato, de la marca y del riesgo, que están fuera de
+El modelo estima cuánto vendería una tienda nueva. La decisión de abrirla depende
+de la renta, del contrato, de la marca y del riesgo, variables que no están en
 los datos.
 :::
 
@@ -212,33 +217,32 @@ estudiante en plataforma de curso, no publicación arbitrada; las cifras del cas
 provienen de la empresa.
 :::
 
-## Dónde entra este curso {.smaller}
+## Dónde se ubica este curso {.smaller}
 
-De las cinco etapas, este curso vive sobre todo en la **4 y la 5**, analizar y
-comunicar, con la **2** presente todo el tiempo, porque los datos reales llegan
-sucios.
+El curso trabaja sobre todo las etapas **4 y 5**, analizar y comunicar, con la
+**2** presente de forma continua.
 
 ::: {.friccion}
-¿En qué etapa crees que se cometen los errores más caros?
+¿En qué etapa se originan los errores más difíciles de corregir?
 :::
 
-Casi siempre en la **1**: recolectar el dato equivocado, o el dato correcto sobre
-la población equivocada. Ningún análisis posterior lo arregla.
+En la **1**. Un dato recolectado sobre la población equivocada, o una variable
+que no mide lo que se creía, no se corrige en ninguna etapa posterior.
 
 # De qué se trata la estadística {background-color="#24494C"}
 
 ## Definición de trabajo {.smaller}
 
-Si el análisis de datos es el proceso, la estadística es la caja de herramientas
-de las etapas 4 y 5.
+El análisis de datos es el proceso completo. La estadística aporta los métodos de
+las etapas 4 y 5.
 
 ::: {.concepto}
 La estadística es el conjunto de métodos para **recolectar, organizar, resumir y
 analizar datos**, y para **tomar decisiones** cuando la información es incompleta.
 :::
 
-Las dos mitades cuentan. La primera describe lo que tienes. La segunda te permite
-afirmar algo sobre lo que no observaste.
+La primera parte describe los datos observados. La segunda permite afirmar algo
+sobre lo que no se observó.
 
 ## Las dos ramas {.smaller}
 
@@ -247,13 +251,13 @@ afirmar algo sobre lo que no observaste.
 :::{.column width="50%"}
 ### Descriptiva
 
-Resume y presenta los datos **que tienes**.
+Resume y presenta los datos **observados**.
 
 - Estatura promedio de este salón
 - Distribución de precios en una tienda
-- La tabla que acabamos de ver
+- La tabla de exportaciones
 
-Se queda dentro de los datos observados.
+Sus conclusiones no salen del conjunto medido.
 
 **Es este curso.**
 :::
@@ -266,7 +270,7 @@ Concluye sobre una población **a partir de una muestra**.
 - Estatura promedio de la universidad, midiendo 200 alumnos
 - Intención de voto nacional, con 1,200 entrevistas
 
-Requiere probabilidad, que es la segunda mitad del semestre.
+Requiere probabilidad, contenido de la segunda mitad del semestre.
 
 **Es Análisis de Datos II.**
 :::
@@ -290,46 +294,43 @@ promedio. ¿Descriptiva o inferencial?
 
 Registró todas las ventas, así que no hay muestra. El promedio es exacto.
 
-Ahora cambia la pregunta: *¿cuál será el ticket promedio del mes que entra?*
-
-Eso ya es inferencia, y de la difícil, porque el mes que entra es el futuro, no
-una muestra aleatoria de nada.
+Con otra pregunta, *¿cuál será el ticket promedio del mes que entra?*, el
+ejercicio pasa a ser inferencia. El mes siguiente no es una muestra aleatoria del
+mes registrado.
 
 ::: {.no-dice}
-La **pregunta** determina la rama, no el tamaño de los datos.
+La rama la determina la **pregunta**, no el tamaño de los datos.
 
-Millones de registros siguen siendo descriptiva si solo describes lo que
-contienen. Y 30 observaciones ya son inferencia si pretendes hablar de algo que
-no mediste.
+Millones de registros siguen siendo descriptiva si el análisis se limita a
+describirlos. Treinta observaciones ya son inferencia si la conclusión habla de
+algo que no se midió.
 :::
 
-# Cómo vamos a trabajar {background-color="#24494C"}
+# Cómo trabaja el curso {background-color="#24494C"}
 
 ## Las cinco unidades {.smaller}
 
 | | Unidad | Idea |
 |:--:|---|---|
-| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y qué tengo |
-| 2 | **Ver** | Antes de resumir una variable, hay que verla completa |
+| 1 | **La pregunta y los datos** | Qué quiero saber, sobre quién, y con qué datos |
+| 2 | **Ver los datos** | Una variable se resume después de verla completa |
 | 3 | **Resumir y comparar** | Muchos números en pocos, sabiendo qué se pierde |
 | 4 | **Anticipar** | Razonar sobre lo que todavía no ocurrió |
 | 5 | **Modelar** | Describir una variable entera, y saber cuándo el modelo no sirve |
 
-Las gráficas van antes que las medidas de posición y de tendencia central.
-Cuando llegues a ellas ya vas a saber dibujar la distribución sobre la que se
-calculan.
+Las gráficas van antes que las medidas de posición y de tendencia central. Al
+llegar a ellas, la distribución sobre la que se calculan ya estará construida.
 
 ## Cómo se trabaja {.smaller}
 
-**Programamos en R, desde el navegador.** El curso corre en Colab y cada
-herramienta entra en la sesión donde hace falta para responder una pregunta.
+**En R, desde el navegador.** El curso corre en Colab. Cada herramienta de R
+entra en la sesión donde hace falta para responder una pregunta estadística.
 
-**Tu portafolio.** Eliges una serie de datos reales de tu carrera, de un catálogo
-que está en el sitio, y le aplicas todo lo del curso durante el semestre.
+**Con datos reales.** En clase, el levantamiento de precios de Profeco. Fuera de
+clase, una serie que cada quien elige de un catálogo, afín a su carrera.
 
-**Los grupos son mixtos entre carreras.** Comparar una serie de precios
-accionarios contra una de comercio exterior contra una de ingreso de hogares es
-una discusión que solo se puede tener con esa mezcla.
+**El portafolio es tu cuaderno.** El mismo cuaderno de Colab crece durante el
+semestre y se publica en tu repositorio de GitHub.
 
 ## Sobre la IA {.smaller}
 
@@ -345,25 +346,21 @@ Respondes por todo lo que entregues, incluido lo que no revisaste.
 Las reglas completas están en el sitio, en *Postura sobre IA*. Es lectura
 obligatoria antes de la primera entrega.
 
-## Lo que espero al final {.smaller}
+## El resultado esperado {.smaller}
 
-Que puedas tomar un análisis hecho por alguien más, una persona, un modelo o un
-consultor, y responder tres preguntas:
+Al terminar el semestre, ante un análisis hecho por alguien más, sea una persona,
+un modelo o un consultor, poder responder tres preguntas:
 
 1. ¿El cálculo corresponde a la pregunta que se decía responder?
 2. ¿Los supuestos del método se cumplen en estos datos?
 3. ¿Qué se está afirmando que los datos no sostienen?
 
-::: {.nota}
-Esa es la habilidad que sobrevive a la automatización, y la que se paga.
-:::
-
 # La encuesta del grupo {background-color="#24494C"}
 
 ## Ustedes son la población {.smaller}
 
-Los siguientes minutos levantamos nuestro propio conjunto de datos. Es el que
-vamos a usar durante las tres primeras unidades.
+En los siguientes minutos se levanta el conjunto de datos del grupo. Acompaña las
+tres primeras unidades.
 
 Se captura: **edad** en años cumplidos · **estatura** en metros · **carrera** ·
 **tiempo de traslado** en minutos · **número de zapatos**.
@@ -373,50 +370,43 @@ Se captura: **edad** en años cumplidos · **estatura** en metros · **carrera**
 
 Se levanta sin nombre y sin correo.
 
-Un dato personal que ya se recogió identificable no se puede desidentificar
-después. La única protección sólida es no recogerlo.
+Un dato personal recogido de forma identificable no se puede desidentificar
+después. La protección efectiva es no recogerlo.
 :::
 
-## Por qué nuestros propios datos {.smaller}
+## Preguntas que salen de estos datos {.smaller}
 
-::::{.columns}
+Cinco variables, cinco decisiones de medición que discutir:
 
-:::{.column width="55%"}
-Porque van a discutir con ellos.
+- Si alguien redondea su estatura hacia arriba, ¿qué le pasa al promedio del
+  grupo?
+- ¿"Años cumplidos" mide lo mismo para quien cumplió ayer y para quien cumple
+  mañana?
+- El tiempo de traslado, ¿de qué día? ¿A qué hora?
+- ¿Treinta personas describen a la universidad?
 
-Cuando salga la estatura promedio del salón, alguien va a decir *"pero yo no me
-parezco a ese número"*. Esa objeción es la unidad 3 completa.
-
-Con datos ajenos nadie objeta nada. Con los propios, todos tienen una intuición
-que defender.
+::: {.nota}
+Cuando aparezca la estatura promedio del salón, cada quien podrá contrastarla con
+la propia. Esa comparación es el contenido de la unidad 3.
 :::
 
-:::{.column width="45%"}
-También sirve para lo incómodo:
-
-- ¿Qué pasa si alguien redondea su estatura hacia arriba?
-- ¿"Años cumplidos" mide lo mismo para todos?
-- ¿30 personas describen a la universidad?
-
-Materia de las sesiones 3 y 4.
-:::
-
-::::
+Las dos primeras preguntas son materia de las sesiones 3 y 4.
 
 ## Tarea para la sesión 2 {.smaller}
 
 **Entra a Colab y deja tu cuenta lista.** <https://colab.research.google.com>
 
 ::: {.nota}
-Tu correo `@anahuac.mx` funciona con Microsoft, así que todavía no es una cuenta
-de Google.
+El correo `@anahuac.mx` opera con Microsoft, así que todavía no es una cuenta de
+Google.
 
 En <https://accounts.google.com/signup> elige **usar tu dirección de correo
-actual** en vez de crear un Gmail. Google manda un código a tu correo
-institucional y listo: tendrás Drive y Colab con tu dirección de la escuela.
+actual** en vez de crear un Gmail. Google envía un código de verificación al
+correo institucional, y con eso quedan disponibles Drive y Colab con la dirección
+de la escuela.
 
-Si aparece una pantalla pidiendo autorización de la organización, entra con
-cualquier otra cuenta de Google. Colab funciona igual.
+Si aparece una pantalla que pide autorización de la organización, entra con
+cualquier otra cuenta de Google. Colab opera igual.
 :::
 
 **Lee *Cómo trabajamos* y *Postura sobre IA*** en el sitio del curso.
