@@ -59,7 +59,8 @@ anio_dato <- max(comparacion$anio)
 
 Al terminar esta sesión vas a poder:
 
-1. **Enunciar** el objetivo de la estadística y el tipo de decisiones que apoya.
+1. **Enunciar** el objetivo de la estadística y el tipo de decisiones que apoya,
+   incluido el efecto de esas decisiones sobre los datos posteriores.
 2. **Ubicar** a la estadística dentro del proceso completo de análisis de datos.
 3. **Clasificar** una pregunta concreta según la rama que exige, y reconocer
    cuándo no corresponde a ninguna de las dos.
@@ -597,19 +598,75 @@ quedó con las 45 consultas de mayor correlación.
 
 . . .
 
-En la temporada 2012-2013 **sobreestimó los casos al doble** de lo que reportaron
-los Centros para el Control de Enfermedades. El servicio se descontinuó en 2015.
+En febrero de 2013 estimó **más del doble** de consultas médicas por síntomas de
+gripe que las que reportaron los Centros para el Control de Enfermedades. Desde
+agosto de 2011 se había pasado de alto en 100 de 108 semanas.
 
 . . .
 
 ::: {.no-dice}
-Lazer y colegas analizaron el fallo. Entre las causas: el modelo se ajustó a
-correlaciones de búsqueda que cambiaron con el tiempo, y el propio buscador
-modificó sus sugerencias, alterando lo que la gente tecleaba.
+El error no se repartía al azar: el de una semana anticipaba el de la siguiente.
+Un modelo simple con los datos del CDC rezagados dos semanas, que ya estaban
+disponibles, pronosticaba mejor que Google Flu Trends.
 
-Un modelo que funciona con los datos de ayer puede dejar de funcionar cuando el
-fenómeno que mide cambia. En la formulación de Box, todos los modelos están
-equivocados y algunos son útiles; la pregunta operativa es bajo qué condiciones.
+En la formulación de Box, todos los modelos están equivocados y algunos son
+útiles; la pregunta operativa es bajo qué condiciones deja de serlo.
+:::
+
+## Google cambió el buscador {.smaller}
+
+Lazer y colegas identificaron el mecanismo. Google modificó el servicio dos
+veces: en junio de 2011 empezó a sugerir términos adicionales de búsqueda, y en
+febrero de 2012, a devolver diagnósticos posibles ante una consulta por síntomas.
+
+. . .
+
+::: {.no-dice}
+Los autores señalan que esas modificaciones sostienen el modelo de negocio de
+Google, en parte por **ingresos publicitarios**. Las sugerencias elevan la
+frecuencia relativa de ciertas búsquedas, y el modelo estaba construido sobre
+frecuencias relativas.
+
+La conducta de búsqueda no queda determinada solo desde fuera. El proveedor del
+servicio la cultiva.
+:::
+
+::: {.nota}
+Los autores llaman a esto dinámica de **blue team**, y la distinguen de la de
+**red team**: los propios medidos alteran la señal a propósito. El ejemplo que
+dan son las campañas y las empresas que fuerzan una tendencia en redes sociales
+sabiendo que los medios las monitorean.
+:::
+
+## Medir aquello sobre lo que se decide {.smaller}
+
+::: {.friccion}
+En los casos de esta sesión, ¿qué cambia **después** de tomar la decisión?
+:::
+
+. . .
+
+| Caso | Qué cambia al decidir |
+|---|---|
+| Abrir la tienda | El flujo peatonal y las ventas de las sucursales vecinas |
+| Recomendar la película | Lo que el usuario ve, y con ello el registro de sus gustos |
+| Publicar la encuesta | La información con la que decide quien todavía no ha votado |
+
+. . .
+
+::: {.no-dice}
+Goodhart lo enunció en 1975 sobre política monetaria: toda regularidad
+estadística observada tiende a romperse cuando se la somete a presión con fines
+de control.
+
+Un patrón medido sobre un fenómeno en el que nadie interviene puede sostenerse.
+Cuando ese patrón se usa para decidir, la decisión interviene sobre el fenómeno,
+y los datos del periodo siguiente ya no son los que produjeron el patrón.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Goodhart, C. A. E. (1975). Problems of Monetary Management: The UK Experience.
+*Papers in Monetary Economics*, vol. 1. Reserve Bank of Australia.
 :::
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}

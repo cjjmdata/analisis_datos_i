@@ -84,6 +84,40 @@ en clase.
 - **Rossman, A.** *Ask Good Questions* (blog). <https://askgoodquestions.blog>
   → Todo el curso. Preguntas conceptuales de estadística introductoria.
 
+## Artículos de los casos
+
+Las fuentes originales de los casos que se discuten en clase. Se citan por sus
+cifras, no por su relato; los libros de divulgación que los recogen tienen
+erratas en los números.
+
+- **Ginsberg, J., Mohebbi, M. H., Patel, R. S., Brammer, L., Smolinski, M. S. y
+  Brilliant, L. (2009).** *Detecting influenza epidemics using search engine
+  query data.* **Nature**, 457, 1012-1014.
+  <https://www.nature.com/articles/nature07634> ·
+  [PDF de acceso libre](https://static.googleusercontent.com/media/research.google.com/en//archive/papers/detecting-influenza-epidemics.pdf)
+  → Sesión 1. El artículo que presentó Google Flu Trends. La sección *Model data*
+  es la que documenta que el modelo se ajustó con 128 semanas por región.
+
+- **Lazer, D., Kennedy, R., King, G. y Vespignani, A. (2014).** *The Parable of
+  Google Flu: Traps in Big Data Analysis.* **Science**, 343(6176), 1203-1205.
+  <https://www.science.org/doi/10.1126/science.1248506> ·
+  [copia de acceso libre](https://gking.harvard.edu/publications/parable-google-flu%C2%A0traps-big-data-analysis)
+  → Sesión 1. La autopsia del modelo. Documenta que Google modificó el buscador
+  para sugerir términos, en parte por ingresos publicitarios, y que eso alteró
+  los datos sobre los que el modelo estaba construido.
+
+- **Squire, P. (1988).** *Why the 1936 Literary Digest Poll Failed.* **Public
+  Opinion Quarterly**, 52(1), 125-133.
+  <https://academic.oup.com/poq/article-abstract/52/1/125/1878544>
+  → Sesión 1. Separa empíricamente el sesgo del marco muestral del de no
+  respuesta, con una encuesta de Gallup de 1937.
+
+- **Goodhart, C. A. E. (1975).** *Problems of Monetary Management: The UK
+  Experience.* En *Papers in Monetary Economics*, vol. 1. Reserve Bank of
+  Australia.
+  → Sesión 1. El enunciado original: toda regularidad estadística observada
+  tiende a romperse cuando se la somete a presión con fines de control.
+
 ## Manuales de consulta
 
 Para cuando necesites la definición formal o una demostración.
