@@ -170,6 +170,13 @@ table thead {
 .concepto { color: $teal-900; font-weight: 700; }
 .alerta   { color: $brick-700; font-weight: 700; }
 
+// Encabezado en rojo. Se aplica con `## Título {.rojo}`.
+// Usa el ladrillo de la paleta y no un rojo puro: #A4503C da 5.54:1 sobre
+// blanco y convive con el teal. Un #FF0000 desentona y baja el contraste.
+// El valor para modo oscuro está en estilo-oscuro.scss: este tono cae a 2.4:1
+// sobre el fondo oscuro y no se puede reutilizar.
+.rojo { color: $brick-700; }
+
 // Tabla del calendario en la portada
 // ---------------------------------------------------------------
 .calendario {
