@@ -55,6 +55,21 @@ razon_absoluta <- val("China", "exp_bdd") / val("México", "exp_bdd")
 anio_dato <- max(comparacion$anio)
 ```
 
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Enunciar** el objetivo de la estadística y el tipo de decisiones que apoya.
+2. **Ubicar** a la estadística dentro del proceso completo de análisis de datos.
+3. **Distinguir** la rama descriptiva de la inferencial, y clasificar una
+   pregunta concreta en una de las dos.
+4. **Justificar** por qué la rama la determina la pregunta y no el tamaño de los
+   datos.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 1.1 Objetivo y ramas de la estadística
+:::
+
 # Una pregunta para empezar {background-color="#24494C"}
 
 ## ¿Quién exporta más? {.smaller}
@@ -180,41 +195,98 @@ Un análisis que parte de un archivo ya limpio, sin declarar su origen, no se
 puede verificar.
 :::
 
-## Un caso: Starbucks {.smaller}
+## Caso Starbucks: dónde abrir {.smaller}
+
+Starbucks evalúa una esquina para abrir una tienda nueva.
+
+::: {.friccion}
+¿Qué datos necesitarías para decidir si conviene?
+:::
+
+. . .
 
 ::::{.columns}
 
 :::{.column width="50%"}
-**Dónde abrir una tienda**
-
-- Datos demográficos
-- Patrones de flujo de personas
-- Proximidad de otras tiendas
-
-El modelo estima el impacto de la nueva ubicación, incluso sobre sus propias
-sucursales.
+- Población que vive alrededor
+- Ingreso de esos hogares
+- Flujo peatonal por hora del día
 :::
 
 :::{.column width="50%"}
-**Marketing dirigido**
-
-- Descuentos y recompensas personalizadas
-- Recuperación de clientes inactivos
-- Impacto del clima en el consumo
+- Oficinas y escuelas cercanas
+- Distancia a otras sucursales
+- Ventas de tiendas parecidas
 :::
 
 ::::
 
+## Qué hace el modelo {.smaller}
+
+1. Toma las tiendas que **ya operan**.
+2. Para cada una, registra los atributos de su ubicación y las ventas
+   observadas.
+3. Estima la relación entre esos atributos y las ventas.
+4. Aplica esa relación a la esquina candidata.
+
+. . .
+
+::: {.nota}
+El resultado incluye la **canibalización**: cuánta venta de la tienda nueva sale
+de las sucursales vecinas en lugar de ser venta adicional.
+
+Estimar una relación entre atributos y un resultado es **regresión**, contenido
+de Análisis de Datos II.
+:::
+
+## Qué queda fuera del modelo {.smaller}
+
 ::: {.no-dice}
-El modelo estima cuánto vendería una tienda nueva. La decisión de abrirla depende
-de la renta, del contrato, de la marca y del riesgo, variables que no están en
-los datos.
+El modelo estima cuánto vendería la tienda. La decisión de abrirla depende de la
+renta, del contrato de arrendamiento, de la marca y del riesgo, variables que no
+están en los datos.
+
+El método específico que usa Starbucks no es público.
 :::
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}
 Fuente: Harvard Digital Initiative, *Starbucks: grinding data*. Entrada de
 estudiante en plataforma de curso, no publicación arbitrada; las cifras del caso
 provienen de la empresa.
+:::
+
+## Caso Starbucks: marketing dirigido {.smaller}
+
+**Marketing dirigido**: enviar una oferta distinta a cada cliente, en lugar de la
+misma promoción a todos.
+
+::: {.friccion}
+Para decidir qué oferta enviarle a cada quien, ¿qué datos harían falta?
+:::
+
+. . .
+
+::::{.columns}
+
+:::{.column width="50%"}
+- Qué compró antes, y con qué frecuencia
+- Cuánto tiempo lleva sin visitar
+- A qué hora del día suele ir
+:::
+
+:::{.column width="50%"}
+- Qué tienda visita
+- Cuánto gasta por visita
+- Clima del día
+:::
+
+::::
+
+. . .
+
+::: {.nota}
+Con esos datos, el modelo estima **para cada cliente** la probabilidad de que
+responda a cada oferta, y envía la de mayor probabilidad.
 :::
 
 ## Dónde se ubica este curso {.smaller}
@@ -243,6 +315,53 @@ analizar datos**, y para **tomar decisiones** cuando la información es incomple
 
 La primera parte describe los datos observados. La segunda permite afirmar algo
 sobre lo que no se observó.
+
+## Qué preguntas responde {.smaller}
+
+::: {.friccion}
+Cuatro preguntas reales. ¿Cuáles se pueden contestar con los datos que ya se
+tienen, y cuáles exigen concluir sobre algo que no se midió?
+:::
+
+. . .
+
+| Pregunta | Qué exige |
+|---|---|
+| ¿Este medicamento nuevo funciona mejor que el actual? | Concluir sobre pacientes futuros |
+| ¿Los términos de búsqueda anticipan una temporada de gripe? | Concluir sobre la población |
+| ¿Qué tan confiable es la encuesta más reciente? | Concluir a partir de 1,200 entrevistas |
+| ¿Qué película recomendarle a este usuario? | Describir su historial y el de usuarios parecidos |
+
+. . .
+
+Las tres primeras necesitan **inferencia**. La cuarta se resuelve describiendo lo
+observado.
+
+## Cuando el modelo deja de funcionar {.smaller}
+
+Google Flu Trends estimaba la incidencia de gripe a partir de términos de
+búsqueda. Publicado en 2009, funcionó durante varias temporadas.
+
+. . .
+
+En la temporada 2012-2013 **sobreestimó los casos al doble** de lo que reportaron
+los Centros para el Control de Enfermedades. El servicio se descontinuó en 2015.
+
+. . .
+
+::: {.no-dice}
+Lazer y colegas analizaron el fallo. Entre las causas: el modelo se ajustó a
+correlaciones de búsqueda que cambiaron con el tiempo, y el propio buscador
+modificó sus sugerencias, alterando lo que la gente tecleaba.
+
+Un modelo que funciona con los datos de ayer puede dejar de funcionar cuando el
+fenómeno que mide cambia.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Lazer, D., Kennedy, R., King, G. y Vespignani, A. (2014). The Parable of Google
+Flu: Traps in Big Data Analysis. *Science*, 343(6176), 1203-1205.
+:::
 
 ## Las dos ramas {.smaller}
 

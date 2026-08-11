@@ -295,6 +295,28 @@ Si se cambia la fuente monoespaciada, verificar que la regla siga aplicando.
 
 ## Patrón de producción de una sesión
 
+### Toda presentación abre con objetivos de aprendizaje
+
+Primera diapositiva después de la portada. Verbos observables (enunciar,
+distinguir, calcular, justificar, clasificar), tres o cuatro, y al pie el punto
+del temario que cubre la sesión.
+
+Los objetivos se derivan del punto del temario asignado a esa sesión, no de todo
+lo que la sesión toca. El contenido de apoyo sirve a los objetivos; no genera
+objetivos propios. La sesión 1 cubre 1.1, así que sus cuatro objetivos son sobre
+objetivo y ramas de la estadística, aunque la sesión también recorra las cinco
+etapas del análisis y dos casos.
+
+### Las láminas de caso van como análisis participativo
+
+La pregunta primero, la respuesta después de un `. . .` que la revela al hacer
+clic. El grupo propone antes de ver la lista.
+
+Patrón: contexto en una línea → `.friccion` con la pregunta → `. . .` → lo que
+el grupo debió proponer → qué hace el método → `.no-dice` con lo que queda fuera.
+
+
+
 Dos archivos paralelos: `slides/uN/sXX_tema.qmd` (público) y
 `analisis/sXX_tema.qmd` (notebook interno que ejecuta el análisis completo y
 produce los números reales).
