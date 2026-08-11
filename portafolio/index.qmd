@@ -105,7 +105,7 @@ Veinte gráficas impecables sin una frase que diga qué significan no aprueban.
 Producir la gráfica es la parte que ya no es escasa.
 :::
 
-## Requisitos técnicos {.rojo}
+## Requisitos técnicos
 
 **El cuaderno se basta solo.** Empieza descargando sus propios datos desde la
 fuente o desde tu repositorio, y corre completo en una sesión limpia de Colab.
