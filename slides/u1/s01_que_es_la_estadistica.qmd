@@ -707,42 +707,7 @@ un modelo o un consultor, poder responder tres preguntas:
 2. ¿Los supuestos del método se cumplen en estos datos?
 3. ¿Qué se está afirmando que los datos no sostienen?
 
-# La encuesta del grupo {background-color="#24494C"}
-
-## Ustedes son la población {.smaller}
-
-En los siguientes minutos se levanta el conjunto de datos del grupo. Acompaña las
-tres primeras unidades.
-
-Se captura: **edad** en años cumplidos · **estatura** en metros · **carrera** ·
-**tiempo de traslado** en minutos · **número de zapatos**.
-
-::: {.callout-important}
-## Anónima desde la captura
-
-Se levanta sin nombre y sin correo.
-
-Un dato personal recogido de forma identificable no se puede desidentificar
-después. La protección efectiva es no recogerlo.
-:::
-
-## Preguntas que salen de estos datos {.smaller}
-
-Cinco variables, cinco decisiones de medición que discutir:
-
-- Si alguien redondea su estatura hacia arriba, ¿qué le pasa al promedio del
-  grupo?
-- ¿"Años cumplidos" mide lo mismo para quien cumplió ayer y para quien cumple
-  mañana?
-- El tiempo de traslado, ¿de qué día? ¿A qué hora?
-- ¿Treinta personas describen a la universidad?
-
-::: {.nota}
-Cuando aparezca la estatura promedio del salón, cada quien podrá contrastarla con
-la propia. Esa comparación es el contenido de la unidad 3.
-:::
-
-Las dos primeras preguntas son materia de las sesiones 3 y 4.
+# Para la próxima sesión {background-color="#24494C"}
 
 ## Tarea para la sesión 2 {.smaller}
 
@@ -770,4 +735,5 @@ sola, concreta.
 
 **Sesión 2 · Tu primer análisis**
 
-Código real sobre datos reales.
+Se levanta la encuesta del grupo y se lee desde Colab. Código real sobre datos
+propios.

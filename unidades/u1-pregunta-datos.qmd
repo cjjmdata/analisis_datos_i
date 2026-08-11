@@ -17,7 +17,7 @@ corresponde con los datos disponibles, o sobre un grupo que no es el de interés
 | # | Tema | Programa |
 |:--:|---|:--:|
 | 1 | [Presentación del curso: ¿qué es la estadística?](../slides/u1/s01_que_es_la_estadistica.qmd) | 1.1 |
-| 2 | Tu primer análisis: el cuaderno y los datos | 1.1 |
+| 2 | Tu primer análisis: la encuesta del grupo en el cuaderno | 1.1 |
 | 3 | Población y muestra | 1.2 |
 | 4 | Variables, escalas y las cuatro preguntas; se monta el repositorio | 1.3 |
 
