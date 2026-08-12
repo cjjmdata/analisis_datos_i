@@ -25,6 +25,27 @@ Un modelo te dará una desviación estándar correcta. No te dirá que calcularl
 sobre esa variable no tenía sentido, porque no sabe de dónde salieron tus datos
 ni qué decisión vas a tomar con ellos. Eso lo sabes tú, o no lo sabe nadie.
 
+## El problema es anterior a la IA
+
+Cuando las computadoras personales pusieron el análisis estadístico al alcance de
+cualquiera, los manuales de la época ya advertían sobre esto. Salkind y Frey
+describen el patrón: quien no tiene formación suficiente toma los datos que
+tenga a la mano, los pasa por un procedimiento sofisticado y supone que el
+resultado es confiable por venir de ahí. La formulación que citan es *garbage
+in, garbage out*: si los datos de entrada no son confiables, lo que salga del
+análisis tampoco lo es.
+
+::: {.nota}
+Lo que cambió con los modelos de lenguaje es la escala y la velocidad. El
+análisis que antes exigía aprender a manejar un programa hoy se pide en una
+frase, y el requisito sobre los datos de entrada sigue siendo el mismo.
+:::
+
+::: {style="font-size:0.8em; color:#6C7A7B;"}
+Salkind, N. J. y Frey, B. B. (2019). *Statistics for People Who (Think They)
+Hate Statistics*, 7ª ed. SAGE, cap. 1.
+:::
+
 ## Reglas
 
 ### Permitido, sin declarar
