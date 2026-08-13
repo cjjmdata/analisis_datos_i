@@ -56,6 +56,58 @@ que son las funciones que aparecen en cualquier código de R que te encuentres y
 las que vas a seguir usando en Análisis de Datos II.
 :::
 
+## El otro libro en línea
+
+::: {.nota}
+**Introduction to Modern Statistics (2ª edición).** Mine Çetinkaya-Rundel y
+Johanna Hardin.
+
+<https://openintro-ims.netlify.app/> · Gratuito, en línea, en inglés.
+Licencia CC BY-SA.
+:::
+
+Misma autora que R4DS. Donde R4DS enseña **cómo se programa**, este enseña **qué
+se calcula y qué significa**, con R a la vista.
+
+Sus capítulos 1 a 6 cubren el terreno de este curso. Del 7 en adelante entra
+regresión e inferencia, que son Análisis de Datos II.
+
+| Capítulos | Cuándo | Para qué |
+|---|---|---|
+| 1 · Hello data | Unidad 1 | Observación, variable, tipos de variable |
+| 2 · Study design | Unidad 1, sesión 3 | Población y muestra, sesgos, alcance de la conclusión |
+| 4 · Exploring categorical data | Unidad 2 | Barras, tablas cruzadas, proporciones por renglón |
+| 5 · Exploring numerical data | Unidades 2 y 3 | Histograma, forma, dispersión, diagrama de caja |
+| 3 y 6 · Applications | Unidades 1 y 2 | Ejercicios resueltos con código |
+
+::: {.callout-note}
+El capítulo 5 introduce la mediana hasta su quinta sección, después de tres
+visualizaciones. Es el mismo orden de este curso: ver la distribución antes de
+resumirla.
+:::
+
+### Los datos, en un paquete de R
+
+Los conjuntos del libro están en CRAN y se instalan como cualquier otro:
+
+```r
+install.packages("openintro")
+library(openintro)
+
+data(package = "openintro")   # ver el catálogo completo
+?loans_full_schema            # documentación de un conjunto
+```
+
+Son 262 conjuntos, con una mediana de 218 filas. Sirven para **practicar una
+técnica** cuando quieras un conjunto con una propiedad concreta sin descargar
+nada.
+
+::: {.no-dice}
+No sirven para el portafolio. Son datos de Estados Unidos que llegan ya limpios,
+y el portafolio evalúa que documentes de dónde salió tu dato y qué se le hizo.
+Las fuentes del portafolio están en el [catálogo](../datos/catalogo.qmd).
+:::
+
 ## Lecturas críticas
 
 Textos sobre **qué significa medir** y cómo se abusa de los números. Se discuten

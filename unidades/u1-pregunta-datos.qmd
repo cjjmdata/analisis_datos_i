@@ -47,10 +47,32 @@ conveniencia, no necesariamente.
 **Un censo y una muestra son objetos distintos, con problemas distintos.** Los [Censos Económicos](../datos/catalogo.qmd#censos-economicos) sirven
 para ver la diferencia con datos mexicanos reales.
 
+**Hasta dónde llega una conclusión lo deciden dos cosas distintas.** Una es cómo
+se eligió a quién se midió, y decide si el resultado se puede extender a la
+población. La otra es si el investigador asignó los tratamientos o solo observó
+lo que ya ocurría, y decide si se puede afirmar que una variable causó a la otra.
+
+| | Se asignó el tratamiento | Solo se observó |
+|---|---|---|
+| **Selección aleatoria** | Se generaliza y se afirma causa | Se generaliza, sin causa |
+| **Selección no aleatoria** | Causa dentro del grupo medido | Ni una cosa ni la otra |
+
+Este curso trabaja casi siempre en el renglón de abajo y en la columna de la
+derecha, que es donde caen los datos que ya existen. La columna izquierda exige
+diseño experimental, y la fila de arriba es el contenido de *Análisis de
+Datos II*.
+
+::: {.no-dice}
+La celda de abajo a la derecha es la más común fuera de la escuela, y la que más
+se sobreinterpreta. Un tablero con millones de registros de clientes vive ahí:
+describe a quienes ya son clientes, y no autoriza a decir qué habría pasado con
+los que no lo son ni qué causó la compra.
+:::
+
 ## Los datos de la unidad
 
-En la sesión 1 el grupo se auto-encuesta. Ustedes son la población, y ese conjunto
-de datos acompaña las tres primeras unidades.
+En la sesión 2 el grupo se auto-encuesta. Ustedes son la población, y ese
+conjunto de datos acompaña las tres primeras unidades.
 
 Se captura **sin nombre, sin correo y sin marca de tiempo individual**. La
 anonimización ocurre en el momento de la captura, y es también contenido del
