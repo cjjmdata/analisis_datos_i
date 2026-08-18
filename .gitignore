@@ -63,3 +63,6 @@ Thumbs.db
 **/*.quarto_ipynb
 
 /.quarto/
+
+# residuo de correr R sin dispositivo grafico
+Rplots.pdf

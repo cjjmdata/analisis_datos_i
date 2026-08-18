@@ -38,7 +38,7 @@ El programa oficial se cubre completo. El mapeo punto por punto está en
 
 ## Cómo funciona el curso
 
-**En clase, todos los mismos datos.** En la primera sesión el grupo se
+**En clase, todos los mismos datos.** En la segunda sesión el grupo se
 auto-encuesta: ustedes son la población. A partir de la unidad 2 entra
 **Quién es Quién en los Precios**, el levantamiento de precios de Profeco: el
 mismo producto, la misma marca, el mismo día, a precios distintos según la
@@ -64,7 +64,7 @@ responder una pregunta estadística. Ver
 |:--:|:---|:---|:--:|
 | | **Unidad 1 · La pregunta y los datos** | | |
 | 1 | [Presentación del curso: ¿qué es la estadística?](slides/u1/s01_que_es_la_estadistica.qmd) | | 1.1 |
-| 2 | Tu primer análisis: la encuesta del grupo en el cuaderno | correr código, `read_csv` | 1.1 |
+| 2 | [Tu primer análisis: la encuesta del grupo en el cuaderno](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s02_primer-analisis.ipynb) | correr código, `read_csv` | 1.1 |
 | 3 | Población y muestra | `nrow`, `slice_sample` | 1.2 |
 | 4 | Variables, escalas y las cuatro preguntas; se monta el repositorio | `glimpse`, `factor` | 1.3 |
 | | **Unidad 2 · Ver los datos** | | |
