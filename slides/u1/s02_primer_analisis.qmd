@@ -1,0 +1,272 @@
+---
+title: "Tu primer análisis"
+subtitle: "Sesión 2 · Unidad 1 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 2 · Programa 1.1"
+    incremental: false
+    fig-align: center
+    code-line-numbers: false
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Abrir** un cuaderno de Colab con el entorno de R y ejecutar código.
+2. **Leer** un conjunto de datos desde una fuente en línea y describir su
+   estructura: cuántas observaciones, cuántas variables y de qué tipo.
+3. **Producir** una gráfica y una comparación entre grupos a partir de esos
+   datos.
+4. **Identificar** qué decisiones de medición se tomaron al levantar el dato y
+   cuáles quedan pendientes de discutir.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 1.1 Objetivo y ramas de la estadística
+:::
+
+# El conjunto de datos {background-color="#24494C"}
+
+## Ustedes son la población {.smaller}
+
+En los siguientes minutos se levanta el conjunto de datos del grupo. Acompaña las
+tres primeras unidades.
+
+Se captura: **género** · **carrera** · **edad** en años cumplidos ·
+**estatura** en metros · **tiempo de traslado** en minutos · **número de
+calzado** en numeración mexicana.
+
+::: {.callout-important}
+## Anónima desde la captura
+
+Se levanta sin nombre y sin correo.
+
+Un dato personal recogido de forma identificable no se puede desidentificar
+después. La protección efectiva es no recogerlo.
+:::
+
+## Antes de contestar {.smaller}
+
+::: {.friccion}
+Dos de las seis preguntas admiten más de una respuesta correcta según cómo las
+interpretes. ¿Cuáles?
+:::
+
+. . .
+
+**La estatura.** Con qué precisión, y hacia dónde redondeas.
+
+**El tiempo de traslado.** De qué día, a qué hora, con qué tráfico.
+
+::: {.nota}
+El calzado tenía el mismo problema y se resolvió al redactarlo: el enunciado fija
+la numeración mexicana. Sin esa aclaración, un 5 y un 38 pueden ser el mismo pie.
+
+Definir la variable es parte de medirla, y se hace antes.
+:::
+
+# El entorno {background-color="#24494C"}
+
+## Colab corre en el navegador {.smaller}
+
+No hay que instalar nada. El cuaderno vive en tu Drive y el cómputo ocurre en una
+máquina de Google.
+
+::: {.alerta}
+Colab abre en Python. Este curso trabaja en R.
+
+**Entorno de ejecución → Cambiar tipo de entorno de ejecución → R → Guardar**
+:::
+
+. . .
+
+Después, **Archivo → Guardar una copia en Drive**.
+
+Trabajas sobre tu copia. Ese cuaderno es el primer archivo de tu portafolio.
+
+::: {style="font-size:0.8em;"}
+**[Abrir el cuaderno de hoy](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s02_primer-analisis.ipynb)**
+:::
+
+## Activar el paquete {.smaller}
+
+```r
+library(tidyverse)
+```
+
+`tidyverse` es el conjunto de herramientas con el que trabaja el curso: leer
+datos, transformarlos y graficarlos.
+
+::: {.nota}
+Si la celda marca `there is no package called 'tidyverse'`, el paquete no está en
+esa máquina y hay que instalarlo antes. En la sesión 4 vemos por qué a veces
+falta y cómo se automatiza.
+:::
+
+# Leer los datos {background-color="#24494C"}
+
+## Del formulario al cuaderno {.smaller}
+
+```r
+URL <- "https://docs.google.com/..."
+
+grupo <- read_csv(URL) |>
+  select(
+    momento  = Timestamp,
+    genero   = `Género`,
+    carrera  = Carrera,
+    edad     = `Edad, en años cumplidos`,
+    estatura = `Estatura, en metros`,
+    traslado = `Tiempo de traslado a la universidad, en minutos`,
+    calzado  = `Número de calzado`
+  )
+```
+
+. . .
+
+::: {.friccion}
+Las columnas llegan con el título completo de cada pregunta. ¿Por qué molestarse
+en renombrarlas?
+:::
+
+## Lo que hace esa instrucción {.smaller}
+
+`select()` hace tres cosas a la vez:
+
+1. **Renombra**, porque el título completo de la pregunta no se teclea.
+2. **Reordena**, al orden del cuestionario.
+3. **Descarta** la columna de una pregunta que se eliminó del formulario y sigue
+   llegando vacía.
+
+. . .
+
+::: {.no-dice}
+La hoja de respuestas de Google es un registro acumulativo, no un espejo del
+formulario: al renombrar una pregunta conserva el encabezado viejo, al borrarla
+deja la columna, y al agregar una la manda al final.
+
+Los nombres y el orden de las columnas los decide el análisis, no la fuente.
+:::
+
+## Mirar antes de calcular {.smaller}
+
+```r
+glimpse(grupo)
+```
+
+Devuelve cuántas observaciones hay, cuántas variables, cómo se llama cada una y
+de qué tipo es.
+
+. . .
+
+```r
+count(grupo, carrera)
+```
+
+Cuenta cuántas observaciones hay de cada categoría.
+
+::: {.nota}
+Ese conteo es una **tabla de distribución de frecuencias**, que es el tema de la
+sesión 5. Aquí aparece antes porque hace falta para leer los datos.
+:::
+
+# La primera gráfica {background-color="#24494C"}
+
+## Cómo está compuesto el grupo {.smaller}
+
+```r
+ggplot(grupo, aes(y = carrera)) +
+  geom_bar() +
+  labs(title = "Cómo está compuesto el grupo",
+       x = "Estudiantes", y = NULL)
+```
+
+. . .
+
+::: {.nota}
+Cópiala y córrela. La gramática de `ggplot` es la sesión 6, y para entonces vas a
+haber visto varias gráficas hechas antes de construir la primera.
+
+Las barras van horizontales porque los nombres de las carreras son largos y en el
+eje de abajo se encimarían.
+:::
+
+## Comparar dos grupos {.smaller}
+
+```r
+grupo |>
+  group_by(genero) |>
+  summarise(
+    n        = n(),
+    estatura = round(mean(estatura), 2),
+    calzado  = round(mean(calzado), 1)
+  )
+```
+
+. . .
+
+::: {.friccion}
+Si la estatura promedio de un grupo es mayor que la del otro, ¿qué se puede
+afirmar sobre una persona de este salón elegida al azar?
+:::
+
+. . .
+
+::: {.no-dice}
+Nada sobre esa persona en particular. Un promedio describe al conjunto y no
+predice el caso individual.
+
+La diferencia entre describir el grupo medido y afirmar algo sobre alguien que no
+se midió es la que separa las dos ramas de la sesión anterior.
+:::
+
+# Lo que queda abierto {background-color="#24494C"}
+
+## Preguntas que salen de estos datos {.smaller}
+
+::: {.friccion}
+Con los datos ya en pantalla, ¿qué haría falta saber para confiar en cada cifra?
+:::
+
+. . .
+
+| Pregunta | Sesión |
+|---|:--:|
+| Si alguien redondeó su estatura hacia arriba, ¿qué le pasa al promedio? | 4 |
+| ¿"Años cumplidos" mide lo mismo para quien cumplió ayer y para quien cumple mañana? | 4 |
+| El tiempo de traslado, ¿de qué día? ¿A qué hora? | 4 |
+| ¿Este grupo describe a la universidad? | 3 |
+
+::: {.nota}
+Cuando aparezca la estatura promedio del salón, cada quien podrá contrastarla con
+la propia. Esa comparación es el contenido de la unidad 3.
+:::
+
+## Tarea para la sesión 3 {.smaller}
+
+**Guarda tu copia del cuaderno** con los resultados que corriste hoy. Es el
+primer archivo de tu portafolio.
+
+**Entra al [catálogo de datos](../../datos/catalogo.qmd)** y revisa las fuentes de
+tu carrera. No elijas todavía: solo lee de dónde sale cada una y qué mide.
+
+**Trae una respuesta** a la última pregunta de la lámina anterior: ¿este grupo
+describe a la universidad? Con un argumento, no con un sí o un no.
+
+## Lo que sigue {.smaller background-color="#24494C" .center}
+
+**Sesión 3 · Población y muestra**
+
+Sobre quién se puede concluir, y con qué autoridad.
