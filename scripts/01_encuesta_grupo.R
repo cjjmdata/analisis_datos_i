@@ -20,24 +20,32 @@ ORIGEN <- Sys.getenv("ENCUESTA_URL", unset = "datos/encuesta_cruda.csv")
 crudos <- read_csv(ORIGEN, show_col_types = FALSE)
 n_crudos <- nrow(crudos)
 
-# Google escribe la marca de tiempo en la primera columna y no se puede
-# desactivar en el formulario. Se descarta aquí: con el orden de llegada y quién
-# estaba en el salón, una marca de tiempo individual vuelve identificable un
-# renglón que por lo demás no lo es.
+# La marca de tiempo se conserva: no hay identificador con el que cruzarla, y
+# sirve para ver el orden de llegada. Solo se normaliza el nombre de la columna.
 marca <- names(crudos)[1]
 if (grepl("marca|timestamp|hora", marca, ignore.case = TRUE)) {
-  crudos <- select(crudos, -1)
-  message("Descartada la columna de marca de tiempo: ", marca)
+  names(crudos)[1] <- "momento"
+  message("Marca de tiempo conservada, renombrada a 'momento'.")
 }
 
 # Los nombres largos del formulario no sirven para teclear en clase.
+# Se seleccionan por nombre y no por posición: la hoja de respuestas de Google
+# es acumulativa, así que al editar el formulario las columnas quedan en un orden
+# que ya no es el del cuestionario.
 grupo <- crudos |>
-  rename_with(~ c("carrera", "edad", "estatura", "traslado",
-                  "calzado", "numeracion")[seq_along(.x)]) |>
+  select(
+    momento,
+    genero   = starts_with("Género"),
+    carrera  = starts_with("Carrera"),
+    edad     = starts_with("Edad"),
+    estatura = starts_with("Estatura"),
+    traslado = starts_with("Tiempo de traslado"),
+    calzado  = starts_with("Número de calzado")
+  ) |>
   mutate(
     across(c(edad, estatura, traslado, calzado), as.numeric),
-    carrera    = factor(carrera),
-    numeracion = factor(numeracion)
+    carrera = factor(carrera),
+    genero  = factor(genero)
   )
 
 # Toda operación que descarta observaciones reporta cuántas descartó.
@@ -48,9 +56,8 @@ if (descartados > 0) {
   message("Se conservan de todas formas: los faltantes son tema de la sesión 7.")
 }
 
-# El orden de llegada también informa quién contestó primero. Se rompe.
-set.seed(1409)
-grupo <- grupo[sample(nrow(grupo)), ]
+# Se ordena por momento de respuesta, que es el orden natural del registro.
+grupo <- arrange(grupo, momento)
 
 stopifnot(nrow(grupo) == n_crudos)
 

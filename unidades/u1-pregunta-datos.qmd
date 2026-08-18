@@ -74,10 +74,13 @@ los que no lo son ni qué causó la compra.
 En la sesión 2 el grupo se auto-encuesta. Ustedes son la población, y ese
 conjunto de datos acompaña las tres primeras unidades.
 
-Se captura **sin nombre, sin correo y sin marca de tiempo individual**. La
-anonimización ocurre en el momento de la captura, y es también contenido del
-curso: un dato personal que ya se recogió identificable no se puede desidentificar
-después.
+Se captura **sin nombre y sin correo**. La anonimización ocurre en el momento de
+la captura, y es también contenido del curso: un dato personal que ya se recogió
+identificable no se puede desidentificar después.
+
+Sí queda registrada la hora de respuesta, porque el formulario la escribe y
+porque sirve para ver el orden de llegada. Al no haber identificador, esa hora no
+señala a nadie.
 
 ::: {.ia-nota}
 Un modelo de lenguaje clasifica bien las escalas de medición en un examen. Falla

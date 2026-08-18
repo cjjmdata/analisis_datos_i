@@ -16,9 +16,16 @@
  * Un dato personal recogido de forma identificable no se puede desidentificar
  * después; la única protección efectiva es no recogerlo.
  *
- * La marca de tiempo NO se puede desactivar: Google la escribe siempre en la
- * columna A de la hoja de respuestas. Se descarta al publicar, con el paso 3 de
- * la guía, y también en scripts/01_encuesta_grupo.R.
+ * La marca de tiempo se conserva. Google la escribe siempre en la columna A y no
+ * se puede desactivar; se deja porque sin identificador con el que cruzarla no
+ * señala a nadie, y porque sirve para ver el orden de llegada.
+ *
+ * SI EDITAS EL FORMULARIO A MANO DESPUÉS DE CREARLO, la hoja de respuestas no
+ * se reacomoda: conserva los encabezados viejos, deja la columna de una
+ * pregunta borrada y manda las nuevas al final, sin importar su posición en el
+ * formulario. La hoja es un registro acumulativo, no un espejo. Por eso este
+ * script es la definición del instrumento: se edita aquí y se vuelve a crear el
+ * formulario, o se acepta que la hoja y el formulario dejen de coincidir.
  */
 
 var CARRERAS = [
@@ -51,6 +58,19 @@ function crearEncuestaDelGrupo() {
   } catch (e) {
     Logger.log('setRequireLogin no aplica en esta cuenta: ' + e.message);
   }
+
+  // --- Género --------------------------------------------------------------
+  // Va primero porque es la más rápida de contestar y arranca el flujo. Se
+  // levanta para comparar estatura y calzado entre grupos en la unidad 3.
+  //
+  // OJO con el anonimato: en un salón de treinta, género más carrera más
+  // estatura más edad puede describir a una sola persona. El renglón deja de
+  // ser anónimo aunque no traiga nombre. Conviene decirlo al levantarla.
+  form.addMultipleChoiceItem()
+    .setTitle('Género')
+    .setChoiceValues(['Femenino', 'Masculino'])
+    .showOtherOption(true)
+    .setRequired(true);
 
   // --- Carrera -------------------------------------------------------------
   // Lista cerrada: con texto libre, count(grupo, carrera) devuelve una fila por
@@ -100,24 +120,19 @@ function crearEncuestaDelGrupo() {
     .setRequired(true);
 
   // --- Calzado -------------------------------------------------------------
-  // Dos preguntas y no una: en México conviven la numeración mexicana y la
-  // europea, y un solo campo numérico mezcla dos escalas distintas en la misma
-  // columna. Preguntar cuál se usó permite separarlas, y de paso es el ejemplo
-  // de la sesión 4 sobre definir la variable antes de medirla.
+  // La numeración se fija en el enunciado en vez de preguntarse aparte. En
+  // México conviven la mexicana y la europea, y sin fijarla un 5 y un 38 pueden
+  // ser el mismo pie. Que la escala se declare al definir la variable, y no se
+  // rescate después, es el ejemplo de la sesión 4.
   form.addTextItem()
-    .setTitle('Número de calzado')
-    .setHelpText('El número que usas normalmente. Solo la cifra.')
+    .setTitle('Número de calzado (numeración mexicana)')
+    .setHelpText('Solo la cifra. Si usas numeración europea, conviértela o pregúntame.')
     .setValidation(
       FormApp.createTextValidation()
-        .setHelpText('Escribe un número entre 15 y 50.')
-        .requireNumberBetween(15, 50)
+        .setHelpText('Escribe un número entre 15 y 35.')
+        .requireNumberBetween(15, 35)
         .build()
     )
-    .setRequired(true);
-
-  form.addMultipleChoiceItem()
-    .setTitle('¿En qué numeración es ese número?')
-    .setChoiceValues(['Mexicana', 'Europea', 'No sé'])
     .setRequired(true);
 
   // --- Hoja de respuestas --------------------------------------------------
