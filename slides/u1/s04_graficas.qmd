@@ -1,0 +1,383 @@
+---
+title: "Ver los datos"
+subtitle: "Sesión 4 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 4 · Programa 1.3 y 3.2"
+    incremental: false
+    fig-align: center
+    fig-width: 9
+    fig-height: 4
+    code-line-numbers: false
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+    title-slide-attributes:
+      data-background-image: ../img/portada-graficas.png
+      data-background-size: cover
+      data-background-opacity: "0.9"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+theme_set(theme_minimal(base_size = 15))
+COLOR <- "#3A6B6F"
+
+URL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067&single=true&output=csv"
+
+grupos <- read_csv(URL, show_col_types = FALSE) |>
+  select(
+    momento  = Timestamp,
+    genero   = `Género`,
+    carrera  = Carrera,
+    edad     = `Edad, en años cumplidos`,
+    estatura = `Estatura, en metros`,
+    traslado = `Tiempo de traslado a la universidad, en minutos`,
+    calzado  = `Número de calzado`
+  ) |>
+  mutate(momento = mdy_hms(momento))
+```
+
+## El cuaderno de hoy {.smaller}
+
+**[Abrir en Colab](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s04_graficas.ipynb)**
+
+Entorno de ejecución → Cambiar tipo de entorno de ejecución → **R**, y después
+Archivo → Guardar una copia en Drive.
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Clasificar** cada variable de un conjunto de datos como categórica o
+   numérica, y dentro de cada familia en su subtipo.
+2. **Elegir** la gráfica que corresponde al tipo de variable, y justificar por
+   qué otra no corresponde.
+3. **Construir** en R las gráficas del programa sobre datos propios.
+4. **Criticar** una gráfica ajena: qué muestra, qué omite y qué decisión de quien
+   la hizo la produjo.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 1.3 Tipos de variables · 3.2 Gráficas
+:::
+
+# Qué tipo de dato tengo {background-color="#24494C"}
+
+## La pregunta que va antes de graficar {.smaller}
+
+::: {.friccion}
+Tienen seis variables del grupo. Antes de dibujar nada: ¿en cuáles tiene sentido
+calcular un promedio?
+:::
+
+. . .
+
+```{r}
+#| echo: false
+glimpse(grupos)
+```
+
+## Dos familias {.smaller}
+
+::: {.concepto}
+Una variable es **categórica** si solo puede tomar uno de un conjunto pequeño de
+valores.
+
+Es **numérica** si puede tomar un rango amplio de valores y tiene sentido
+sumarlos, restarlos o promediarlos.
+:::
+
+| Familia | Subtipo | Qué la distingue | En la encuesta |
+|---|---|---|---|
+| **Categórica** | Nominal | Sin orden | género, carrera |
+| | Ordinal | Con orden, sin magnitud | nivel de estudios, NSE |
+| **Numérica** | Discreta | Solo ciertos valores | edad, calzado |
+| | Continua | Cualquier valor de un intervalo | estatura, traslado |
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Wickham, Çetinkaya-Rundel y Grolemund (2023), *R for Data Science*, 2ª ed., cap. 1.
+:::
+
+## Por qué importa antes de graficar {.smaller}
+
+::: {.no-dice}
+R calcula la media de un código postal sin advertir nada. El software no sabe qué
+representan los números: en cuanto una variable se codifica como número, todas
+las operaciones quedan disponibles y casi ninguna es interpretable.
+
+El tipo de dato decide qué gráfica corresponde y qué estadístico tiene sentido.
+Es una decisión tuya, no del programa.
+:::
+
+. . .
+
+::: {.friccion}
+El número de calzado es un número. ¿Qué significa el calzado promedio del salón?
+:::
+
+# Una variable categórica {background-color="#24494C"}
+
+## Cada punto, una persona {.smaller}
+
+```{r}
+ggplot(grupos, aes(x = carrera)) +
+  geom_dotplot(binaxis = "x", stackdir = "up",
+               dotsize = 0.5, fill = COLOR) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = NULL) +
+  theme(axis.text.x = element_text(size = 8))
+```
+
+::: {.nota}
+La altura de cada pila cuenta cuántos contestaron lo mismo. Ese conteo es la
+**frecuencia** de la categoría.
+:::
+
+## La misma información, como barra {.smaller}
+
+```{r}
+ggplot(grupos, aes(y = carrera)) +
+  geom_bar(fill = COLOR) +
+  labs(x = "Estudiantes", y = NULL)
+```
+
+::: {.friccion}
+¿Qué se gana al pasar de los puntos a la barra? ¿Qué se pierde?
+:::
+
+## Puntos y barras {.smaller}
+
+**Se gana** legibilidad cuando hay muchos casos. Con trescientos respondientes la
+pila de puntos es ilegible y la barra sigue funcionando.
+
+**Se pierde** la unidad de observación. La barra es un rectángulo; el punto era
+una persona que contestó.
+
+::: {.no-dice}
+La barra ya es un resumen. Entre el dato y la barra hubo un conteo, y ese conteo
+descartó todo lo demás que esa persona respondió.
+
+Toda gráfica es una decisión sobre qué mostrar y qué omitir.
+:::
+
+## El pastel {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+grupos |>
+  count(carrera) |>
+  ggplot(aes(x = "", y = n, fill = carrera)) +
+  geom_col(width = 1) +
+  coord_polar("y") +
+  scale_fill_brewer(palette = "BuGn") +
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme_void(base_size = 11)
+```
+
+::: {.friccion}
+¿Cuál categoría es mayor? ¿Por cuánto?
+:::
+
+## Por qué este curso no las construye {.smaller}
+
+Cleveland y McGill midieron con qué exactitud las personas leen cada codificación
+visual. La **posición sobre una escala común**, que es lo que usa la barra, se
+juzga con mucha mayor precisión que el **ángulo** y el **área**, que es lo que usa
+el pastel.
+
+::: {.no-dice}
+El pastel funciona con dos o tres categorías que sean fracciones simples. Con
+más, obliga a comparar ángulos, y ahí el ojo falla.
+
+Vas a encontrarlas en informes todo el tiempo. Saber por qué fallan es el punto.
+:::
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Cleveland, W. S. y McGill, R. (1984). Graphical Perception. *JASA*, 79(387),
+531-554.
+:::
+
+# Una variable numérica {background-color="#24494C"}
+
+## Histograma {.smaller}
+
+```{r}
+ggplot(grupos, aes(x = estatura)) +
+  geom_histogram(binwidth = 0.05, fill = COLOR, color = "white") +
+  labs(x = "Estatura (m)", y = "Personas")
+```
+
+::: {.nota}
+La barra de un histograma cubre un **intervalo** de valores, no una categoría. Por
+eso las barras se tocan: el eje es continuo.
+:::
+
+## El ancho del intervalo es una decisión {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.6
+ggplot(grupos, aes(x = estatura)) +
+  geom_histogram(binwidth = 0.02, fill = COLOR, color = "white") +
+  labs(x = "Estatura (m) · binwidth = 0.02", y = NULL)
+```
+
+```{r}
+#| echo: false
+#| fig-height: 2.6
+ggplot(grupos, aes(x = estatura)) +
+  geom_histogram(binwidth = 0.10, fill = COLOR, color = "white") +
+  labs(x = "Estatura (m) · binwidth = 0.10", y = NULL)
+```
+
+::: {.no-dice}
+Los mismos datos con dos anchos distintos sugieren formas distintas, y ninguno de
+los dos es falso. Quien elige el ancho elige la historia. Es la sesión 9.
+:::
+
+## Polígono y frecuencia acumulada {.smaller}
+
+::::{.columns}
+
+:::{.column width="50%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3
+ggplot(grupos, aes(x = estatura)) +
+  geom_freqpoly(binwidth = 0.05,
+                color = COLOR,
+                linewidth = 1) +
+  labs(x = "Estatura (m)", y = NULL)
+```
+:::
+
+:::{.column width="50%"}
+```{r}
+#| fig-width: 4.5
+#| fig-height: 3
+ggplot(grupos, aes(x = estatura)) +
+  stat_ecdf(color = COLOR, linewidth = 1) +
+  labs(x = "Estatura (m)",
+       y = "Proporción acumulada")
+```
+:::
+
+::::
+
+El **polígono** une los puntos medios del histograma. La **ojiva** acumula: a cada
+estatura responde qué proporción del grupo mide eso o menos.
+
+# Dos variables {background-color="#24494C"}
+
+## Numérica y categórica: diagrama de caja {.smaller}
+
+```{r}
+ggplot(grupos, aes(x = estatura, y = genero)) +
+  geom_boxplot(fill = COLOR, alpha = 0.35) +
+  labs(x = "Estatura (m)", y = NULL)
+```
+
+::: {.nota}
+La caja va del primer al tercer cuartil y la línea de en medio es la mediana. El
+detalle es la sesión 11.
+:::
+
+## Dos numéricas: dispersión {.smaller}
+
+```{r}
+ggplot(grupos, aes(x = estatura, y = calzado)) +
+  geom_point(aes(color = genero), size = 3) +
+  labs(x = "Estatura (m)", y = "Calzado", color = NULL)
+```
+
+::: {.friccion}
+Si la nube sube de izquierda a derecha, ¿qué se puede afirmar? ¿Que ser alto
+causa tener el pie grande?
+:::
+
+# Series de tiempo {background-color="#24494C"}
+
+## Cuándo contestaron {.smaller}
+
+```{r}
+grupos |>
+  count(minuto = floor_date(momento, "minute")) |>
+  ggplot(aes(x = minuto, y = n)) +
+  geom_line(color = COLOR, linewidth = 1) +
+  geom_point(color = COLOR, size = 2) +
+  labs(x = NULL, y = "Respuestas")
+```
+
+## Esto todavía no es una serie de tiempo {.smaller}
+
+::: {.concepto}
+Una **serie de tiempo** es una secuencia de observaciones de la misma variable,
+ordenadas en el tiempo, donde cada valor depende de los anteriores y el conjunto
+suele tener tendencia.
+:::
+
+::: {.no-dice}
+La gráfica anterior cuenta respuestas por minuto de un evento que duró unos
+minutos. Tiene eje temporal, y no tiene ni tendencia ni dependencia entre
+observaciones.
+
+El precio de una acción, el tipo de cambio y la inflación mensual sí lo son.
+Sobre ellos el promedio del **nivel** dice poco, porque la serie sube y baja: se
+trabaja con la variación de un periodo al siguiente.
+:::
+
+Este curso trabaja con observaciones independientes entre sí. Las series de
+tiempo quedan fuera, y también de *Análisis de Datos II*.
+
+# Cierre {background-color="#24494C"}
+
+## Qué gráfica va con qué variable {.smaller}
+
+| Tienes | Gráfica | En R |
+|---|---|---|
+| Una categórica | Barras, puntos | `geom_bar()`, `geom_dotplot()` |
+| Una numérica | Histograma, polígono, ojiva | `geom_histogram()`, `geom_freqpoly()`, `stat_ecdf()` |
+| Categórica y numérica | Diagrama de caja | `geom_boxplot()` |
+| Dos numéricas | Dispersión | `geom_point()` |
+| Una numérica en el tiempo | Línea | `geom_line()` |
+
+::: {.nota}
+La tabla se lee de izquierda a derecha: primero se determina el tipo de variable,
+después se elige la gráfica.
+:::
+
+## Leer una gráfica ajena {.smaller}
+
+::: {.friccion}
+En un informe de tu carrera vas a encontrar gráficas hechas por alguien más. Tres
+preguntas para cada una:
+:::
+
+1. ¿Qué tipo de variable está representada, y la gráfica le corresponde?
+2. ¿Qué decisión tomó quien la hizo que pudo haber sido otra? El ancho del
+   intervalo, el rango del eje, el orden de las categorías.
+3. ¿Qué queda fuera de la gráfica que haría falta para juzgar lo que afirma?
+
+## Tarea {.smaller}
+
+**Del catálogo de datos**, elige una fuente de tu carrera y clasifica sus
+variables: cuáles son categóricas y cuáles numéricas, con su subtipo.
+
+**Busca una gráfica publicada** en un informe, un periódico o un reporte de tu
+área. Aplícale las tres preguntas de la lámina anterior y escribe la respuesta.
+
+**En tu cuaderno**, reproduce dos de las gráficas de hoy con los datos del grupo y
+escribe una línea sobre qué muestra cada una.

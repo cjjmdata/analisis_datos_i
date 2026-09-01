@@ -66,7 +66,7 @@ responder una pregunta estadística. Ver
 | 1 | [Presentación del curso: ¿qué es la estadística?](slides/u1/s01_que_es_la_estadistica.qmd) | | 1.1 |
 | 2 | [Tu primer análisis: la encuesta del grupo en el cuaderno](slides/u1/s02_primer_analisis.qmd) | correr código, `read_csv` | 1.1 |
 | 3 | Población y muestra | `nrow`, `slice_sample` | 1.2 |
-| 4 | Variables, escalas y las cuatro preguntas; se monta el repositorio | `glimpse`, `factor` | 1.3 |
+| 4 | [Ver los datos: tipos de variable y gráficas](slides/u1/s04_graficas.qmd) | `glimpse`, `factor` | 1.3 |
 | | **Unidad 2 · Ver los datos** | | |
 | 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
 | 6 | Variables categóricas: la gráfica de barras | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
