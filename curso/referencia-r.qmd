@@ -194,6 +194,185 @@ coeficiente_variacion <- function(x) {
 coeficiente_variacion(estaturas)
 ```
 
+## Abrir un archivo de datos
+
+Cada formato tiene su función. Todas devuelven lo mismo, una tabla, y a partir de
+ahí el análisis es idéntico.
+
+| Formato | Extensión | Función | Paquete |
+|---|---|---|---|
+| Texto separado por comas | `.csv` | `read_csv()` | `readr` |
+| Texto separado por tabulador | `.tsv`, `.txt` | `read_tsv()` | `readr` |
+| Excel | `.xlsx`, `.xls` | `read_excel()` | `readxl` |
+| SPSS | `.sav` | `read_sav()` | `haven` |
+| Stata | `.dta` | `read_dta()` | `haven` |
+| SAS | `.sas7bdat` | `read_sas()` | `haven` |
+| JSON | `.json` | `fromJSON()` | `jsonlite` |
+| Objeto de R | `.rds` | `readRDS()` | base R |
+
+`readr` viene con `tidyverse`. Los demás se instalan y se activan por separado:
+
+```r
+install.packages(c("readxl", "haven"))
+
+library(readxl)
+library(haven)
+```
+
+### Excel
+
+```r
+library(readxl)
+
+datos <- read_excel("ventas.xlsx")                    # la primera hoja
+datos <- read_excel("ventas.xlsx", sheet = "2025")    # una hoja por nombre
+datos <- read_excel("ventas.xlsx", skip = 3)          # saltar 3 renglones
+
+excel_sheets("ventas.xlsx")                           # qué hojas tiene
+```
+
+::: {.callout-warning}
+Un archivo de Excel suele traer título, logotipo y renglones en blanco antes de
+la tabla. `read_excel()` toma el primer renglón como nombres de columna, así que
+si el archivo empieza con un título, tus columnas se van a llamar `Reporte de
+ventas` y `...2`. Para eso está `skip`.
+:::
+
+### SPSS
+
+```r
+library(haven)
+
+encuesta <- read_sav("estudio.sav")
+```
+
+Un `.sav` guarda **etiquetas**: la columna trae el número y el texto que ese
+número significa. Al leerlo, esa columna no llega como texto sino como un tipo
+propio, `haven_labelled`:
+
+```r
+count(encuesta, sexo)
+#>   sexo           n
+#>   <dbl+lbl>  <int>
+#> 1 1 [Hombre]   120
+#> 2 2 [Mujer]    132
+```
+
+Para trabajar con las etiquetas como categorías, se convierten:
+
+```r
+encuesta <- encuesta |>
+  mutate(sexo = as_factor(sexo))
+
+count(encuesta, sexo)
+#>   sexo       n
+#>   <fct>  <int>
+#> 1 Hombre   120
+#> 2 Mujer    132
+```
+
+::: {.no-dice}
+`as_factor()` es de `haven` y usa las etiquetas. `as.factor()`, con punto, es de
+base R y convierte el número en la categoría `"1"`, sin la etiqueta. Se parecen
+al escribirlas y hacen cosas distintas.
+
+Para ver qué significa cada código sin convertir nada: `attr(encuesta$sexo,
+"labels")`.
+:::
+
+### CSV, y el problema de los acentos
+
+```r
+library(readr)
+
+datos <- read_csv("precios.csv")
+
+datos <- read_csv("precios.csv", locale = locale(encoding = "latin1"))
+```
+
+::: {.callout-warning}
+Si ya estás usando `read_csv()` y aun así los acentos salen como `Ã±` o `Ã³`,
+entonces el problema no es la función sino el archivo: no está guardado en UTF-8.
+Es común en exportaciones de Excel en Windows, y el argumento `locale` lo
+corrige.
+
+Y si el archivo usa punto y coma como separador, que también es común en México,
+la función es `read_csv2()`.
+:::
+
+## Llevar un archivo a Google Colab
+
+La máquina de Colab no es tu computadora: no ve tu carpeta de Descargas. El
+archivo tiene que llegar ahí de alguna forma.
+
+### Desde tu computadora, con el panel de archivos
+
+1. En la barra de la izquierda, el icono de **carpeta**.
+2. **Arrastrar** el archivo a ese panel, o el botón de subir.
+3. Esperar a que termine la barra de progreso.
+4. Ya se lee por su nombre:
+
+```r
+datos <- read_csv("precios.csv")
+```
+
+::: {.callout-important}
+Lo que subes se borra cuando la sesión se reinicia, igual que los paquetes. Si
+vuelves al día siguiente, hay que subirlo de nuevo.
+
+Por eso el curso lee de una URL siempre que puede: esa lectura sí se reproduce
+sola cada vez que alguien abre el cuaderno.
+:::
+
+### Desde una dirección de internet
+
+Si el archivo está publicado, no hace falta descargarlo: la función lee la URL
+directamente.
+
+```r
+datos <- read_csv("https://ejemplo.org/precios.csv")
+```
+
+Para formatos que no leen URL, primero se descarga a la máquina de Colab y
+después se abre:
+
+```r
+download.file("https://ejemplo.org/estudio.sav", "estudio.sav", mode = "wb")
+
+encuesta <- read_sav("estudio.sav")
+```
+
+::: {.callout-note}
+`mode = "wb"` es obligatorio para archivos que no son de texto: Excel, SPSS,
+Stata, imágenes. Sin eso el archivo se descarga corrupto y la función de lectura
+falla con un mensaje que no dice por qué.
+:::
+
+### Sobre Google Drive
+
+Montar tu Drive dentro de Colab se hace con `google.colab`, que es una
+biblioteca de **Python**, así que no está disponible en un cuaderno con entorno
+de R.
+
+Con el entorno en R, las dos rutas son las de arriba: subir por el panel, o leer
+de una URL.
+
+### Comprobar que llegó
+
+```r
+list.files()          # qué archivos hay en la carpeta de trabajo
+file.exists("precios.csv")
+```
+
+::: {.nota}
+`cannot open file 'precios.csv': No such file or directory` casi siempre
+significa una de tres cosas: el archivo no se subió, la sesión se reinició y se
+borró, o el nombre no coincide. `list.files()` resuelve las tres.
+
+El nombre incluye la extensión y distingue mayúsculas: `Precios.CSV` y
+`precios.csv` son archivos distintos.
+:::
+
 ## Estadísticos, de un vistazo
 
 Todos son de base R: no necesitan ningún paquete.
