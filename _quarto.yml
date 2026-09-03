@@ -59,6 +59,10 @@ website:
             text: Panorama de la unidad
           - href: slides/u1/s01_que_es_la_estadistica.qmd
             text: "S1 · ¿Qué es la estadística?"
+          - href: slides/u1/s02_primer_analisis.qmd
+            text: "S2 · Tu primer análisis"
+          - href: slides/u1/s04_graficas.qmd
+            text: "S4 · Ver los datos"
       - section: "2 · Ver los datos"
         contents:
           - href: unidades/u2-ver.qmd
