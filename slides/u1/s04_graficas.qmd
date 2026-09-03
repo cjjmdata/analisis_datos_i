@@ -191,23 +191,99 @@ grupos |>
 ¿Cuál categoría es mayor? ¿Por cuánto?
 :::
 
-## Por qué este curso no las construye {.smaller}
+## Un caso real: participación de mercado {.smaller}
 
-Cleveland y McGill midieron con qué exactitud las personas leen cada codificación
-visual. La **posición sobre una escala común**, que es lo que usa la barra, se
-juzga con mucha mayor precisión que el **ángulo** y el **área**, que es lo que usa
-el pastel.
+```{r}
+#| echo: false
+#| fig-height: 3.6
+proveedores <- tibble(
+  proveedor = c("Proveedor A", "Proveedor B", "Proveedor C", "Proveedor D"),
+  cuota     = c(34, 31, 9, 26)
+)
+
+ggplot(proveedores, aes(x = "", y = cuota, fill = proveedor)) +
+  geom_col(width = 1) +
+  coord_polar("y") +
+  scale_fill_brewer(palette = "Blues") +
+  labs(x = NULL, y = NULL, fill = NULL) +
+  theme_void(base_size = 12)
+```
+
+::: {.friccion}
+Cuatro proveedores. ¿Cuál tiene la mayor participación? ¿Qué porcentaje le
+calculas?
+:::
+
+## Los números {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.2
+proveedores |>
+  mutate(proveedor = fct_reorder(proveedor, cuota)) |>
+  ggplot(aes(x = cuota, y = proveedor)) +
+  geom_col(fill = "#8C8C8C") +
+  geom_text(aes(label = paste0(cuota, "%")), hjust = 1.3, color = "white") +
+  labs(x = NULL, y = NULL, caption = "Total: 100%") +
+  theme(axis.text.x = element_blank(),
+        panel.grid = element_blank())
+```
 
 ::: {.no-dice}
-El pastel funciona con dos o tres categorías que sean fracciones simples. Con
-más, obliga a comparar ángulos, y ahí el ojo falla.
+Knaflic presenta este caso con el pastel dibujado en **3D**. La perspectiva
+inclina el círculo: las rebanadas de abajo se ven más cerca y más grandes de lo
+que son.
 
-Vas a encontrarlas en informes todo el tiempo. Saber por qué fallan es el punto.
+Con esa gráfica, la mayoría señala al Proveedor B, que tiene **31%**. El mayor es
+el Proveedor A, con **34%**, y se ve más chico.
+:::
+
+## Lo que hay que retener {.smaller}
+
+**El ojo no traduce bien área ni ángulo a cantidad.** Con rebanadas de tamaño
+parecido es muy difícil decir cuál es mayor. Con rebanadas distintas se puede
+decir cuál, pero no por cuánto.
+
+**Las barras comparten una línea base.** Por eso el ojo compara los extremos y
+juzga la diferencia con precisión. Es la misma conclusión que midieron Cleveland
+y McGill.
+
+::: {.alerta}
+Nunca en 3D. No aporta nada y deforma la lectura.
+:::
+
+::: {.nota}
+La dona tiene el mismo problema y uno peor: pide comparar longitudes de arco.
+
+Si vas a usar un pastel, la pregunta de Knaflic es **por qué**. Si tienes una
+respuesta, adelante. Si no, va una barra.
 :::
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}
-Cleveland, W. S. y McGill, R. (1984). Graphical Perception. *JASA*, 79(387),
-531-554.
+Knaflic, C. N. (2015). *Storytelling with Data*. Wiley, cap. 2. · Cleveland, W. S.
+y McGill, R. (1984). Graphical Perception. *JASA*, 79(387), 531-554.
+:::
+
+## Tres decisiones que mejoran cualquier barra {.smaller}
+
+1. **Ordenar de mayor a menor**, salvo que la categoría tenga un orden propio,
+   como los meses o los niveles de escolaridad.
+2. **Etiquetar el valor** cuando importa la cifra exacta, y quitar entonces la
+   cuadrícula y el eje.
+3. **Declarar el total** cuando las partes suman un todo. Es lo único que el
+   pastel hacía bien.
+
+```r
+proveedores |>
+  mutate(proveedor = fct_reorder(proveedor, cuota)) |>
+  ggplot(aes(x = cuota, y = proveedor)) +
+  geom_col() +
+  geom_text(aes(label = paste0(cuota, "%")), hjust = 1.3, color = "white")
+```
+
+::: {.nota}
+`fct_reorder()` ordena una variable categórica por el valor de otra. Sin eso,
+ggplot ordena alfabéticamente, que casi nunca es el orden que interesa.
 :::
 
 # Una variable numérica {background-color="#24494C"}
@@ -357,6 +433,9 @@ tiempo quedan fuera, y también de *Análisis de Datos II*.
 ::: {.nota}
 La tabla se lee de izquierda a derecha: primero se determina el tipo de variable,
 después se elige la gráfica.
+
+Para lo que no está aquí, **[The R Graph Gallery](https://r-graph-gallery.com/)**
+tiene el catálogo con el código de cada una.
 :::
 
 ## Leer una gráfica ajena {.smaller}
