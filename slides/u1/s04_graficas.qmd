@@ -340,6 +340,32 @@ proveedores |>
 ggplot ordena alfabéticamente, que casi nunca es el orden que interesa.
 :::
 
+## En porcentaje {.smaller}
+
+El porcentaje se calcula antes, en una tabla que se puede imprimir y verificar.
+
+```{r}
+#| fig-height: 2.8
+tabla <- grupos |>
+  count(carrera) |>
+  mutate(prop = n / sum(n))
+
+ggplot(tabla, aes(x = prop, y = fct_reorder(carrera, prop))) +
+  geom_col(fill = COLOR) +
+  geom_text(aes(label = scales::percent(prop, accuracy = 0.1)),
+            hjust = 1.2, color = "white") +
+  scale_x_continuous(labels = scales::percent) +
+  labs(x = "Porcentaje del grupo", y = NULL)
+```
+
+::: {.nota}
+ggplot puede calcular la proporción por dentro, con `after_stat(prop)`. Se
+prefiere la tabla porque el cálculo queda a la vista: `n / sum(n)` se puede
+revisar, y el paso intermedio se puede imprimir.
+
+Si no se puede reconstruir de dónde salió un número, ese número no se sostiene.
+:::
+
 ## El color se reserva {.smaller}
 
 ```{r}
