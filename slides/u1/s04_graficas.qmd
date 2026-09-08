@@ -140,13 +140,45 @@ una observación.
 :::
 
 ```{r}
-#| fig-height: 3.2
+#| fig-height: 3
 ggplot(grupos, aes(x = carrera)) +
   geom_dotplot(binaxis = "x", stackdir = "up",
                dotsize = 0.5, fill = COLOR) +
   scale_y_continuous(NULL, breaks = NULL) +
-  labs(x = NULL) +
-  theme(axis.text.x = element_text(size = 8))
+  labs(x = NULL)
+```
+
+::: {.friccion}
+La gráfica corrió sin ningún error. ¿Se puede usar así?
+:::
+
+## Los nombres se encinan {.smaller}
+
+::: {.no-dice}
+R no avisa cuando una gráfica queda ilegible. Ejecutó lo que se le pidió y
+devolvió una imagen; que las etiquetas se traslapen no es un error de sintaxis.
+
+Revisar la salida es parte del trabajo, y no lo hace el programa.
+:::
+
+. . .
+
+`str_wrap()` parte un texto en renglones de un ancho máximo. Aplicado a la
+variable del eje, acomoda los nombres largos en varias líneas.
+
+```r
+str_wrap(carrera, 18)
+```
+
+## Corregida {.smaller}
+
+```{r}
+#| fig-height: 3
+ggplot(grupos, aes(x = str_wrap(carrera, 18))) +
+  geom_dotplot(binaxis = "x", stackdir = "up",
+               dotsize = 0.5, fill = COLOR) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = NULL)
 ```
 
 ::: {.nota}
