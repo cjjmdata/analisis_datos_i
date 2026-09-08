@@ -131,7 +131,16 @@ El número de calzado es un número. ¿Qué significa el calzado promedio del sa
 
 ## Cada punto, una persona {.smaller}
 
+::: {.concepto}
+**Gráfica de puntos.** Cada observación es un punto, y los que comparten valor se
+apilan. La altura de la pila es la frecuencia.
+
+Sirve con pocos casos, cuando importa que se vea que detrás de cada unidad hay
+una observación.
+:::
+
 ```{r}
+#| fig-height: 3.2
 ggplot(grupos, aes(x = carrera)) +
   geom_dotplot(binaxis = "x", stackdir = "up",
                dotsize = 0.5, fill = COLOR) +
@@ -147,7 +156,15 @@ La altura de cada pila cuenta cuántos contestaron lo mismo. Ese conteo es la
 
 ## La misma información, como barra {.smaller}
 
+::: {.concepto}
+**Gráfica de barras.** La longitud de cada barra representa la frecuencia de una
+categoría. Todas arrancan del mismo punto.
+
+Es la opción por defecto para una variable categórica.
+:::
+
 ```{r}
+#| fig-height: 3.2
 ggplot(grupos, aes(y = carrera)) +
   geom_bar(fill = COLOR) +
   labs(x = "Estudiantes", y = NULL)
@@ -173,6 +190,11 @@ Toda gráfica es una decisión sobre qué mostrar y qué omitir.
 :::
 
 ## El pastel {.smaller}
+
+::: {.concepto}
+**Gráfica de pastel.** Divide un círculo en rebanadas proporcionales a cada
+categoría. El lector compara ángulos y áreas.
+:::
 
 ```{r}
 #| echo: false
@@ -286,19 +308,72 @@ proveedores |>
 ggplot ordena alfabéticamente, que casi nunca es el orden que interesa.
 :::
 
+## El color se reserva {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.2
+mayor <- grupos |> count(carrera) |> slice_max(n, n = 1) |> pull(carrera)
+
+grupos |>
+  mutate(destacar = if_else(carrera == mayor, "si", "no")) |>
+  ggplot(aes(y = fct_rev(fct_infreq(carrera)), fill = destacar)) +
+  geom_bar() +
+  scale_fill_manual(values = c("si" = "#A4503C", "no" = "#CCCCCC")) +
+  labs(x = "Estudiantes", y = NULL) +
+  guides(fill = "none")
+```
+
+::: {.no-dice}
+Si todas las barras son del mismo color, ninguna destaca. Si una sola lleva color
+y el resto quedan en gris, el ojo va directo a esa.
+
+El color no es decoración: es lo que dirige la atención. Gastarlo en todas las
+categorías equivale a no usarlo.
+:::
+
+## Los colores se escriben en hexadecimal {.smaller}
+
+Un color se escribe como `#RRGGBB`: dos dígitos para rojo, dos para verde y dos
+para azul, en base 16.
+
+```r
+AZUL  <- "#3A6B6F"   # color principal
+GRIS  <- "#CCCCCC"   # lo que va en segundo plano
+ROJO  <- "#A4503C"   # lo que se quiere destacar
+
+ggplot(grupos, aes(y = carrera)) +
+  geom_bar(fill = AZUL)
+```
+
+::: {.nota}
+Definirlos una vez al principio del cuaderno y reutilizarlos deja todas las
+gráficas del documento con la misma identidad, y permite cambiarlas todas
+editando una línea.
+:::
+
 # Una variable numérica {background-color="#24494C"}
 
 ## Histograma {.smaller}
 
+::: {.concepto}
+**Histograma.** Parte el rango de la variable en intervalos del mismo ancho y
+dibuja cuántas observaciones caen en cada uno.
+
+Sirve para ver la **forma**: dónde se concentra, si es simétrica, si tiene una o
+dos modas, si hay valores lejanos.
+:::
+
 ```{r}
+#| fig-height: 3
 ggplot(grupos, aes(x = estatura)) +
   geom_histogram(binwidth = 0.05, fill = COLOR, color = "white") +
   labs(x = "Estatura (m)", y = "Personas")
 ```
 
 ::: {.nota}
-La barra de un histograma cubre un **intervalo** de valores, no una categoría. Por
-eso las barras se tocan: el eje es continuo.
+La barra cubre un **intervalo**, no una categoría. Por eso las barras se tocan: el
+eje es continuo.
 :::
 
 ## El ancho del intervalo es una decisión {.smaller}
@@ -353,8 +428,14 @@ ggplot(grupos, aes(x = estatura)) +
 
 ::::
 
-El **polígono** une los puntos medios del histograma. La **ojiva** acumula: a cada
-estatura responde qué proporción del grupo mide eso o menos.
+::: {.concepto}
+El **polígono** une los puntos medios de las barras del histograma. Sirve para
+comparar dos distribuciones en la misma gráfica, cosa que dos histogramas
+encimados no permiten.
+
+La **ojiva** acumula: a cada estatura responde qué proporción del grupo mide eso
+o menos. Sirve para preguntas de umbral.
+:::
 
 # Dos variables {background-color="#24494C"}
 
@@ -366,14 +447,29 @@ ggplot(grupos, aes(x = estatura, y = genero)) +
   labs(x = "Estatura (m)", y = NULL)
 ```
 
-::: {.nota}
-La caja va del primer al tercer cuartil y la línea de en medio es la mediana. El
-detalle es la sesión 11.
+::: {.concepto}
+**Diagrama de caja.** La caja va del primer al tercer cuartil, la línea de en
+medio es la mediana y los bigotes llegan al valor más lejano que no se considera
+atípico.
+
+Sirve para comparar una variable numérica entre categorías: centro, dispersión y
+extremos de varios grupos en el mismo espacio.
+:::
+
+::: {style="font-size:0.8em;"}
+El detalle de los cuartiles es la sesión 11.
 :::
 
 ## Dos numéricas: dispersión {.smaller}
 
+::: {.concepto}
+**Gráfica de dispersión.** Cada observación es un punto, ubicado por sus valores
+en dos variables numéricas. Sirve para ver si se mueven juntas, en qué dirección
+y con cuánta fuerza.
+:::
+
 ```{r}
+#| fig-height: 3
 ggplot(grupos, aes(x = estatura, y = calzado)) +
   geom_point(aes(color = genero), size = 3) +
   labs(x = "Estatura (m)", y = "Calzado", color = NULL)
@@ -388,7 +484,14 @@ causa tener el pie grande?
 
 ## Cuándo contestaron {.smaller}
 
+::: {.concepto}
+**Gráfica de línea.** Une observaciones consecutivas de la misma variable a lo
+largo del tiempo. Solo aplica cuando el orden de los puntos significa algo: unir
+categorías sin orden sugiere una continuidad que no existe.
+:::
+
 ```{r}
+#| fig-height: 2.8
 grupos |>
   count(minuto = floor_date(momento, "minute")) |>
   ggplot(aes(x = minuto, y = n)) +

@@ -66,3 +66,6 @@ Thumbs.db
 
 # residuo de correr R sin dispositivo grafico
 Rplots.pdf
+
+# cuadernos de trabajo de la clase en vivo
+clase/
