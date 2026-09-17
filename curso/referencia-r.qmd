@@ -209,6 +209,8 @@ ahí el análisis es idéntico.
 | SAS | `.sas7bdat` | `read_sas()` | `haven` |
 | JSON | `.json` | `fromJSON()` | `jsonlite` |
 | Objeto de R | `.rds` | `readRDS()` | base R |
+| CSV comprimido | `.csv.gz` | `read_csv()`, directo | `readr` |
+| Comprimido con uno o varios archivos | `.zip` | `unzip()` y después la función del archivo que trae | base R |
 
 `readr` viene con `tidyverse`. Los demás se instalan y se activan por separado:
 
@@ -288,6 +290,8 @@ library(readr)
 datos <- read_csv("precios.csv")
 
 datos <- read_csv("precios.csv", locale = locale(encoding = "latin1"))
+
+datos <- read_csv("precios.csv", skip = 4)   # saltar 4 renglones antes del encabezado
 ```
 
 ::: {.callout-warning}
@@ -298,6 +302,62 @@ corrige.
 
 Y si el archivo usa punto y coma como separador, que también es común en México,
 la función es `read_csv2()`.
+:::
+
+### Archivos comprimidos
+
+Un `.gz` comprime un solo archivo. `read_csv()` lo descomprime al leerlo, también
+desde una dirección de internet:
+
+```r
+datos <- read_csv("https://ejemplo.org/listings.csv.gz")
+```
+
+Un `.zip` puede traer varios archivos, a veces dentro de carpetas: los datos, un
+diccionario y metadatos. Se descomprime primero y después se lee el archivo que
+interesa:
+
+```r
+download.file("https://ejemplo.org/encuesta.zip", "encuesta.zip", mode = "wb")
+
+unzip("encuesta.zip", list = TRUE)   # qué trae, sin descomprimir
+unzip("encuesta.zip")                # descomprime en la carpeta de trabajo
+list.files(recursive = TRUE)         # qué quedó, también dentro de carpetas
+
+datos <- read_csv("conjunto_de_datos/tabla.csv")
+```
+
+::: {.nota}
+Los microdatos de INEGI se organizan en varias tablas: viviendas, hogares,
+personas. A veces llegan juntas en un solo `.zip` y a veces en un `.zip` por
+tabla. Cada tabla tiene su propia unidad de observación, así que elegir la tabla
+va antes de leerla.
+:::
+
+### Cuando `read_csv()` avisa de problemas
+
+`read_csv()` decide el tipo de cada columna revisando una muestra de renglones.
+Si después encuentra valores que no corresponden a ese tipo, los deja como `NA`
+y avisa:
+
+```
+One or more parsing issues, call `problems()` on your data frame for details
+```
+
+La lectura sí se hizo, pero **esos valores se perdieron**. `problems(datos)`
+muestra en qué renglón y en qué columna ocurrió. Para que revise todos los
+renglones antes de decidir el tipo:
+
+```r
+datos <- read_csv("archivo.csv", guess_max = Inf)
+```
+
+Tarda más, y los valores llegan completos.
+
+::: {.no-dice}
+Una columna que llega como `<lgl>` con puro `NA` puede venir vacía en el archivo,
+o puede ser una lectura fallida. `glimpse()` las muestra igual. `problems()` las
+distingue: si no reporta nada en esa columna, la columna venía vacía.
 :::
 
 ## Llevar un archivo a Google Colab
@@ -420,6 +480,7 @@ ggplot(datos, aes(x = variable)) +   # los datos y qué va en cada eje
 | `object '...' not found` | La celda que lo define no se ha corrido, o hay error de mayúsculas o acentos |
 | `cannot open file '...'` | Ruta mal escrita, o el archivo no está donde crees |
 | Los acentos salen como `Ã±` | Usa `read_csv()`, no `read.csv()` |
+| `One or more parsing issues` | `read_csv()` adivinó mal el tipo de una columna y dejó valores como `NA`. Vuelve a leer con `guess_max = Inf` |
 | `unexpected symbol` | Falta una coma, un paréntesis o una comilla |
 
 Con `unexpected symbol`, R señala **dónde se dio cuenta** del problema, que casi

@@ -5,13 +5,32 @@ lang: es
 ---
 
 De este catálogo eliges **la serie que te va a acompañar todo el semestre**. La
-elección se hace en las primeras dos semanas y no se cambia después: la gracia
-del [portafolio](../portafolio/index.qmd) es acumular análisis sobre los mismos
-datos hasta conocerlos de verdad.
+elección se hace en la primera actividad del portafolio. Si al revisarla la
+fuente resulta inviable, se cambia en ese momento; después ya no, porque la
+gracia del [portafolio](../portafolio/index.qmd) es acumular análisis sobre los
+mismos datos hasta conocerlos de verdad.
 
 Las carreras que aparecen en cada fuente son una **sugerencia de afinidad**, no
-una restricción. Si eres de Finanzas y quieres trabajar con precios de la
-canasta básica, adelante, con el argumento de por qué.
+una restricción. Si eres de Finanzas y quieres trabajar con el gasto de los
+hogares, adelante, con el argumento de por qué.
+
+La base de Profeco que usamos en clase no forma parte del catálogo: el
+portafolio trabaja con datos distintos de los de clase.
+
+## Qué tan fácil es llegar al dato
+
+Antes de elegir, conviene saber cuánto trabajo cuesta tener la tabla en Colab.
+Varía mucho entre fuentes.
+
+| Acceso | Qué implica | Fuentes |
+|---|---|---|
+| **Directo** | Un archivo que se lee en una o dos líneas | [Inside Airbnb](#airbnb) · [Banco Mundial](#worldbank) |
+| **Con pasos** | Un `.zip` que se descomprime; hay que elegir la tabla y consultar el diccionario aparte | [ENIGH](#enigh-gasto) · [ENOE](#enoe) · [DENUE](#denue) |
+| **Manual** | Se descarga desde el portal, a veces con cuenta o llave | [Banxico](#banxico) · [INPC](#inpc) · [OEC](#oec) · [Comtrade](#comtrade) · [Google Trends](#trends) · [ENAPROCE](#enaproce) · [Censos Económicos](#censos-economicos) |
+| **Bloqueado por script** | El servidor rechaza hoy las descargas automatizadas | [datos.gob.mx](#datosgob) · [Precios accionarios](#acciones) |
+
+Las rutas y las funciones de lectura de cada formato están en la
+[referencia de R](../curso/referencia-r.qmd#abrir-un-archivo-de-datos).
 
 ## Cómo leer el estado de verificación
 
@@ -20,12 +39,14 @@ automatizadas. Cada ficha declara **qué se comprobó y cuándo**.
 
 | Estado | Significa |
 |---|---|
-| **Verificada** | Se descargó el dato programáticamente y llegó completo |
+| **Verificada** | Se descargó el archivo, se leyó en R y llegó completo |
 | **Portal disponible** | El sitio responde; la descarga es manual o no se probó de punta a punta |
 | **Con registro** | Funciona, pero necesitas una llave gratuita |
 | **Bloqueada** | El portal existe pero rechaza descargas automatizadas |
 
-Última comprobación: **8 de agosto de 2026**.
+Última comprobación: **12 de septiembre de 2026**, descargando y leyendo en R
+las fuentes de acceso directo y con pasos, y probando la descarga de las
+bloqueadas. Las de acceso manual conservan la comprobación del 8 de agosto.
 
 ## Finanzas y Contaduría Pública
 
@@ -46,9 +67,10 @@ con historia larga.
 
 Precios diarios de acciones, índices y ETF.
 
-- **Estado**: **descarga verificada** para emisoras de la Bolsa Mexicana de
-  Valores: `BIMBOA.MX`, `WALMEX.MX`, `FEMSAUBD.MX`, `GMEXICOB.MX`,
-  `CEMEXCPO.MX`, y el índice `^MXX`. Precios diarios en pesos.
+- **Estado**: bloqueada por script. El 12 de septiembre de 2026 la descarga
+  automatizada respondió `429` (demasiadas solicitudes). En agosto funcionó para
+  `BIMBOA.MX`, `WALMEX.MX`, `FEMSAUBD.MX`, `GMEXICOB.MX`, `CEMEXCPO.MX` y el
+  índice `^MXX`. La descarga manual desde la página no se comprobó.
 - **En R**: `leer_emisora("BIMBOA.MX")` de `R/datos.R`, que trae el dato en vivo
   y cae al respaldo si el servicio no responde. También sirven `quantmod` y
   `tidyquant`.
@@ -99,33 +121,28 @@ La base primaria de comercio internacional. Es de donde bebe OEC.
 
 PIB, comercio, inversión extranjera, población, para todos los países.
 
-- **Estado**: **descarga verificada.** Sin token, sin registro, devuelve JSON
-  limpio. Datos actualizados al 13 de julio de 2026.
-- **Prueba directa** (pégala en tu navegador):
-  `https://api.worldbank.org/v2/country/MEX/indicator/NY.GDP.MKTP.CD?format=json`
+- **Estado**: **descarga verificada.** Sin token y sin registro. Datos
+  actualizados al 13 de julio de 2026.
+- **Acceso**: en Excel, un archivo por indicador para todos los países.
+  Cambiando `NY.GDP.MKTP.CD` por el código del indicador sirve para cualquier
+  serie:
+
+  ```r
+  url <- "https://api.worldbank.org/v2/en/indicator/NY.GDP.MKTP.CD?downloadformat=excel"
+  download.file(url, "indicador.xls", mode = "wb")
+  serie <- read_excel("indicador.xls", skip = 3)
+  ```
+
+- **Antes de interpretar**: cada año es una columna, y los renglones mezclan
+  países con agregados regionales como *Arab World* o *Africa Eastern and
+  Southern*.
+- **El JSON de la API no conviene para leer la base**: llega anidado y
+  **paginado**. `fromJSON()` sobre la consulta de México devuelve 50 de los 66
+  años sin avisar.
 - **Para qué sirve aquí**: es la fuente más confiable del catálogo para trabajar
   sin fricción técnica. Comparaciones entre países para coeficiente de variación.
 
 ## Mercadotecnia Estratégica
-
-### Profeco · Quién es Quién en los Precios {#profeco}
-
-Precios de productos específicos, por establecimiento y ciudad, levantados por
-la Procuraduría Federal del Consumidor.
-
-- **Estado**: **descarga verificada.** CSV directo, sin token, bajo licencia
-  **CC-BY-4.0**. Un archivo por quincena, de unos 150 MB.
-- **Es la fuente central del curso.** El subconjunto de clase trae 42,351 precios
-  de seis productos de canasta básica, en 63 cadenas comerciales y 30 estados,
-  levantados en noviembre de 2025.
-- **Columnas**: producto, presentación, marca, categoría, precio, fecha, cadena
-  comercial, giro, estado, municipio.
-- **Para qué sirve aquí**: el mismo producto, la misma presentación, la misma
-  marca, el mismo mes, a precios distintos según la tienda. En el subconjunto del
-  curso, un kilo de arroz a granel va de 16 a 50 pesos: **212% de diferencia**
-  entre la tienda más barata y la más cara.
-- **En R**: `scripts/01_profeco.R` baja una quincena y recorta el subconjunto.
-- <https://datos.gob.mx/> (buscar "quién es quién en los precios")
 
 ### Google Trends {#trends}
 
@@ -142,10 +159,25 @@ Interés de búsqueda relativo por término, región y tiempo.
 
 Ingreso y gasto de hogares mexicanos, con desglose fino por rubro.
 
-- **Estado**: portal disponible, microdatos descargables.
+- **Estado**: **descarga verificada** (edición 2024).
+- **Acceso**: un `.zip` por tabla, en CSV, SPSS y otros formatos. La tabla
+  `concentradohogar` tiene un renglón por hogar y es la adecuada para empezar:
+  91,414 hogares y 126 variables.
+
+  ```r
+  url <- "https://www.inegi.org.mx/contenidos/programas/enigh/nc/2024/microdatos/enigh2024_ns_concentradohogar_csv.zip"
+  download.file(url, "enigh.zip", mode = "wb")
+  unzip("enigh.zip")
+  serie <- read_csv("concentradohogar.csv")
+  ```
+
+- **Antes de interpretar**: el `.zip` no trae diccionario. Las variables son
+  claves (`tam_loc`, `est_socio`) que se leen con el descriptor de archivos de la
+  página de la encuesta. Y el tipo cambia con el formato: `tam_loc` llega como
+  `<dbl>` en el CSV y como `<chr+lbl>` en el archivo de SPSS.
 - **Para qué sirve aquí**: estructura de gasto por decil de ingreso. Segmentación
   con datos reales en vez de personas inventadas.
-- <https://www.inegi.org.mx/programas/enigh/nc/2022/>
+- <https://www.inegi.org.mx/programas/enigh/nc/2024/>
 
 ## Administración y Dirección de Empresas
 
@@ -154,8 +186,21 @@ Ingreso y gasto de hogares mexicanos, con desglose fino por rubro.
 Directorio de todos los establecimientos económicos del país: giro, tamaño,
 ubicación.
 
-- **Estado**: portal y API documentados y disponibles. La API requiere token
-  gratuito.
+- **Estado**: **descarga verificada** para la descarga masiva por actividad. La
+  API requiere token gratuito.
+- **Acceso**: un `.zip` por actividad económica, que **sí trae su diccionario de
+  datos**. El de tiendas de abarrotes (`46111`) pesa 57 MB comprimido y 369 MB
+  descomprimido: 682,918 establecimientos. Por su tamaño se lee desde la
+  dirección, no subiéndolo al panel de Colab.
+
+  ```r
+  url <- "https://www.inegi.org.mx/contenidos/masiva/denue/denue_00_46111_csv.zip"
+  download.file(url, "denue.zip", mode = "wb")
+  unzip("denue.zip")
+  serie <- read_csv("conjunto_de_datos/denue_inegi_46111_.csv", guess_max = Inf)
+  ```
+
+- **Antes de interpretar**: `raz_social` trae nombres de personas físicas.
 - **Para qué sirve aquí**: la distribución del tamaño de las empresas mexicanas
   por número de empleados es muy asimétrica, con una mayoría de microempresas y
   una cola larga. Sirve para tablas de frecuencias, histogramas y para discutir
@@ -166,7 +211,22 @@ ubicación.
 
 Encuesta Nacional de Ocupación y Empleo. Trimestral, con factores de expansión.
 
-- **Estado**: portal disponible, microdatos descargables.
+- **Estado**: **descarga verificada** (cuarto trimestre de 2025).
+- **Acceso**: un `.zip` de 41 MB con cinco tablas: viviendas (`VIV`), hogares
+  (`HOG`), sociodemográfico de personas (`SDEM`) y cuestionario de ocupación
+  (`COE1`, `COE2`). Elegir la tabla es elegir la unidad de observación.
+
+  ```r
+  url <- "https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/microdatos/enoe_2025_trim4_csv.zip"
+  download.file(url, "enoe.zip", mode = "wb")
+  unzip("enoe.zip")
+  serie <- read_csv("ENOE_SDEMT425.csv", guess_max = Inf)
+  ```
+
+- **Antes de interpretar**: sin `guess_max = Inf`, `read_csv()` pierde los 292
+  valores de un campo de texto. Los campos de texto libre traen acentos rotos
+  desde el origen, que ninguna opción de lectura corrige, y nombres de personas.
+  Sin diccionario en el `.zip`.
 - <https://www.inegi.org.mx/programas/enoe/15ymas/>
 
 ### INEGI · ENAPROCE (productividad y competitividad de empresas) {#enaproce}
@@ -202,16 +262,27 @@ Censo completo de la actividad económica del país.
 
 Catálogo abierto del gobierno federal.
 
-- **Estado**: **API verificada.** La API de CKAN responde sin token.
-  79 conjuntos de datos para el término "precios", la mayoría bajo CC-BY-4.0.
-- **Prueba directa**:
-  `https://datos.gob.mx/api/3/action/package_search?q=precios`
+- **Estado**: bloqueada por script. El sitio migró a `www.datos.gob.mx`. El 12
+  de septiembre de 2026 su API respondió `403` a las solicitudes sin agente de
+  navegador, que es como las hace R, y los archivos que lista viven en
+  `repodatos.atdt.gob.mx`, que rechazó todas las descargas automatizadas.
+- <https://www.datos.gob.mx/>
 
 ### Inside Airbnb {#airbnb}
 
 Listados de Airbnb por ciudad, con precio, tipo, ubicación y reseñas.
 
-- **Estado**: portal disponible. Licencia Creative Commons.
+- **Estado**: **descarga verificada.** Licencia CC BY 4.0.
+- **Acceso**: Ciudad de México, edición del 15 de junio de 2026. `read_csv()`
+  lee el `.gz` directo de la dirección: 31,430 anuncios y 90 variables.
+
+  ```r
+  serie <- read_csv("https://data.insideairbnb.com/mexico/df/mexico-city/2026-06-15/data/listings.csv.gz")
+  ```
+
+- **Antes de interpretar**: 14 de las 90 columnas vienen completamente vacías en
+  esta edición, entre ellas `host_since` y `neighbourhood`. Trae nombre y
+  descripción de los anfitriones.
 - **Nota**: es el dataset central de *Análisis de Datos II*. Trabajarlo aquí te
   da ventaja el semestre siguiente, pero también te quita la novedad.
 - <https://insideairbnb.com/get-the-data/>
@@ -227,7 +298,7 @@ La media y la desviación estándar del **nivel** de un precio a cinco años dic
 muy poco. La serie sube o baja, así que el promedio describe un punto por el que
 la serie pasó, no un valor típico.
 
-Sobre los **rendimientos** —la variación porcentual de un día al siguiente— esos
+Sobre los **rendimientos** (la variación porcentual de un día al siguiente) esos
 mismos estadísticos sí funcionan, porque los rendimientos no arrastran tendencia.
 :::
 
@@ -237,8 +308,8 @@ geométrica es la única correcta.
 
 **El análisis de series de tiempo no es parte de este curso ni de Análisis de
 Datos II.** Las dos materias trabajan con observaciones independientes entre sí.
-Vale la pena saberlo al elegir: una serie de corte transversal, como la de
-Profeco o la de comercio exterior de un año, te sirve en las dos.
+Una serie de corte transversal, como la de la ENIGH o la de comercio exterior de
+un año, sirve en las dos materias.
 
 ## Cómo llegan los datos a clase
 

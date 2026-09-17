@@ -71,10 +71,9 @@ responder una pregunta estadística. Ver
 | 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
 | 6 | Variables categóricas: la gráfica de barras | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
 | 7 | Datos faltantes: lo que falta también informa | `is.na`, `drop_na` | agregado |
-| 8 | Histograma: la forma de una variable numérica | `geom_histogram` | 3.2.2 |
-| 9 | El ancho del intervalo, polígono y frecuencia acumulada | `binwidth`, `geom_freqpoly`, `stat_ecdf` | 3.2.2 |
+| 8 y 9 | [Histograma y frecuencia acumulada](slides/u2/s08_histograma-acumulada.qmd) | `geom_histogram`, `binwidth`, `geom_freqpoly`, `cumsum`, `stat_ecdf` | 3.2.2 |
 | | **Unidad 3 · Resumir y comparar** | | |
-| 10 | Cuantiles: cuartiles, deciles y percentiles | `quantile`, `seq`, `probs` | 2.1 |
+| 10 | [Cuantiles: cuartiles, deciles y percentiles](slides/u3/s10_cuantiles.qmd) | `quantile`, `seq`, `probs`, `IQR` | 2.1 |
 | 11 | Diagrama de caja: detectar y decidir qué hacer | `geom_boxplot`, `filter` | 3.2.3 |
 | 12 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
 | 13 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |

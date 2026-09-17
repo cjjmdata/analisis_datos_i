@@ -13,20 +13,20 @@ No hay un entregable aparte que se arma al final. El cuaderno crece sesión a
 sesión, y al cierre del semestre esa misma libreta es el trabajo que entregas.
 
 En clase todos analizamos los mismos datos. Fuera de clase, cada quien analiza
-**su serie**: la eliges del [catálogo](../datos/catalogo.qmd) en las primeras dos
-semanas y le aplicas cada técnica en la semana en que se ve.
+**su serie**: la eliges del [catálogo](../datos/catalogo.qmd) en la primera
+actividad del portafolio y le aplicas cada técnica en la semana en que se ve.
 
 ## Por qué así
 
-**Los grupos son mixtos.** En este salón hay gente de Mercadotecnia, de
-Administración, de Finanzas y de Negocios Internacionales. Un caso diseñado para
-un perfil le habla a la cuarta parte del salón.
+**Tu base es tuya.** En clase todos analizamos los mismos datos, elegidos para
+que sirvan a cualquier carrera. El portafolio es donde el curso se vuelve de tu
+área, o del tema que te interese.
 
 **La técnica se entiende cuando la transfieres.** Calcular un coeficiente de
 variación sobre una serie que tú elegiste, y explicar por qué ese número tiene o
 no sentido para *esa* serie, exige entender qué mide.
 
-**La mezcla es material de discusión.** Cuando lleguemos a asimetría, alguien va
+**La variedad es material de discusión.** Cuando lleguemos a asimetría, alguien va
 a traer una serie de rendimientos casi simétrica y alguien más una de
 exportaciones por destino muy sesgada. Esa comparación se hace con datos que
 ustedes trajeron.
@@ -53,8 +53,8 @@ la terminal.
 1. Una cuenta en <https://github.com>
 2. Un repositorio nuevo, público, llamado `analisis-datos-i`
 
-Los dos son formularios web. Lo montamos en la sesión 4, cuando ya tengas la
-primera sección escrita.
+Los dos son formularios web. Lo montamos en clase, cuando ya tengas la primera
+sección escrita.
 
 ### Cada vez que avances
 
@@ -62,7 +62,8 @@ En Colab: **Archivo → Guardar una copia en GitHub**. Eliges tu repositorio,
 escribes un mensaje que diga qué agregaste, y aceptas.
 
 GitHub muestra los cuadernos ya formateados, con sus gráficas y resultados, así
-que la liga de tu repositorio es la entrega.
+que la liga de tu repositorio es la entrega. Mientras el repositorio no esté
+montado, las entregas se suben a Brightspace como archivo `.ipynb`.
 
 ::: {.nota}
 El mensaje del commit describe **qué cambió**, en pocas palabras.

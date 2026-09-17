@@ -1,0 +1,356 @@
+---
+title: "Histograma y frecuencia acumulada"
+subtitle: "Sesión 8 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 8 · Programa 3.2.2"
+    incremental: false
+    fig-align: center
+    fig-width: 9
+    fig-height: 4
+    code-line-numbers: false
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+    title-slide-attributes:
+      data-background-image: ../img/portada-graficas.png
+      data-background-size: cover
+      data-background-opacity: "0.9"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+
+theme_set(theme_minimal(base_size = 15))
+AZUL  <- "#3A6B6F"
+GRIS  <- "#CCCCCC"
+ROJO  <- "#A4503C"
+TINTA <- "#34425A"
+
+URL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067&single=true&output=csv"
+
+grupos <- read_csv(URL, show_col_types = FALSE) |>
+  select(
+    carrera  = Carrera,
+    genero   = `Género`,
+    edad     = `Edad, en años cumplidos`,
+    estatura = `Estatura, en metros`,
+    traslado = `Tiempo de traslado a la universidad, en minutos`
+  ) |>
+  filter(!is.na(traslado))
+
+# Una lámina por grupo: cada carrera ve su propia distribución.
+# El subtítulo se arma con los datos, no se teclea.
+lamina_grupo <- function(carrera_sel) {
+  d <- filter(grupos, carrera == carrera_sel)
+  ggplot(d, aes(x = traslado)) +
+    geom_histogram(binwidth = 10, fill = AZUL, color = "white", boundary = 0) +
+    labs(
+      title = carrera_sel,
+      subtitle = sprintf("n = %d · del mínimo de %d al máximo de %d minutos · rango de %d",
+                         nrow(d), min(d$traslado), max(d$traslado),
+                         max(d$traslado) - min(d$traslado)),
+      x = "Minutos de traslado", y = "Estudiantes"
+    )
+}
+```
+
+## El cuaderno de hoy {.smaller}
+
+**[Abrir en Colab](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s08_histograma-acumulada.ipynb)**
+
+Entorno de ejecución → Cambiar tipo de entorno de ejecución → **R**, y después
+Archivo → Guardar una copia en Drive.
+
+Los datos son los de la encuesta que contestaron en la sesión 2.
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Calcular** el mínimo, el máximo y el rango de una variable numérica, y
+   decir qué parte de los datos describen.
+2. **Construir** un histograma y justificar el ancho de intervalo que elegiste.
+3. **Distinguir** el histograma de la gráfica de barras por el tipo de variable
+   y por el eje.
+4. **Leer** una curva de frecuencia acumulada para responder preguntas de
+   umbral.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 3.2.2 Histograma, polígono y ojiva
+:::
+
+# El recorrido {background-color="#24494C"}
+
+## ¿Quién vive más lejos? {.smaller}
+
+::: {.friccion}
+Antes de mirar la pantalla: **¿cuántos minutos tarda en llegar la persona que
+más tarda de todo el grupo?**
+
+Escribe tu número. Al final de la clase lo comparas.
+:::
+
+. . .
+
+```{r}
+#| echo: true
+min(grupos$traslado)
+max(grupos$traslado)
+```
+
+## El rango {.smaller}
+
+El **rango** es la distancia entre el valor mayor y el menor.
+
+$$R = x_{max} - x_{min}$$
+
+```{r}
+max(grupos$traslado) - min(grupos$traslado)
+```
+
+. . .
+
+```{r}
+range(grupos$traslado)     # los dos extremos
+diff(range(grupos$traslado))  # y su diferencia
+```
+
+## Lo que el rango describe {.smaller}
+
+::: {.no-dice}
+El rango se calcula con **dos datos** de los `r nrow(grupos)` que hay. Si una
+sola persona contestara que tarda 300 minutos, el rango cambiaría por completo y
+el resto del grupo seguiría igual.
+
+Dice **dónde empieza y dónde termina** el recorrido. No dice dónde está la
+mayoría.
+:::
+
+. . .
+
+Dónde está la mayoría se ve partiendo el recorrido por dentro. Eso es el
+histograma, y el rango es su eje horizontal.
+
+# El histograma {background-color="#24494C"}
+
+## De contar categorías a contar intervalos {.smaller}
+
+Con una variable **categórica** se cuenta cuántos hay en cada categoría. Las
+categorías ya vienen dadas: Mercadotecnia, Finanzas, Negocios.
+
+Con una variable **numérica** no hay categorías: se fabrican. El recorrido se
+parte en intervalos del mismo ancho y se cuenta cuántos caen en cada uno.
+
+::: {.nota}
+Las barras del histograma **se tocan** porque el eje es continuo: cada barra
+cubre un tramo del recorrido, no una categoría suelta.
+:::
+
+## El histograma en R {.smaller}
+
+```{r}
+#| output-location: column
+#| code-line-numbers: "1|2|3"
+ggplot(grupos, aes(x = traslado)) +
+  geom_histogram(binwidth = 10, fill = AZUL, color = "white", boundary = 0) +
+  labs(x = "Minutos de traslado", y = "Estudiantes")
+```
+
+## El ancho del intervalo es una decisión {.smaller}
+
+::: {.friccion}
+Los mismos datos, dos anchos. **¿Cuál de las dos es la verdadera?**
+:::
+
+```{r}
+#| echo: false
+#| fig-height: 2.6
+ggplot(grupos, aes(x = traslado)) +
+  geom_histogram(binwidth = 5, fill = AZUL, color = "white", boundary = 0) +
+  labs(title = "binwidth = 5", x = NULL, y = NULL)
+```
+
+```{r}
+#| echo: false
+#| fig-height: 2.6
+ggplot(grupos, aes(x = traslado)) +
+  geom_histogram(binwidth = 20, fill = AZUL, color = "white", boundary = 0) +
+  labs(title = "binwidth = 20", x = "Minutos de traslado", y = NULL)
+```
+
+## Ninguna de las dos {.smaller}
+
+::: {.no-dice}
+Las dos son correctas y describen los mismos datos. Con intervalos angostos se
+ve el detalle y también el ruido; con intervalos anchos se ve la forma general y
+se pierden los huecos.
+
+**Quien elige el ancho elige la historia**, y por eso el ancho se declara junto
+a la gráfica.
+:::
+
+::: {.ia-nota}
+Si le pides a un modelo "hazme un histograma de esta variable", va a elegir un
+ancho por ti, casi siempre sin decírtelo. La forma que veas será consecuencia de
+esa decisión que no tomaste.
+
+Revisa el argumento `binwidth` de cada gráfica que recibas.
+:::
+
+## Comparar dos grupos {.smaller}
+
+Dos histogramas encimados se tapan. El **polígono de frecuencias** une los
+puntos medios y deja leer los dos a la vez.
+
+```{r}
+#| fig-height: 3.2
+ggplot(grupos, aes(x = traslado, color = genero)) +
+  geom_freqpoly(binwidth = 10, linewidth = 1) +
+  labs(x = "Minutos de traslado", y = "Estudiantes", color = NULL)
+```
+
+# La frecuencia acumulada {background-color="#24494C"}
+
+## Una pregunta distinta {.smaller}
+
+El histograma responde **cuántos hay en cada tramo**.
+
+Esta pregunta es otra: **¿cuántos llegan en 30 minutos o menos?**
+
+::: {.friccion}
+Tu apuesta primero: de cada 100 estudiantes del grupo, ¿cuántos llegan en 30
+minutos o menos?
+:::
+
+## La tabla acumulada {.smaller}
+
+`cumsum()` va sumando lo que lleva acumulado hasta cada renglón.
+
+```{r}
+#| output-location: column
+grupos |>
+  count(traslado) |>
+  mutate(
+    acumulada = cumsum(n),
+    porcentaje = acumulada / sum(n) * 100
+  ) |>
+  head(8)
+```
+
+## La curva {.smaller}
+
+```{r}
+#| output-location: column
+#| fig-width: 5
+ggplot(grupos, aes(x = traslado)) +
+  stat_ecdf(color = AZUL, linewidth = 1) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Minutos de traslado",
+       y = "Porcentaje acumulado")
+```
+
+Para cada valor del eje horizontal, la curva dice **qué porcentaje del grupo
+queda en ese valor o por debajo**.
+
+## Leer la curva {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+corte <- 30
+p <- mean(grupos$traslado <= corte) * 100
+
+ggplot(grupos, aes(x = traslado)) +
+  stat_ecdf(color = AZUL, linewidth = 1) +
+  geom_segment(aes(x = corte, xend = corte, y = 0, yend = p / 100),
+               color = ROJO, linewidth = 0.8, linetype = "dashed") +
+  geom_segment(aes(x = 0, xend = corte, y = p / 100, yend = p / 100),
+               color = ROJO, linewidth = 0.8, linetype = "dashed") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = "Minutos de traslado", y = "Porcentaje acumulado",
+       title = sprintf("El %.0f%% del grupo llega en %d minutos o menos", p, corte))
+```
+
+::: {.nota}
+Esta curva es la **ojiva** de los libros de texto. El nombre clásico se menciona
+para reconocerlo; el software actual la dibuja así.
+:::
+
+# Tu grupo {background-color="#24494C"}
+
+## Mercadotecnia Estratégica {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+lamina_grupo("Mercadotecnia Estratégica")
+```
+
+## Administración y Dirección de Empresas {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+lamina_grupo("Administración y Dirección de Empresas")
+```
+
+## Finanzas y Contaduría Pública {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+lamina_grupo("Finanzas y Contaduría Pública")
+```
+
+## Negocios Internacionales {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+lamina_grupo("Negocios Internacionales")
+```
+
+# La fila {background-color="#24494C"}
+
+## De pie, en orden {.smaller}
+
+Todos de pie. Se forman en una sola fila, **de menor a mayor tiempo de
+traslado**, sin que nadie dirija.
+
+Una vez formados:
+
+1. La persona que quedó **exactamente a la mitad** da un paso al frente.
+2. Ahora las dos personas que parten en dos cada mitad.
+3. Cuenta cuántos quedan a la izquierda de cada una.
+
+. . .
+
+Esos tres lugares de la fila tienen nombre, y son el tema de la próxima sesión.
+
+## Tarea {.smaller}
+
+Sobre **tu serie del portafolio**:
+
+1. El mínimo, el máximo y el rango de tu variable numérica, con sus unidades.
+2. Un histograma, con **dos anchos distintos**, y una línea que diga cuál
+   elegiste y por qué.
+3. La curva de frecuencia acumulada, y una pregunta de umbral contestada con
+   ella: *"el ___% de mis observaciones está en ___ o menos"*.
+
+::: {.nota}
+Si tu variable numérica tiene pocos valores distintos, el histograma va a salir
+pobre. Dilo en tu cuaderno: es un hallazgo sobre tu fuente, no un error tuyo.
+:::

@@ -18,9 +18,10 @@ vive en `../analisis_de_datos/analisis_datos_ii` y es el referente de estructura
 
 1. **Sin experiencia previa de programación.** Ninguna. Para muchos, este curso es
    su primer contacto con una línea de código.
-2. **Grupos mixtos entre carreras**, no separados por perfil: Mercadotecnia
-   Estratégica · Administración y Dirección de Empresas · Finanzas y Contaduría
-   Pública · Negocios Internacionales.
+2. **Grupos separados por carrera**: Mercadotecnia Estratégica · Administración y
+   Dirección de Empresas · Finanzas y Contaduría Pública · Negocios
+   Internacionales. Cada grupo tiene una sola carrera. El diseño original suponía
+   grupos mixtos; la sección "Columna vertebral común" dice qué cambia.
 3. Son alumnos de negocios, no de matemáticas. Pero **este curso sí lleva teoría,
    fórmulas y demostración ligera** — no es un taller de herramientas.
 
@@ -81,7 +82,14 @@ con visualización.
 
 ### Columna vertebral común + lente de carrera
 
-Los grupos son mixtos, así que **no se producen cuatro cursos paralelos**.
+**No se producen cuatro cursos paralelos**, aunque los grupos sean por carrera.
+El material de clase es común y la diferencia entre carreras vive en la base que
+cada alumno elige, que además no está restringida a su carrera.
+
+Los grupos por carrera sí cambian dos cosas respecto del diseño original: los
+equipos del caso de negocio no pueden mezclar carreras, y la discusión comparada
+entre series de distintas carreras ocurre dentro de un grupo solo si sus
+integrantes eligen fuentes de otras áreas.
 
 **Columna vertebral (todos, en clase).** Dos fuentes: la **encuesta del grupo**
 (sesión 1; los alumnos son la población; sostiene las unidades 1–3) y el **caso de
