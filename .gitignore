@@ -46,6 +46,18 @@ prompts/
 # reactivos y claves de respuesta
 examen/
 
+# calificaciones y todo archivo con datos que identifican alumnos
+calificaciones/
+
+# configuración local de Claude Code; la protección de las llaves vive en la global
+.claude/settings.local.json
+.claude/hooks/
+
+# red de seguridad: exportaciones de calificaciones que caigan fuera de su carpeta
+*GradesExport*
+*calificaciones*.csv
+*calificaciones*.xlsx
+
 # material fuente de semestres previos y documentos institucionales
 referencias/
 

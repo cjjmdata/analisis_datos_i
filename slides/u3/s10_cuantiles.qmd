@@ -50,8 +50,9 @@ grupos <- read_csv(URL, show_col_types = FALSE) |>
   ) |>
   filter(!is.na(traslado), !is.na(estatura))
 
-# Once traslados para el cálculo a mano. Con n = 11 las posiciones de los
-# cuartiles caen en un dato exacto y no hace falta interpolar todavía.
+# Once traslados para el cálculo a mano. Con n = 11, la fórmula (n+1)p cae en
+# un dato exacto; quantile() usa otra fórmula y sí interpola. Esa diferencia es
+# el contenido de la sección.
 once <- sort(head(grupos$traslado, 11))
 
 deciles <- read_csv("../../datos/enigh2024_deciles.csv", show_col_types = FALSE)
@@ -198,58 +199,79 @@ once[posiciones]
 
 . . .
 
-Y ahora la función que hace lo mismo:
+Y ahora la función de R:
 
 ```{r}
 quantile(once, probs = c(0.25, 0.50, 0.75))
 ```
 
-## ¿Coinciden siempre? {.smaller}
+::: {.friccion}
+La mediana y el tercer cuartil coinciden. **El primero no.** ¿Por qué?
+:::
 
-Con once datos, las posiciones cayeron en un dato exacto. Con el grupo completo
-no ocurre: la posición cae entre dos datos y el cuantil se **interpola**.
+## Dos fórmulas para la misma posición {.smaller}
 
-```{r}
-estatura <- sort(grupos$estatura)
-m <- length(estatura)
-(m + 1) * 0.75            # la posición ya no es un entero
-```
+Cada método ubica el cuartil en un lugar distinto de la lista.
+
+| | Fórmula de la posición | Con $n = 11$ y $p = 0{,}25$ |
+|---|---|---|
+| A mano, **tipo 6** | $(n+1)\,p$ | $12 \times 0{,}25 = 3$ |
+| `quantile()`, **tipo 7** | $1 + (n-1)\,p$ | $1 + 10 \times 0{,}25 = 3{,}5$ |
 
 . . .
 
+La posición 3 es un dato de la lista: el **8**.
+
+La posición 3,5 cae entre el tercero y el cuarto, así que se **interpola**:
+
+$$8 + 0{,}5 \times (15 - 8) = 11{,}5$$
+
 ```{r}
-#| echo: false
-pos <- (m + 1) * 0.75
-manual <- estatura[floor(pos)] + (pos - floor(pos)) * (estatura[floor(pos) + 1] - estatura[floor(pos)])
-tibble(
-  método = c("A mano, con (n+1)p", "quantile() de R"),
-  Q3 = c(manual, quantile(grupos$estatura, .75))
-) |>
-  knitr::kable(digits = 4)
+quantile(once, 0.25, type = 6)   # la misma fórmula del cálculo a mano
 ```
 
-**No coinciden.**
+## Por qué hay más de una {.smaller}
 
-## Por qué no coinciden {.smaller}
-
-::: {.ia-nota}
-R tiene **nueve** definiciones de cuantil. La fórmula $(n+1)p$ que acabamos de
-usar es el tipo 6; la que R usa por omisión es el tipo 7.
+::: {.concepto}
+Un cuantil de una muestra no tiene una definición única. Las nueve que trae R
+difieren en dónde colocan la posición y en cómo reparten el peso entre los dos
+datos vecinos.
+:::
 
 ```{r}
 #| echo: false
 x <- c(12, 14, 15, 18, 19, 22, 25, 28, 31, 40)
-tibble(tipo = 1:9, Q1 = sapply(1:9, \(t) quantile(x, .25, type = t))) |>
-  pivot_wider(names_from = tipo, values_from = Q1, names_prefix = "tipo ") |>
-  knitr::kable(caption = "Primer cuartil de los mismos diez datos, según el método")
+tibble(
+  tipo     = c(4, 5, 6, 7, 8),
+  posición = c("$np$", "$np + 0{,}5$", "$(n+1)p$", "$1+(n-1)p$", "$(n+\frac{1}{3})p + \frac{1}{3}$"),
+  `dónde se usa` = c("—", "Hazen", "Minitab, SPSS, Excel EXC",
+                     "R por omisión, Excel INC, NumPy", "recomendado por Hyndman y Fan"),
+  Q1 = sapply(c(4, 5, 6, 7, 8), \(t) quantile(x, .25, type = t))
+) |>
+  knitr::kable(digits = 3,
+               caption = "Primer cuartil de los mismos diez datos, según el método")
 ```
 
-En Excel pasa igual: `PERCENTIL.INC` es el tipo 7 y `PERCENTIL.EXC` es el tipo 6.
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Hyndman, R. J. y Fan, Y. (1996). Sample Quantiles in Statistical Packages.
+*The American Statistician*, 50(4), 361-365. Es la referencia que cita la ayuda
+de `quantile()`.
+:::
+
+## Cuál usar {.smaller}
+
+::: {.ia-nota}
+Ninguna de las nueve es la correcta: son convenciones. Lo que no se vale es
+mezclarlas dentro del mismo trabajo, ni reportar un cuartil sin saber de cuál
+salió.
+
+**En este curso** se usa `quantile()` tal cual, que es el tipo 7. Si comparas
+contra una cifra calculada en Excel con `PERCENTIL.EXC`, o contra un libro que
+use $(n+1)p$, los números van a diferir y la diferencia no es un error.
 
 Si le preguntas a un modelo de lenguaje cuál es el primer cuartil, vas a recibir
 un número sin saber con qué convención se calculó. La pregunta que importa no es
-cuál es el número, sino **cuál de las nueve definiciones usó**, y si es la misma
-que usó el resto de tu trabajo.
+cuál es el número, sino **cuál de las nueve definiciones usó**.
 :::
 
 # Los cortes {background-color="#24494C"}

@@ -249,6 +249,15 @@ curso · contenido administrativo. Todo eso vive en Brightspace.
 `referencias/` está en `.gitignore`: contiene material fuente de semestres previos
 y documentos institucionales.
 
+`calificaciones/` también: ahí se trabajan las calificaciones, identificadas por
+clave. El archivo que une cada clave con el nombre del alumno vive **fuera del
+repositorio**, en una carpeta del semestre con los demás archivos que identifican
+alumnos. Ningún asistente lee, lista ni recorre esa carpeta ni las que la
+contienen.
+En Claude Code lo impiden un hook y reglas de permiso en la configuración global
+del usuario. Codex y otras herramientas no tienen ese candado: ahí la regla
+depende de que se respete este párrafo.
+
 ## Estructura
 
 ```
@@ -269,6 +278,7 @@ y documentos institucionales.
 ├── analisis/                    ← NO SE PUBLICA (notebooks de validación)
 ├── prompts/                     ← NO SE PUBLICA
 ├── examen/                      ← NO SE PUBLICA
+├── calificaciones/              ← NO SE VERSIONA (datos que identifican alumnos)
 └── referencias/                 ← NO SE VERSIONA (material fuente)
 ```
 
