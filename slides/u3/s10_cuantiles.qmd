@@ -336,8 +336,71 @@ Piensa en el ingreso mensual de tu hogar, sumando lo que entra de todas las
 personas que viven ahí.
 
 **¿En cuál de los diez deciles de México crees que cae?**
+:::
 
-Anótalo. Nadie lo dice en voz alta.
+Contesta en el formulario. Es anónimo: no pide nombre ni correo, y aquí solo se
+proyecta el conteo del grupo.
+
+::: {style="font-size:0.8em; color:#6C7A7B;"}
+La liga se proyecta en clase.
+:::
+
+## El conteo del grupo {.smaller}
+
+::::{.columns}
+
+:::{.column width="58%"}
+| Decil | n | % del grupo |
+|:--:|:--:|:--:|
+| **I** | | |
+| **II** | | |
+| **III** | | |
+| **IV** | | |
+| **V** | | |
+| **VI** | | |
+| **VII** | | |
+| **VIII** | | |
+| **IX** | | |
+| **X** | | |
+:::
+
+:::{.column width="42%"}
+<div style="height:3em;"></div>
+
+::: {style="font-size:1.6em; line-height:1.15; color:#3A6B6F; text-align:center;"}
+↑<br>
+<span style="font-size:0.42em;">**mayor** ingreso<br>promedio del hogar</span>
+<div style="height:3.2em;"></div>
+<span style="font-size:0.42em;">**menor** ingreso<br>promedio del hogar</span><br>
+↓
+:::
+:::
+
+::::
+
+::: {.nota}
+Por definición, cada decil contiene el **10%** de los hogares del país. Diez
+renglones con 10% en cada uno.
+:::
+
+## Lo que suele pasar {.smaller}
+
+::: {.friccion}
+Antes de ver el conteo: ¿cómo creen que va a quedar repartido el grupo entre los
+diez deciles?
+:::
+
+. . .
+
+::: {.no-dice}
+Alrededor del 40% de las personas en países de la OCDE se ubica en el **centro**
+de la distribución, coincida o no con su ingreso real.
+
+Quienes están arriba **subestiman** su posición; quienes están abajo la
+sobreestiman. Entre los hogares del 30% más bajo, el 70% se coloca más arriba de
+donde está.
+
+Y subestiman más quienes tienen **más años de escolaridad**.
 :::
 
 ## Los deciles reales {.smaller}
