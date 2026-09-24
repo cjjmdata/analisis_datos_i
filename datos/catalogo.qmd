@@ -67,13 +67,21 @@ con historia larga.
 
 Precios diarios de acciones, índices y ETF.
 
-- **Estado**: bloqueada por script. El 12 de septiembre de 2026 la descarga
-  automatizada respondió `429` (demasiadas solicitudes). En agosto funcionó para
-  `BIMBOA.MX`, `WALMEX.MX`, `FEMSAUBD.MX`, `GMEXICOB.MX`, `CEMEXCPO.MX` y el
-  índice `^MXX`. La descarga manual desde la página no se comprobó.
-- **En R**: `leer_emisora("BIMBOA.MX")` de `R/datos.R`, que trae el dato en vivo
-  y cae al respaldo si el servicio no responde. También sirven `quantmod` y
-  `tidyquant`.
+- **Estado**: intermitente. Yahoo no ofrece una API oficial y limita las
+  descargas automatizadas. El 12 de septiembre de 2026 respondió `429`
+  (demasiadas solicitudes); el 23 de septiembre `quantmod` descargó sin problema
+  `TSLA`, `AAPL`, `NVDA`, `WALMEX.MX` y el índice `^MXX`. `WALMEX.MX` trae días
+  sin dato, que hay que declarar antes de calcular.
+- **En R**: `getSymbols()` de `quantmod`, que también lee otras fuentes, como
+  FRED de la Reserva Federal (esa no se pudo comprobar el 23 de septiembre: la
+  conexión falló). `leer_emisora("BIMBOA.MX")` de `R/datos.R` trae el dato en
+  vivo y cae al respaldo si el servicio no responde.
+
+```r
+library(quantmod)
+
+tsla <- getSymbols("TSLA", src = "yahoo", from = "2024-01-01", auto.assign = FALSE)
+```
 - **Para qué sirve aquí**: rendimientos para media geométrica, comparación de
   volatilidad entre emisoras con coeficiente de variación, y colas pesadas al
   llegar a curtosis y distribución normal.

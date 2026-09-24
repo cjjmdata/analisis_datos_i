@@ -216,3 +216,13 @@ $presentation-slide-text-align: left;
   font-size: 0.5em;
   color: #6C7A7B;
 }
+
+// Portada con imagen de fondo: el texto oscuro de la paleta se pierde sobre una
+// foto. Solo aplica a portadas que declaran data-background-image; las de fondo
+// liso conservan el color de encabezado.
+.reveal #title-slide[data-background-image] {
+  .title, .subtitle, .quarto-title-author-name, .author {
+    color: #FFFFFF;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
+  }
+}

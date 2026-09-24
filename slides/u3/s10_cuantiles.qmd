@@ -573,8 +573,45 @@ Mínimo, $Q_1$, mediana, $Q_3$ y máximo describen la distribución completa con
 cinco valores.
 
 ::: {.nota}
-Estos cinco números son exactamente los que dibuja el diagrama de caja de la
-próxima sesión.
+El diagrama de caja se construye con estos cinco números.
+:::
+
+## ¿Dónde están los cinco números? {.smaller}
+
+```{r}
+#| fig-height: 2.4
+ggplot(grupos, aes(x = traslado)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35, width = 0.5) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Minutos de traslado")
+```
+
+::: {.friccion}
+Localiza en la caja los cinco números de la lámina anterior.
+:::
+
+. . .
+
+```{r}
+#| echo: false
+caja <- ggplot_build(ggplot(grupos, aes(x = traslado)) + geom_boxplot())$data[[1]]
+fuera <- sort(unlist(caja$outliers))
+```
+
+La caja va de $Q_1$ a $Q_3$ y la línea interior es la mediana. El bigote derecho
+termina en **`r caja$xmax` minutos**, y el máximo del grupo es
+**`r max(grupos$traslado)`**.
+
+::: {.friccion}
+¿Por qué el bigote no llega al máximo? ¿Qué son los puntos sueltos?
+:::
+
+. . .
+
+::: {.nota}
+La caja calcula un alcance a partir del rango intercuartil y deja fuera lo que
+queda más lejos. Cómo se calcula ese alcance, y qué hacer con los puntos que
+quedan fuera, es el contenido de la sesión 11.
 :::
 
 # Tu grupo {background-color="#24494C"}
