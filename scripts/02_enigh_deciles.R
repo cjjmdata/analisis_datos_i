@@ -9,15 +9,19 @@
 # El ingreso se publica trimestral. Aquí se agrega la columna mensual porque el
 # alumno tiene presente el ingreso mensual de su hogar.
 #
-# Validado contra el comunicado de prensa de INEGI del 23 de julio de 2025:
+# Validado contra la presentación de resultados de INEGI (julio de 2025). El
+# promedio nacional está en las pp. 7 y 9; los diez deciles, en la p. 12.
 #   ingreso corriente trimestral promedio  77,864 pesos  (aquí: 77,864)
-#   decil I                                16,795 pesos  (aquí: 16,795)
-#   decil X                               236,095 pesos  (aquí: 236,092)
-# La diferencia de 3 pesos en el decil X viene del reparto del hogar que cae
-# justo en el corte entre deciles.
+#   diez deciles                           diferencia máxima de 3 pesos, en el X
+# La diferencia viene del reparto del hogar que cae justo en el corte entre
+# deciles. Verificado el 23 de septiembre de 2026.
+#
+# Las columnas piso y tope son el menor y el mayor ingreso observado dentro de
+# cada decil. INEGI publica los promedios; los límites se calculan aquí.
 #
 # Fuente: INEGI, Encuesta Nacional de Ingresos y Gastos de los Hogares 2024.
 #   https://www.inegi.org.mx/programas/enigh/nc/2024/
+#   https://www.inegi.org.mx/contenidos/programas/enigh/nc/2024/doc/enigh2024_ns_presentacion_resultados.pdf
 #   https://www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/enigh/ENIGH2024.pdf
 #
 # Uso: Rscript scripts/02_enigh_deciles.R
@@ -49,11 +53,13 @@ deciles <- hogares |>
   summarise(
     hogares    = sum(factor),
     trimestral = weighted.mean(ing_cor, factor),
+    piso       = min(ing_cor),   # el hogar de menor ingreso dentro del decil
     tope       = max(ing_cor),
     .groups    = "drop"
   ) |>
   mutate(
     mensual      = trimestral / 3,
+    piso_mensual = piso / 3,
     tope_mensual = tope / 3,
     porcentaje_del_ingreso = trimestral * hogares / sum(trimestral * hogares) * 100
   )

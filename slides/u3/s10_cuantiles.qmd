@@ -87,9 +87,10 @@ Archivo → Guardar una copia en Drive.
 
 Al terminar esta sesión vas a poder:
 
-1. **Calcular** a mano la posición de un cuartil, un decil y un percentil, y
-   obtener su valor.
-2. **Interpretar** un cuantil como la posición de un dato dentro del conjunto.
+1. **Calcular** a mano la posición de un cuantil en la lista ordenada y obtener
+   su valor.
+2. **Interpretar** un cuantil como el valor que deja debajo una proporción dada
+   de los datos.
 3. **Distinguir** la mediana como cuantil de la mediana como medida de centro.
 4. **Explicar** por qué dos programas devuelven cuartiles distintos para los
    mismos datos.
@@ -115,7 +116,7 @@ ggplot(grupos, aes(x = traslado)) +
   geom_segment(aes(x = 0, xend = corte, y = p/100, yend = p/100), color = ROJO, linetype = "dashed") +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "Minutos de traslado", y = NULL,
-       title = sprintf("30 minutos deja al %.0f%% debajo", p))
+       title = sprintf("%g minutos deja al %.0f%% debajo", corte, p))
 ```
 
 ## La pregunta de hoy {.smaller}
@@ -137,7 +138,8 @@ ggplot(grupos, aes(x = traslado)) +
 
 . . .
 
-Ese valor es un **cuantil**. Es la fila de la clase pasada, leída en la curva.
+Ese valor es un **cuantil**: la misma curva de la sesión anterior, leída en
+sentido inverso.
 
 ## Cómo se nombran {.smaller}
 
@@ -149,9 +151,50 @@ Un cuantil parte los datos ordenados en partes iguales. Según en cuántas parte
 | **Deciles** | 10 partes | 9 cortes | $D_1$ a $D_9$ |
 | **Percentiles** | 100 partes | 99 cortes | $P_1$ a $P_{99}$ |
 
-::: {.nota}
-Son el mismo procedimiento con distinta finura. El primer cuartil, el decil 2 y
-el percentil 25 son el mismo valor: $Q_1 = D_{2.5} = P_{25}$.
+Los tres son el mismo procedimiento con distinta finura, así que cada cuartil y
+cada decil equivalen a un percentil:
+
+| Cuartiles | Deciles | Percentil |
+|:--:|:--:|:--:|
+| | $D_2$ | $P_{20}$ |
+| $Q_1$ | | $P_{25}$ |
+| | $D_3$ | $P_{30}$ |
+| $Q_2$ | $D_5$ | $P_{50}$ |
+| $Q_3$ | | $P_{75}$ |
+
+. . .
+
+::: {.friccion}
+$Q_2$ coincide con un decil. **¿$Q_1$ coincide con alguno?**
+:::
+
+## Mismo número, distinto concepto {.smaller}
+
+$Q_1$ no coincide con ningún decil: el 25% cae entre el 20% y el 30%.
+
+```{r}
+quantile(grupos$traslado, probs = c(0.20, 0.25, 0.30))
+```
+
+. . .
+
+::: {.friccion}
+Son tres cortes distintos y en este grupo dan el mismo número. **¿Por qué?**
+:::
+
+. . .
+
+::: {.no-dice}
+```{r}
+#| echo: false
+empate <- quantile(grupos$traslado, .25)
+n_empate <- sum(grupos$traslado == empate)
+```
+`r n_empate` de las `r nrow(grupos)` respuestas dicen exactamente `r empate`
+minutos. Con tantos empates en un valor, varios cortes caen en el mismo dato.
+
+Que dos cuantiles den el mismo número no los vuelve el mismo cuantil. $D_2$ deja
+debajo el 20% y $Q_1$ el 25%, aunque aquí los dos valgan `r empate`.
 :::
 
 # Primero a mano {background-color="#24494C"}
@@ -172,22 +215,30 @@ Sin calcular nada: **¿qué valor parte esta lista en dos mitades?**
 ## La posición {.smaller}
 
 ::: {.a-mano}
-Un cuartil se localiza primero por su **posición** en la lista ordenada:
+Un cuantil se localiza primero por su **posición** en la lista ordenada. Para
+dejar debajo la proporción $p$:
 
-$$Q_k = \frac{k\,(n+1)}{4}$$
+$$\text{posición} = (n+1)\,p$$
+
+$p = 0{,}25$ para $Q_1$, $p = 0{,}20$ para $D_2$, $p = 0{,}90$ para $P_{90}$.
 
 Con $n = 11$ datos, el primer cuartil está en la posición
 
-$$Q_1 = \frac{1 \times (11+1)}{4} = 3$$
+$$(11+1) \times 0{,}25 = 3$$
 
-o sea, **el tercer dato de la lista ordenada**.
+Su **valor** es el que ocupa ese lugar: el tercer dato de la lista ordenada.
 :::
 
 ```{r}
 n <- length(once)
-(n + 1) * 0.25      # la posición
-once[3]             # el dato que está en esa posición
+posicion <- (n + 1) * 0.25   # dónde está
+once[posicion]               # cuánto vale
 ```
+
+::: {.friccion}
+Con los mismos once datos, ¿en qué posición queda $D_9$? ¿Qué pasa si no es un
+número entero?
+:::
 
 ## Los tres cortes {.smaller}
 
@@ -220,11 +271,11 @@ Cada método ubica el cuartil en un lugar distinto de la lista.
 
 . . .
 
-La posición 3 es un dato de la lista: el **8**.
+La posición 3 es un dato de la lista: el **`r once[3]`**.
 
 La posición 3,5 cae entre el tercero y el cuarto, así que se **interpola**:
 
-$$8 + 0{,}5 \times (15 - 8) = 11{,}5$$
+$$`r once[3]` + 0{,}5 \times (`r once[4]` - `r once[3]`) = `r once[3] + 0.5 * (once[4] - once[3])`$$
 
 ```{r}
 quantile(once, 0.25, type = 6)   # la misma fórmula del cálculo a mano
@@ -244,7 +295,7 @@ x <- c(12, 14, 15, 18, 19, 22, 25, 28, 31, 40)
 tibble(
   tipo     = c(4, 5, 6, 7, 8),
   posición = c("$np$", "$np + 0{,}5$", "$(n+1)p$", "$1+(n-1)p$", "$(n+\frac{1}{3})p + \frac{1}{3}$"),
-  `dónde se usa` = c("—", "Hazen", "Minitab, SPSS, Excel EXC",
+  `dónde se usa` = c("", "Hazen", "Minitab, SPSS, Excel EXC",
                      "R por omisión, Excel INC, NumPy", "recomendado por Hyndman y Fan"),
   Q1 = sapply(c(4, 5, 6, 7, 8), \(t) quantile(x, .25, type = t))
 ) |>
@@ -261,8 +312,8 @@ de `quantile()`.
 ## Cuál usar {.smaller}
 
 ::: {.ia-nota}
-Ninguna de las nueve es la correcta: son convenciones. Lo que no se vale es
-mezclarlas dentro del mismo trabajo, ni reportar un cuartil sin saber de cuál
+Ninguna de las nueve es la correcta: son convenciones. El error está en
+mezclarlas dentro del mismo trabajo, o en reportar un cuartil sin saber de cuál
 salió.
 
 **En este curso** se usa `quantile()` tal cual, que es el tipo 7. Si comparas
@@ -270,8 +321,8 @@ contra una cifra calculada en Excel con `PERCENTIL.EXC`, o contra un libro que
 use $(n+1)p$, los números van a diferir y la diferencia no es un error.
 
 Si le preguntas a un modelo de lenguaje cuál es el primer cuartil, vas a recibir
-un número sin saber con qué convención se calculó. La pregunta que importa no es
-cuál es el número, sino **cuál de las nueve definiciones usó**.
+un número sin saber con qué convención se calculó. Para usarlo hace falta saber
+**cuál de las nueve definiciones aplicó**.
 :::
 
 # Los cortes {background-color="#24494C"}
@@ -310,9 +361,27 @@ IQR(grupos$traslado)
 
 . . .
 
+::: {.friccion}
+Si el traslado más largo del grupo se multiplicara por cinco, ¿qué le pasaría al
+rango intercuartil? ¿Y a la distancia entre el mínimo y el máximo?
+:::
+
+. . .
+
+```{r}
+#| echo: false
+extremo <- grupos$traslado
+extremo[which.max(extremo)] <- max(extremo) * 5
+```
+
+| | Datos reales | Con el extremo |
+|---|:--:|:--:|
+| Máximo menos mínimo | `r diff(range(grupos$traslado))` | `r diff(range(extremo))` |
+| Rango intercuartil | `r IQR(grupos$traslado)` | `r IQR(extremo)` |
+
 ::: {.nota}
-Un solo dato extremo mueve el rango por completo y deja el rango intercuartil
-intacto, porque los dos cortes se calculan por posición, no por magnitud.
+Los cuartiles se calculan por **posición**. Mientras el dato extremo siga siendo
+el último de la lista, cambiar su magnitud no mueve ningún corte.
 :::
 
 ## Deciles {.smaller}
@@ -347,40 +416,48 @@ La liga se proyecta en clase.
 
 ## El conteo del grupo {.smaller}
 
-::::{.columns}
+```{=html}
+<style>
+.conteo-caja { display: flex; justify-content: center; align-items: stretch; gap: 1.2em; }
+.conteo { border-collapse: collapse; width: auto !important; font-size: 0.8em; margin: 0 !important; }
+.conteo th, .conteo td { padding: 0.14em 1.4em; line-height: 1.25; }
+.conteo th { border-bottom: 2px solid #3A6B6F; }
+.conteo td { border-bottom: 1px solid #D9E3E4; }
+.conteo td.d { font-weight: 700; text-align: center; }
+.conteo td:not(.d) { min-width: 5.5em; }
+.conteo-flecha { display: flex; flex-direction: column; align-items: center;
+  padding-top: 2.1em; color: #3A6B6F; font-size: 0.55em; text-align: center;
+  line-height: 1.2; width: 11em; }
+.conteo-flecha i { flex: 1; border-left: 4px solid #3A6B6F; margin-top: 0.5em; }
+.conteo-flecha .punta { font-size: 1.6em; line-height: 0.7; margin-bottom: 0.4em; }
+</style>
+<div class="conteo-caja">
+<table class="conteo">
+<thead><tr><th>Decil</th><th>n</th><th>% del grupo</th></tr></thead>
+<tbody>
+<tr><td class="d">I</td><td></td><td></td></tr>
+<tr><td class="d">II</td><td></td><td></td></tr>
+<tr><td class="d">III</td><td></td><td></td></tr>
+<tr><td class="d">IV</td><td></td><td></td></tr>
+<tr><td class="d">V</td><td></td><td></td></tr>
+<tr><td class="d">VI</td><td></td><td></td></tr>
+<tr><td class="d">VII</td><td></td><td></td></tr>
+<tr><td class="d">VIII</td><td></td><td></td></tr>
+<tr><td class="d">IX</td><td></td><td></td></tr>
+<tr><td class="d">X</td><td></td><td></td></tr>
+</tbody>
+</table>
+<div class="conteo-flecha">
+<span><b>menor</b> ingreso<br>promedio del hogar</span>
+<i></i>
+<span class="punta">&#9660;</span>
+<span><b>mayor</b> ingreso<br>promedio del hogar</span>
+</div>
+</div>
+```
 
-:::{.column width="58%"}
-| Decil | n | % del grupo |
-|:--:|:--:|:--:|
-| **I** | | |
-| **II** | | |
-| **III** | | |
-| **IV** | | |
-| **V** | | |
-| **VI** | | |
-| **VII** | | |
-| **VIII** | | |
-| **IX** | | |
-| **X** | | |
-:::
-
-:::{.column width="42%"}
-<div style="height:3em;"></div>
-
-::: {style="font-size:1.6em; line-height:1.15; color:#3A6B6F; text-align:center;"}
-↑<br>
-<span style="font-size:0.42em;">**mayor** ingreso<br>promedio del hogar</span>
-<div style="height:3.2em;"></div>
-<span style="font-size:0.42em;">**menor** ingreso<br>promedio del hogar</span><br>
-↓
-:::
-:::
-
-::::
-
-::: {.nota}
-Por definición, cada decil contiene el **10%** de los hogares del país. Diez
-renglones con 10% en cada uno.
+::: {style="font-size:0.75em; margin-top:0.6em; text-align:center;"}
+Por definición, cada decil contiene el **10%** de los hogares del país.
 :::
 
 ## Lo que suele pasar {.smaller}
@@ -393,14 +470,21 @@ diez deciles?
 . . .
 
 ::: {.no-dice}
-Alrededor del 40% de las personas en países de la OCDE se ubica en el **centro**
-de la distribución, coincida o no con su ingreso real.
+En un estudio con datos de 97 países, cerca del **40%** de las personas en países
+de la OCDE se ubicó en el **centro** de la distribución, coincidiera o no con su
+ingreso real.
 
-Quienes están arriba **subestiman** su posición; quienes están abajo la
-sobreestiman. Entre los hogares del 30% más bajo, el 70% se coloca más arriba de
-donde está.
+Los estudios coinciden en la dirección del error: quienes están arriba
+**subestiman** su posición y quienes están abajo la sobreestiman. Y en un estudio
+reciente, quienes tienen **más escolaridad** tienden a subestimarla.
+:::
 
-Y subestiman más quienes tienen **más años de escolaridad**.
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Feichtmayer, J. y Gründler, K. (2021). *Global Evidence on Misperceptions and
+Preferences for Redistribution*. CESifo Working Paper 9381. Documento de trabajo,
+sin arbitraje. · Kulic, N., Griaznova, O. y Clerici, E. (2025). (Mis)perceptions
+of individual position in national and global income distribution. The Italian
+case. *Frontiers in Sociology*, 10, 1646173.
 :::
 
 ## Los deciles reales {.smaller}
@@ -409,18 +493,21 @@ Y subestiman más quienes tienen **más años de escolaridad**.
 #| echo: false
 deciles |>
   transmute(
-    Decil = decil,
-    `Ingreso mensual promedio` = scales::comma(round(mensual)),
-    `Hasta` = scales::comma(round(tope_mensual)),
+    Decil = as.character(as.roman(decil)),
+    Desde    = scales::comma(round(piso_mensual)),
+    Promedio = scales::comma(round(mensual)),
+    Hasta    = scales::comma(round(tope_mensual)),
     `% del ingreso total` = round(porcentaje_del_ingreso, 1)
   ) |>
-  knitr::kable(align = "crrr")
+  knitr::kable(align = "crrrr")
 ```
 
 ::: {style="font-size:0.5em; color:#6C7A7B;"}
-INEGI, Encuesta Nacional de Ingresos y Gastos de los Hogares 2024. Ingreso
-corriente trimestral dividido entre tres. Calculado con el factor de expansión
-de la encuesta en `scripts/02_enigh_deciles.R`.
+Ingreso corriente mensual por hogar, en pesos: trimestral entre tres. INEGI,
+ENIGH 2024, microdatos, con el factor de expansión, en
+`scripts/02_enigh_deciles.R`. Los promedios coinciden con la
+[presentación de resultados del INEGI](https://www.inegi.org.mx/contenidos/programas/enigh/nc/2024/doc/enigh2024_ns_presentacion_resultados.pdf),
+p. 12, con diferencias de hasta 3 pesos trimestrales.
 :::
 
 ## Dónde queda la mitad {.smaller}
@@ -431,17 +518,18 @@ mediana_hogar <- deciles$tope_mensual[deciles$decil == 5]
 razon <- deciles$mensual[deciles$decil == 10] / deciles$mensual[deciles$decil == 1]
 ```
 
-La mitad de los hogares del país vive con **`r scales::comma(round(mediana_hogar))` pesos al mes o menos**.
+La mitad de los hogares del país recibe **`r scales::comma(round(mediana_hogar))` pesos al mes o menos**.
 
-El decil X recibe **`r round(razon, 1)` veces** lo que recibe el decil I.
+El ingreso promedio del decil X es **`r round(razon, 1)` veces** el del decil I.
 
 ::: {.no-dice}
 El decil dice en qué lugar del reparto cae un hogar. No dice si ese ingreso
 alcanza: eso depende de cuántas personas viven de él, de dónde viven y de qué
 cuestan ahí las cosas.
 
-El decil X incluye tanto al hogar que recibe 50 mil pesos como al que recibe
-millones. Un corte por posición no describe lo que pasa dentro del último tramo.
+El decil X empieza en **`r scales::comma(round(deciles$tope_mensual[deciles$decil == 9]))` pesos** al mes y
+llega hasta **`r scales::comma(round(max(deciles$tope_mensual)))`**. Un corte por posición no describe lo
+que pasa dentro del último tramo.
 :::
 
 ## Percentiles {.smaller}
@@ -452,13 +540,27 @@ Cien partes. Sirven cuando las diez de los deciles son demasiado gruesas:
 quantile(grupos$traslado, probs = c(0.05, 0.90, 0.95, 0.99))
 ```
 
-::: {.no-dice}
-Con `r nrow(grupos)` respuestas, el percentil 37 y el 38 casi siempre caen entre
-los dos mismos datos. El número sale con tres decimales y eso no significa que
-esté medido con esa precisión.
+::: {.friccion}
+Hay 99 percentiles. ¿Cuántos valores distintos esperas que den con los datos del
+grupo?
+:::
 
-Los percentiles finos piden muchos datos. Con pocos, el cuartil ya dice lo que
-el dato permite decir.
+. . .
+
+```{r}
+#| echo: false
+percentiles <- quantile(grupos$traslado, seq(0.01, 0.99, by = 0.01))
+distintos <- length(unique(percentiles))
+respuestas_distintas <- length(unique(grupos$traslado))
+```
+
+::: {.no-dice}
+Los 99 percentiles dan solo **`r distintos` valores distintos**. Con
+`r nrow(grupos)` respuestas que usan `r respuestas_distintas` valores, muchos
+percentiles vecinos caen en el mismo dato.
+
+Los percentiles finos piden muchos datos distintos. Con pocos, el cuartil ya dice
+lo que el dato permite decir.
 :::
 
 ## El resumen de cinco números {.smaller}
@@ -511,6 +613,13 @@ lamina_grupo("Negocios Internacionales")
 
 ## Tu propio percentil {.smaller}
 
+::: {.friccion}
+Antes de calcular: con tu tiempo de traslado, ¿qué porcentaje del grupo crees
+que tarda lo mismo que tú o menos? Anótalo.
+:::
+
+. . .
+
 En el cuaderno, cambia el número por tu tiempo de traslado:
 
 ```{r}
@@ -518,10 +627,7 @@ mi_traslado <- 30
 mean(grupos$traslado <= mi_traslado) * 100
 ```
 
-. . .
-
-Ese es tu percentil dentro del grupo. Compáralo con la apuesta que escribiste al
-inicio de la sesión anterior.
+Ese es tu percentil dentro del grupo. ¿Qué tan lejos quedó tu apuesta?
 
 ## Tarea {.smaller}
 
