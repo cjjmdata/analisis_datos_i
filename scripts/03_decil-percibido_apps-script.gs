@@ -2,13 +2,13 @@
  * Crea el formulario de una sola pregunta para la sesión 10: en qué decil de
  * ingreso cree cada quien que cae su hogar.
  *
- * Cómo se usa, una vez por grupo y por semestre:
+ * Cómo se usa, una vez por semestre (el mismo formulario sirve a los cuatro grupos):
  *   1. script.google.com → Nuevo proyecto
  *   2. Pegar este archivo completo
  *   3. Ejecutar crearFormularioDecil()
  *   4. Autorizar cuando lo pida
  *   5. Copiar las ligas que imprime el registro de ejecución
- *   6. Publicar la hoja de respuestas como CSV (ver la guía en prompts/)
+ *   6. Publicar la hoja de respuestas como CSV (pasos 3 y 4 de prompts/s02_encuesta-operacion.md)
  *
  * ANONIMATO. No pide nombre ni correo y no exige iniciar sesión. Importa más
  * aquí que en la encuesta del grupo: se está preguntando por el ingreso del
