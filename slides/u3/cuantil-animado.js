@@ -110,21 +110,26 @@
     const deslizador = panel.querySelector("input");
 
     function actualizar() {
-      const p = deslizador.value / 100;
+      const p = deslizador.value / 100, n = datos.length;
       const q = cuantil(datos, p);
-      const debajo = datos.filter(v => v <= q).length;
-      puntos.forEach((c, i) => c.setAttribute("fill", datos[i] <= q ? AZUL : GRIS));
+      // Posición de quantile() (tipo 7), contada desde 1
+      const pos = 1 + (n - 1) * p, k = Math.floor(pos);
+      // Se pinta por posición, no por valor: los empates se reparten
+      puntos.forEach((c, i) => c.setAttribute("fill", i + 1 < k ? AZUL : i + 1 === k ? ROJO : GRIS));
       hLinea.setAttribute("x1", M.izq); hLinea.setAttribute("x2", escX(q));
       hLinea.setAttribute("y1", escCurva(p)); hLinea.setAttribute("y2", escCurva(p));
       vLinea.setAttribute("x1", escX(q)); vLinea.setAttribute("x2", escX(q));
       vLinea.setAttribute("y1", puntosY0 - 10); vLinea.setAttribute("y2", curvaY1);
       etiquetaP.setAttribute("x", escX(q) - 8); etiquetaP.setAttribute("y", puntosY0 + 4);
       etiquetaP.textContent = fmt(q) + " min";
+      const empates = datos.filter(v => v === datos[k - 1]).length;
+      const posTexto = Number.isInteger(Math.round(pos * 100) / 100) ? fmt(pos) : `${fmt(pos)}, entre el punto ${k} y el ${k + 1}`;
       const cuart = [0.25, 0.5, 0.75].map(pp => fmt(cuantil(datos, pp)));
       lectura.innerHTML =
-        `El <b>${deslizador.value}%</b> queda debajo de <b>${fmt(q)} minutos</b> ` +
-        `(${debajo} de ${datos.length} respuestas). ` +
-        `Q1 = ${cuart[0]} · mediana = ${cuart[1]} · Q3 = ${cuart[2]} · RIC = ${fmt(cuantil(datos, 0.75) - cuantil(datos, 0.25))} · máximo = ${fmt(datos[datos.length - 1])}`;
+        `<b>${deslizador.value}%</b> · posición 1 + (${n} − 1) × ${p.toFixed(2)} = ${posTexto} · ` +
+        `el punto ${k} (rojo) vale <b>${fmt(datos[k - 1])} min</b>; cuantil = <b>${fmt(q)} min</b>` +
+        (empates > 1 ? ` · otras ${empates - 1} respuestas tienen el mismo valor` : "") + `<br>` +
+        `Q1 = ${cuart[0]} · mediana = ${cuart[1]} · Q3 = ${cuart[2]} · RIC = ${fmt(cuantil(datos, 0.75) - cuantil(datos, 0.25))} · máximo = ${fmt(datos[n - 1])}`;
     }
 
     function redibujar() { dibujarEjes(); colocar(posicionesOrdenadas()); dibujarCurva(); actualizar(); }
