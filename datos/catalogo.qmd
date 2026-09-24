@@ -71,7 +71,7 @@ Precios diarios de acciones, índices y ETF.
   descargas automatizadas. El 12 de septiembre de 2026 respondió `429`
   (demasiadas solicitudes); el 23 de septiembre `quantmod` descargó sin problema
   `TSLA`, `AAPL`, `NVDA`, `WALMEX.MX` y el índice `^MXX`. `WALMEX.MX` trae días
-  sin dato, que hay que declarar antes de calcular.
+  sin dato, que se declaran antes de calcular.
 - **En R**: `getSymbols()` de `quantmod`, que también lee otras fuentes, como
   FRED de la Reserva Federal (esa no se pudo comprobar el 23 de septiembre: la
   conexión falló). `leer_emisora("BIMBOA.MX")` de `R/datos.R` trae el dato en
