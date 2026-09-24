@@ -96,7 +96,7 @@
     panel.style.cssText = "display:flex;align-items:center;gap:0.8em;flex-wrap:wrap;font-size:0.55em;margin-top:0.2em;";
     panel.innerHTML = `
       <label style="display:flex;align-items:center;gap:0.5em;">Proporción
-        <input type="range" min="1" max="99" value="25" style="width:18em;"></label>
+        <input type="range" min="0" max="100" value="25" style="width:18em;"></label>
       <button data-p="25">Q1</button><button data-p="50">Mediana</button><button data-p="75">Q3</button>
       <button data-accion="ordenar">Ordenar de nuevo</button>
       <button data-accion="estirar">Alargar el máximo</button>`;

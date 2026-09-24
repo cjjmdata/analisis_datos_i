@@ -52,11 +52,6 @@ grupos <- read_csv(URL, show_col_types = FALSE) |>
   ) |>
   filter(!is.na(traslado), !is.na(estatura))
 
-# Once traslados para el cálculo a mano. Con n = 11, la fórmula (n+1)p cae en
-# un dato exacto; quantile() usa otra fórmula y sí interpola. Esa diferencia es
-# el contenido de la sección.
-once <- sort(head(grupos$traslado, 11))
-
 deciles <- read_csv("../../datos/enigh2024_deciles.csv", show_col_types = FALSE)
 
 # Una lámina por grupo: cada carrera ve sus propios cuartiles.
@@ -220,10 +215,10 @@ debajo el 20% y $Q_1$ el 25%, aunque aquí los dos valgan `r empate`.
 
 ## Once traslados {.smaller}
 
-Estos son los tiempos de once compañeros, ya ordenados:
+Los tiempos de los primeros once compañeros, ordenados de menor a mayor:
 
 ```{r}
-#| echo: false
+once <- sort(head(grupos$traslado, 11))   # los primeros 11, de menor a mayor
 once
 ```
 
