@@ -80,7 +80,8 @@ function crearFormularioDecil() {
   form.setDestination(FormApp.DestinationType.SPREADSHEET, hoja.getId());
 
   Logger.log('=========================================================');
-  Logger.log('Liga para contestar:  ' + form.getShortUrl());
+  // getShortUrl() ya no existe en FormApp; la liga completa funciona igual
+  Logger.log('Liga para contestar:  ' + form.getPublishedUrl());
   Logger.log('Liga para editar:     ' + form.getEditUrl());
   Logger.log('Hoja de respuestas:   ' + hoja.getUrl());
   Logger.log('=========================================================');
