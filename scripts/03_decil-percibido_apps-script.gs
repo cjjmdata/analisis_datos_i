@@ -56,6 +56,19 @@ function crearFormularioDecil() {
     Logger.log('setRequireLogin no aplica en esta cuenta: ' + e.message);
   }
 
+  // El mismo formulario sirve a los cuatro grupos, así que la hoja acumula a
+  // todos. Esta pregunta es la que permite filtrar y que cada clase vea solo
+  // sus respuestas. Los grupos van por carrera.
+  form.addMultipleChoiceItem()
+    .setTitle('Grupo')
+    .setChoiceValues([
+      'Mercadotecnia Estratégica',
+      'Administración y Dirección de Empresas',
+      'Finanzas y Contaduría Pública',
+      'Negocios Internacionales'
+    ])
+    .setRequired(true);
+
   // Lista cerrada y en orden: con texto libre no hay forma de contar por decil.
   form.addMultipleChoiceItem()
     .setTitle('¿En cuál de los diez deciles crees que cae tu hogar?')
