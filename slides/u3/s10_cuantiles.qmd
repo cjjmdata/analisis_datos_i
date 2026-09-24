@@ -3,6 +3,8 @@ title: "Cuantiles"
 subtitle: "Sesión 10 · Análisis de Datos I"
 author: "CJJM"
 lang: es
+resources:
+  - cuantil-animado.js
 format:
   revealjs:
     theme: [default, ../../estilo-slides.scss]
@@ -140,6 +142,23 @@ ggplot(grupos, aes(x = traslado)) +
 
 Ese valor es un **cuantil**: la misma curva de la sesión anterior, leída en
 sentido inverso.
+
+## Muévelo tú {.smaller}
+
+::: {.friccion}
+¿Cuántos puntos se pintan al 50%? Si el traslado más largo se multiplica por cinco, ¿qué cuartil cambia?
+:::
+
+<div id="cuantil-animado"></div>
+
+```{r}
+#| echo: false
+#| results: asis
+# Los datos van del cómputo a la animación; ningún valor se teclea en el JS
+cat(sprintf("<script>const DATOS_CUANTIL = [%s];</script>\n",
+            paste(sort(grupos$traslado), collapse = ",")))
+cat('<script src="cuantil-animado.js"></script>\n')
+```
 
 ## Cómo se nombran {.smaller}
 
