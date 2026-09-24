@@ -149,7 +149,7 @@ sentido inverso.
 ¿Cuántos puntos se pintan al 50%? Si el traslado más largo se multiplica por cinco, ¿qué cuartil cambia?
 :::
 
-<div id="cuantil-animado"></div>
+<div id="cuantil-animado" data-prevent-swipe></div>
 
 ```{r}
 #| echo: false
