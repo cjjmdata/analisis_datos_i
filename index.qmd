@@ -74,7 +74,7 @@ responder una pregunta estadística. Ver
 | 8 y 9 | [Histograma y frecuencia acumulada](slides/u2/s08_histograma-acumulada.qmd) | `geom_histogram`, `binwidth`, `geom_freqpoly`, `cumsum`, `stat_ecdf` | 3.2.2 |
 | | **Unidad 3 · Resumir y comparar** | | |
 | 10 | [Cuantiles: cuartiles, deciles y percentiles](slides/u3/s10_cuantiles.qmd) | `quantile`, `seq`, `probs`, `IQR` | 2.1 |
-| 11 | Diagrama de caja: detectar y decidir qué hacer | `geom_boxplot`, `filter` | 3.2.3 |
+| 11 | [Diagrama de caja: detectar y decidir qué hacer](slides/u3/s11_diagrama-caja.qmd) | `geom_boxplot`, `filter` | 3.2.3 |
 | 12 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
 | 13 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |
 | 14 | Centro III: media geométrica | `prod`, `exp`, `log` | 2.2.3 |

@@ -1,0 +1,650 @@
+---
+title: "Diagrama de caja"
+subtitle: "Sesión 11 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+resources:
+  - caja-animada.js
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 11 · Programa 3.2.3"
+    incremental: false
+    fig-align: center
+    fig-width: 9
+    fig-height: 4
+    code-line-numbers: false
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+    title-slide-attributes:
+      data-background-image: ../img/portada-graficas.png
+      data-background-size: cover
+      data-background-opacity: "0.9"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+
+theme_set(theme_minimal(base_size = 15))
+AZUL  <- "#3A6B6F"
+GRIS  <- "#CCCCCC"
+ROJO  <- "#A4503C"
+TINTA <- "#34425A"
+
+URL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067&single=true&output=csv"
+
+grupos <- read_csv(URL, show_col_types = FALSE) |>
+  select(
+    carrera  = Carrera,
+    genero   = `Género`,
+    estatura = `Estatura, en metros`,
+    traslado = `Tiempo de traslado a la universidad, en minutos`
+  ) |>
+  filter(!is.na(traslado), !is.na(estatura))
+
+paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
+
+# Cercas de Tukey de un vector, para las tablas que se muestran ya calculadas
+cerca_superior <- function(x, k = 1.5) unname(quantile(x, .75) + k * IQR(x))
+cerca_inferior <- function(x, k = 1.5) unname(quantile(x, .25) - k * IQR(x))
+marcados <- function(x, k = 1.5) sort(x[x < cerca_inferior(x, k) | x > cerca_superior(x, k)])
+```
+
+## El cuaderno de hoy {.smaller}
+
+**[Abrir en Colab](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s11_diagrama-caja.ipynb)**
+
+Entorno de ejecución → Cambiar tipo de entorno de ejecución → **R**, y después
+Archivo → Guardar una copia en Drive.
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Construir** un diagrama de caja a partir del resumen de cinco números.
+2. **Calcular** las cercas y **clasificar** qué observaciones quedan fuera.
+3. **Justificar** por qué la regla se apoya en el rango intercuartil y no en la
+   distancia al centro.
+4. **Decidir** qué hacer con una observación marcada y dejar escrita esa
+   decisión.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 3.2.3 Diagrama de caja y bigotes
+:::
+
+# Los cinco números, dibujados {background-color="#24494C"}
+
+## Donde quedamos {.smaller}
+
+```{r}
+quantile(grupos$traslado, probs = seq(0, 1, by = 0.25))
+```
+
+```{r}
+#| echo: false
+#| fig-height: 2.2
+ggplot(grupos, aes(x = traslado)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35, width = 0.5) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Minutos de traslado")
+```
+
+```{r}
+#| echo: false
+dibujo   <- ggplot_build(ggplot(grupos, aes(x = traslado)) + geom_boxplot())$data[[1]]
+bigote   <- dibujo$xmax
+sueltos  <- sort(unlist(dibujo$outliers))
+```
+
+::: {.friccion}
+El bigote termina en **`r bigote`** minutos y el máximo del grupo es
+**`r max(grupos$traslado)`**. ¿Qué regla decide dónde se corta el bigote?
+:::
+
+## Las piezas {.smaller}
+
+| Pieza | Qué marca |
+|---|---|
+| Lado izquierdo de la caja | $Q_1$ |
+| Línea interior | mediana |
+| Lado derecho de la caja | $Q_3$ |
+| Ancho de la caja | rango intercuartil |
+| Bigotes | hasta dónde llegan los datos que la regla considera dentro |
+| Puntos sueltos | las observaciones que quedan fuera |
+
+::: {.nota}
+La caja se dibuja con cuatro de los cinco números. El quinto, el máximo, puede
+quedar fuera del bigote. Explicar por qué es el trabajo de hoy.
+:::
+
+# Primero a mano {background-color="#24494C"}
+
+## Doce traslados {.smaller}
+
+Los once de la sesión pasada, más el compañero que más tarda:
+
+```{r}
+doce <- sort(c(head(grupos$traslado, 11), max(grupos$traslado)))
+doce
+```
+
+::: {.friccion}
+Sin calcular nada: **¿cuál de los doce dirías que no pertenece al mismo
+conjunto?** ¿Con qué argumento, además de que se ve lejos?
+:::
+
+## La cerca {.smaller}
+
+::: {.a-mano}
+La regla mide la distancia en **rangos intercuartiles**, contados desde los
+bordes de la caja:
+
+$$RIC = Q_3 - Q_1$$
+
+$$\text{cerca inferior} = Q_1 - 1.5 \, RIC \qquad
+\text{cerca superior} = Q_3 + 1.5 \, RIC$$
+
+Lo que cae fuera de las cercas se marca.
+:::
+
+```{r}
+q <- quantile(doce, probs = c(0.25, 0.75))
+ric <- q[2] - q[1]
+ric
+
+q[2] + 1.5 * ric      # cerca superior
+q[1] - 1.5 * ric      # cerca inferior
+```
+
+## Quién queda fuera {.smaller}
+
+```{r}
+#| echo: false
+cs_doce <- unname(q[2] + 1.5 * ric)
+ci_doce <- unname(q[1] - 1.5 * ric)
+fuera_doce <- doce[doce > cs_doce | doce < ci_doce]
+dentro_doce <- doce[doce <= cs_doce & doce >= ci_doce]
+```
+
+```{r}
+doce[doce > q[2] + 1.5 * ric]     # los que pasan la cerca superior
+```
+
+. . .
+
+El bigote no llega hasta la cerca: llega hasta el **último dato que todavía cae
+dentro**.
+
+```{r}
+max(doce[doce <= q[2] + 1.5 * ric])
+```
+
+::: {.nota}
+Con estos doce datos: la cerca superior está en **`r cs_doce`**, el bigote se
+detiene en **`r max(dentro_doce)`** y el **`r fuera_doce[1]`** queda marcado. La
+cerca es un cálculo; el bigote es un dato.
+:::
+
+## La misma caja, dibujada por R {.smaller}
+
+```{r}
+#| fig-height: 2.2
+ggplot(tibble(minutos = doce), aes(x = minutos)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35, width = 0.5) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Minutos de traslado")
+```
+
+```{r}
+#| echo: false
+q6 <- quantile(doce, probs = c(0.25, 0.75), type = 6)
+cs6 <- unname(q6[2] + 1.5 * (q6[2] - q6[1]))
+```
+
+::: {.nota}
+La sesión pasada quedó abierto que hay más de una fórmula para el cuartil. Con la
+del cálculo a mano, el tipo 6, la cerca superior se recorre de `r cs_doce` a
+**`r cs6`** minutos.
+
+Los cuartiles cambian. La decisión sobre el `r fuera_doce[1]`, no.
+:::
+
+# Cómo se construye {background-color="#24494C"}
+
+## Paso a paso {.smaller}
+
+::: {.friccion}
+Antes de mover nada: si el factor 1.5 fuera 3, ¿cuántos puntos quedarían
+marcados? ¿Y si fuera 0?
+:::
+
+<div id="caja-animada" data-prevent-swipe></div>
+
+```{r}
+#| echo: false
+#| results: asis
+# Los datos van del cómputo a la animación; ningún valor se teclea en el JS
+cat(sprintf("<script>const DATOS_CAJA = [%s];</script>\n",
+            paste(sort(grupos$traslado), collapse = ",")))
+cat('<script src="caja-animada.js"></script>\n')
+```
+
+# Por qué 1.5 {background-color="#24494C"}
+
+## La cerca, medida en desviaciones estándar {.smaller}
+
+```{r}
+#| echo: false
+z <- qnorm(c(0.25, 0.75))
+ric_z <- z[2] - z[1]
+tabla_normal <- tibble(
+  Factor = c("1.5 (la regla usual)", "3.0"),
+  `Cerca, en desviaciones estándar` = round(z[2] + c(1.5, 3) * ric_z, 2),
+  `Datos que quedan fuera` = c(
+    sprintf("%.2f %%", 2 * pnorm(-(z[2] + 1.5 * ric_z)) * 100),
+    sprintf("%.4f %%", 2 * pnorm(-(z[2] + 3 * ric_z)) * 100))
+)
+knitr::kable(tabla_normal, align = "lcc")
+```
+
+Si los datos siguieran una distribución simétrica conocida, el rango
+intercuartil mediría `r round(ric_z, 3)` desviaciones estándar, y la cerca de
+1.5 caería a `r round(z[2] + 1.5 * ric_z, 3)` desviaciones del centro.
+
+::: {.nota}
+El 1.5 es una **convención**, propuesta por John Tukey en 1977. Está calibrada
+para que, cuando no pasa nada raro, casi nada quede fuera. No es una prueba
+estadística y no tiene un valor de corte que se pueda consultar en una tabla.
+:::
+
+## Lo que la regla marca cuando no pasa nada {.smaller}
+
+```{r}
+#| echo: false
+set.seed(2026)
+repeticiones <- 10000
+simulacion <- tibble(
+  n = c(15, 25, 50, 100),
+  porcentaje = sapply(c(15, 25, 50, 100), function(n) {
+    mean(replicate(repeticiones, {
+      x <- rnorm(n)
+      length(marcados(x)) > 0
+    })) * 100
+  })
+)
+simulacion |>
+  transmute(
+    `Tamaño de la muestra` = n,
+    `Muestras con al menos un punto marcado` = sprintf("%.1f %%", porcentaje)
+  ) |>
+  knitr::kable(align = "cc")
+```
+
+`r format(repeticiones, big.mark = " ")` muestras simuladas de una distribución
+sin ninguna observación anómala.
+
+::: {.no-dice}
+Con `r simulacion$n[3]` observaciones limpias, la regla marca algo en el
+**`r sprintf("%.0f %%", simulacion$porcentaje[3])`** de los casos.
+
+Un punto marcado no es un error, ni un dato malo, ni una prueba de nada. Es un
+**candidato a revisión**. Quien decide qué es, eres tú, y con el contexto de la
+variable, no con la gráfica.
+:::
+
+## Cuando el modelo pide limpiar {.smaller}
+
+::: {.ia-nota}
+Pídele a un modelo de lenguaje que "limpie los valores atípicos" de tu base y te
+va a devolver una base más chica, casi siempre sin decir cuántas filas quitó, con
+qué regla ni cuáles eran.
+
+Tres preguntas para el modelo, y para ti, antes de aceptar el resultado:
+
+1. ¿Qué regla usaste y con qué factor?
+2. ¿Cuántas observaciones quitaste, de cuántas?
+3. ¿Qué tenían esas observaciones en común?
+
+Si no puedes contestarlas, no puedes defender el número que salga después.
+:::
+
+# Por qué los cuartiles {background-color="#24494C"}
+
+## Un dato extremo se esconde a sí mismo {.smaller}
+
+```{r}
+#| echo: false
+extremo <- grupos$traslado
+extremo[which.max(extremo)] <- max(extremo) * 5
+
+n_por_cuartiles <- length(marcados(extremo))
+n_por_distancia <- sum(extremo > mean(extremo) + 2 * sd(extremo) |
+                       extremo < mean(extremo) - 2 * sd(extremo))
+
+tibble(
+  Medida = c("Rango intercuartil", "Desviación estándar"),
+  `Datos reales` = c(IQR(grupos$traslado), sd(grupos$traslado)),
+  `Con el máximo multiplicado por cinco` = c(IQR(extremo), sd(extremo))
+) |>
+  knitr::kable(digits = 1, align = "lcc")
+```
+
+::: {.nota}
+El rango intercuartil no se mueve: se calcula por posición y el dato extremo
+sigue siendo el último de la lista.
+
+La desviación estándar sí se mueve, y se mueve **por culpa del dato que se
+quiere detectar**. Una regla que mida la distancia al centro en desviaciones
+estándar se ensancha justo cuando aparece el valor raro: con estos datos marca
+`r n_por_distancia` observaciones, contra las `r n_por_cuartiles` que marca la
+regla de los cuartiles.
+:::
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+La desviación estándar llega formalmente en la sesión 15, y la regla empírica en
+la 17. Aquí importa solo que una se deja arrastrar y la otra no.
+:::
+
+# Comparar grupos {background-color="#24494C"}
+
+## Una caja por carrera {.smaller}
+
+::: {.friccion}
+Antes de ver la gráfica: **¿qué carrera creen que tarda más en llegar?** ¿Y cuál
+creen que tiene los tiempos más parecidos entre sí?
+:::
+
+. . .
+
+```{r}
+#| fig-height: 3
+ggplot(grupos, aes(x = traslado, y = carrera)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35) +
+  labs(x = "Minutos de traslado", y = NULL)
+```
+
+## Quién queda marcado {.smaller}
+
+```{r}
+#| echo: false
+tabla_carrera <- grupos |>
+  summarise(
+    n = n(),
+    RIC = IQR(traslado),
+    cerca = cerca_superior(traslado),
+    lista = paste(marcados(traslado), collapse = ", "),
+    .by = carrera
+  ) |>
+  arrange(desc(cerca))
+
+tabla_carrera |>
+  transmute(
+    Carrera = carrera, n,
+    `Rango intercuartil` = RIC,
+    `Cerca superior` = round(cerca, 1),
+    Marcados = ifelse(lista == "", "ninguno", lista)
+  ) |>
+  knitr::kable(align = "lcccl")
+```
+
+```{r}
+#| echo: false
+cerca_de <- setNames(tabla_carrera$cerca, tabla_carrera$carrera)
+dentro_propia <- grupos |> filter(traslado <= cerca_de[carrera])
+valor_doble   <- max(dentro_propia$traslado)
+carrera_doble <- dentro_propia$carrera[which.max(dentro_propia$traslado)]
+n_marca       <- sum(cerca_de < valor_doble)
+n_global      <- length(marcados(grupos$traslado))
+```
+
+::: {.nota}
+El compañero que tarda **`r valor_doble` minutos** estudia `r carrera_doble` y su
+propia caja no lo marca. Ese mismo valor quedaría marcado en **`r n_marca` de las
+cuatro** carreras.
+
+Ser atípico no es una propiedad del dato. Es una propiedad de la **comparación**.
+:::
+
+## La comparación cambia el veredicto {.smaller}
+
+```{r}
+#| fig-height: 2.6
+ggplot(grupos, aes(x = traslado, y = genero)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35) +
+  labs(x = "Minutos de traslado", y = NULL)
+```
+
+```{r}
+#| echo: false
+n_genero <- grupos |> summarise(k = length(marcados(traslado)), .by = genero)
+total_genero <- sum(n_genero$k)
+```
+
+::: {.no-dice}
+Sobre el grupo completo la regla marca **`r n_global`** observaciones. Separando
+por carrera, **`r sum(tabla_carrera$lista != "")`** de las cuatro cajas marcan
+algo. Separando por género, las dos cajas juntas marcan **`r total_genero`**.
+
+Son los mismos datos y las mismas cuentas. Una observación es atípica **respecto
+de un grupo**, y ese grupo se nombra: segmentar crea marcados donde no había y
+borra los que había.
+:::
+
+# Lo que la caja esconde {background-color="#24494C"}
+
+## Una caja sin nada marcado {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.8
+ggplot(grupos, aes(x = estatura)) +
+  geom_dotplot(binwidth = 0.01, fill = GRIS, color = "white", dotsize = 0.9) +
+  geom_boxplot(aes(y = -0.35), fill = AZUL, alpha = 0.35, width = 0.25) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Estatura, en metros")
+```
+
+La estatura del grupo no tiene ninguna observación marcada.
+
+::: {.friccion}
+¿La caja describe bien a este grupo? Miren los puntos de arriba antes de
+contestar.
+:::
+
+## Dos grupos dentro de uno {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.8
+ggplot(grupos, aes(x = estatura, y = genero)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35) +
+  labs(x = "Estatura, en metros", y = NULL)
+```
+
+```{r}
+#| echo: false
+med_genero <- grupos |> summarise(mediana = median(estatura), .by = genero) |> arrange(mediana)
+```
+
+::: {.no-dice}
+La mediana pasa de **`r med_genero$mediana[1]`** a
+**`r med_genero$mediana[2]`** metros entre los dos grupos. La caja de todos
+juntos no marcaba nada raro y tampoco mostraba esto.
+
+Un diagrama de caja resume la posición y la dispersión. **No muestra la forma**:
+dos jorobas y una sola se dibujan igual. Por eso la caja se lee junto al
+histograma de la sesión 8, no en lugar de él.
+:::
+
+# Decidir {background-color="#24494C"}
+
+## Cuatro preguntas ante un punto marcado {.smaller}
+
+| Pregunta | Si la respuesta es sí |
+|---|---|
+| ¿Es un error de captura? | Se corrige, y se documenta el cambio |
+| ¿Está en otra unidad? Horas contra minutos, miles contra unidades | Se convierte |
+| ¿Pertenece a otra población? Alguien que viaja desde otra ciudad | Se separa, y se dice que se separó |
+| ¿Es el fenómeno real? | **Se queda**, y muchas veces es el hallazgo |
+
+::: {.nota}
+Ninguna de las cuatro respuestas es borrar el dato en silencio. Las tres primeras
+requieren evidencia externa a la gráfica: la caja marca, no diagnostica.
+:::
+
+## Quitar no es borrar {.smaller}
+
+```{r}
+cerca <- quantile(grupos$traslado, 0.75) + 1.5 * IQR(grupos$traslado)
+
+sin_marcados <- filter(grupos, traslado <= cerca)
+
+nrow(grupos) - nrow(sin_marcados)     # cuántas observaciones se quedaron fuera
+```
+
+```{r}
+#| echo: false
+cambio <- tibble(
+  Medida = c("Mediana", "Tercer cuartil", "Máximo"),
+  `Con todas` = c(median(grupos$traslado), quantile(grupos$traslado, .75), max(grupos$traslado)),
+  `Sin las marcadas` = c(median(sin_marcados$traslado), quantile(sin_marcados$traslado, .75), max(sin_marcados$traslado))
+)
+knitr::kable(cambio, digits = 1, align = "lcc")
+```
+
+::: {.no-dice}
+Quitar las `r n_global` observaciones marcadas no arregla los datos: cambia la
+pregunta. Con todas, la respuesta describe a los `r nrow(grupos)` que
+contestaron; sin ellas, describe a los `r nrow(sin_marcados)` que tardan menos de
+`r round(unname(cerca), 1)` minutos.
+
+Las dos respuestas son válidas. Lo que no es válido es entregar la segunda
+diciendo que describe a todo el grupo.
+:::
+
+# Llevarlo a otra base {background-color="#24494C"}
+
+## Inflación anual, quince países {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.4
+paises_con_inflacion <- filter(paises, !is.na(inflacion))
+
+ggplot(paises_con_inflacion, aes(x = inflacion, y = pais)) +
+  geom_boxplot(fill = AZUL, alpha = 0.35) +
+  labs(x = "Inflación anual, en porcentaje", y = NULL)
+```
+
+::: {.friccion}
+`r nrow(paises_con_inflacion)` observaciones, `r min(paises$anio)` a
+`r max(paises$anio)`. **¿Por qué no se ve nada?**
+:::
+
+## El eje lo manda un año {.smaller}
+
+```{r}
+#| echo: false
+peor <- paises_con_inflacion |> slice_max(inflacion, n = 3) |> arrange(desc(inflacion))
+```
+
+```{r}
+moderada <- filter(paises_con_inflacion, inflacion < 40)
+
+nrow(paises_con_inflacion) - nrow(moderada)   # años que se sacaron de la gráfica
+```
+
+```{r}
+#| echo: false
+#| fig-height: 3
+ggplot(moderada, aes(x = inflacion, y = fct_reorder(pais, inflacion, median))) +
+  geom_boxplot(fill = AZUL, alpha = 0.35) +
+  labs(x = "Inflación anual, en porcentaje", y = NULL)
+```
+
+::: {.nota}
+El máximo es **`r peor$pais[1]` en `r peor$anio[1]`**, con
+`r scales::comma(round(peor$inflacion[1]))` por ciento. Los
+`r nrow(paises_con_inflacion) - nrow(moderada)` años que salieron de esta gráfica
+siguen en la base: se sacaron **para poder ver el resto**, y por eso se reporta
+cuántos son. Las cajas van ordenadas por mediana, no por alfabeto.
+
+Argentina queda como una raya hasta arriba: de sus años con dato, aquí sobrevive
+`r sum(moderada$pais == "Argentina")`.
+:::
+
+## El punto marcado es el hallazgo {.smaller}
+
+```{r}
+#| echo: false
+mexico <- filter(paises_con_inflacion, pais == "México")
+anios_mexico <- mexico |>
+  filter(inflacion > cerca_superior(mexico$inflacion) |
+         inflacion < cerca_inferior(mexico$inflacion)) |>
+  arrange(anio)
+
+anios_mexico |>
+  transmute(Año = anio, `Inflación` = sprintf("%.1f %%", inflacion)) |>
+  knitr::kable(align = "cc")
+```
+
+México, `r min(mexico$anio)` a `r max(mexico$anio)`: la regla marca
+`r nrow(anios_mexico)` años, con la cerca en
+`r sprintf("%.1f", cerca_superior(mexico$inflacion))` por ciento.
+
+::: {.nota}
+Nadie corrige esos años ni los quita. Son la crisis de 1994 y lo que vino
+después. En una serie de negocio, el año marcado suele ser el que pide
+explicación: el mes del desabasto, la tienda que abrió, el cliente que se fue.
+:::
+
+## Lo que estas cajas no dicen {.smaller}
+
+```{r}
+#| echo: false
+cobertura <- paises |>
+  summarise(anios_con_dato = sum(!is.na(inflacion)), .by = pais) |>
+  arrange(anios_con_dato)
+sin_marcar <- paises_con_inflacion |>
+  summarise(k = length(marcados(inflacion)), .by = pais) |>
+  filter(k == 0)
+```
+
+::: {.no-dice}
+**La cobertura no es pareja.** `r cobertura$pais[1]` aparece con
+`r cobertura$anios_con_dato[1]` años de dato y el resto con
+`r max(cobertura$anios_con_dato)`. Su caja se dibuja igual de bonita y no es
+comparable.
+
+**Juntar poblaciones distintas infla los marcados.** Sin separar por país, la
+regla marca `r length(marcados(paises_con_inflacion$inflacion))` de las
+`r nrow(paises_con_inflacion)` observaciones. Separando, cada país tiene su
+propia escala: `r paste(sin_marcar$pais, collapse = " y ")` no tienen ningún año
+marcado.
+
+**Una caja por país ignora el tiempo.** El orden de los años desaparece, y con
+él la diferencia entre un país que se estabilizó y uno que empeora.
+:::
+
+## Tarea {.smaller}
+
+Sobre **tu serie del portafolio**:
+
+1. El diagrama de caja de tu variable numérica, con los cinco números al lado.
+2. La cerca superior e inferior calculadas, y **cuántas observaciones** quedan
+   fuera.
+3. Para cada observación marcada, la decisión con las cuatro preguntas: qué es y
+   qué hiciste. Si no puedes averiguarlo, escribe que no pudiste.
+4. Una caja segmentada por alguna variable categórica de tu base, y una línea
+   sobre si la segmentación cambió quién queda marcado.
+5. Una línea sobre lo que tu caja no muestra.
