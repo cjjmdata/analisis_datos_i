@@ -163,12 +163,15 @@
       });
       dibujarCaja(q1, med, q3, cercaInf, cercaSup, bigoteInf, bigoteSup);
 
-      lectura.innerHTML =
-        `n = ${datos.length} · Q1 = <b>${fmt(q1)}</b> · mediana = <b>${fmt(med)}</b> · Q3 = <b>${fmt(q3)}</b> · ` +
-        `RIC = Q3 − Q1 = <b>${fmt(ric)}</b><br>` +
-        `cercas = ${fmt(q3)} ± ${fmt(k)} × ${fmt(ric)} → de <b>${fmt(cercaInf)}</b> a <b>${fmt(cercaSup)}</b> · ` +
-        `bigotes en <b>${fmt(bigoteInf)}</b> y <b>${fmt(bigoteSup)}</b> · ` +
-        `marcados: <b>${marcados.length}</b>${marcados.length ? " (" + marcados.map(fmt).join(", ") + ")" : ""}`;
+      // La lectura crece con los pasos: cada número aparece cuando se dibuja
+      const lineas = [`n = <b>${datos.length}</b> respuestas, ordenadas de menor a mayor`];
+      if (paso >= 2) lineas.push(`Q1 = <b>${fmt(q1)}</b> · Q3 = <b>${fmt(q3)}</b> · RIC = Q3 − Q1 = <b>${fmt(ric)}</b>`);
+      if (paso >= 3) lineas.push(`mediana = <b>${fmt(med)}</b>`);
+      if (paso >= 4) lineas.push(`cercas = ${fmt(q1)} − ${fmt(k)} × ${fmt(ric)} y ${fmt(q3)} + ${fmt(k)} × ${fmt(ric)} ` +
+        `→ de <b>${fmt(cercaInf)}</b> a <b>${fmt(cercaSup)}</b>`);
+      if (paso >= 5) lineas.push(`bigotes en <b>${fmt(bigoteInf)}</b> y <b>${fmt(bigoteSup)}</b> · ` +
+        `marcados: <b>${marcados.length}</b>${marcados.length ? " (" + marcados.map(fmt).join(", ") + ")" : ""}`);
+      lectura.innerHTML = lineas.join("<br>");
     }
 
     function redibujar() { dibujarEjes(); colocarPuntos(); actualizar(); }
