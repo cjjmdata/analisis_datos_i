@@ -155,7 +155,7 @@ table thead {
 .no-dice {
   background-color: rgba(164, 80, 60, 0.09);
   border-left-color: $brick-700;
-  &::before { content: "Lo que este número NO dice"; color: $brick-700; }
+  &::before { content: "Los límites de este número"; color: $brick-700; }
 }
 
 // Uso e implicaciones de la IA en el punto exacto del temario.

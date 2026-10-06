@@ -111,7 +111,7 @@ Quarto: `::: {.a-mano} ... :::`
 | `.a-mano` | PRIMERO A MANO | **Solo** el cálculo traducido de la fórmula, antes de la función enlatada |
 | `.nota` | *(sin rótulo)* | Todo lo demás que se destaque: idea rectora, regla, advertencia técnica |
 | `.friccion` | *(sin rótulo)* | Pregunta que se contesta antes de ver el resultado |
-| `.no-dice` | LO QUE ESTE NÚMERO NO DICE | Límites de lo que se acaba de calcular |
+| `.no-dice` | LOS LÍMITES DE ESTE NÚMERO | Límites de lo que se acaba de calcular |
 | `.ia-nota` | IA EN ESTE TEMA | Uso e implicaciones de la IA, anclado al tema exacto |
 
 **Si un rótulo se imprime solo, tiene que ser cierto en todos los usos.**

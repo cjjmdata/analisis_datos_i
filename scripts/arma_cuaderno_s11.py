@@ -87,20 +87,22 @@ ggplot(tibble(minutos = doce), aes(x = minutos)) +
 
     ("md", """## 4 · El factor 1.5 es una convención
 
-Cambia el valor de `k` y corre la celda otra vez. Con `k = 0` queda marcada media
-base; con `k = 3` casi nunca se marca nada.
+Cambia el valor de `k` y corre la celda otra vez. Con `k = 0` las cercas
+coinciden con los bordes de la caja; con `k = 3` queda marcado muy poco.
 
-El 1.5 lo propuso John Tukey en 1977 y está calibrado para que, cuando no pasa
-nada raro, casi nada quede fuera. No es una prueba estadística."""),
+El 1.5 lo propuso John Tukey en 1977, elegido para que una variable sin nada raro
+adentro deje muy poco fuera. Es una convención, con el mismo estatus que elegir
+el ancho de un histograma."""),
     ("code", """k <- 1.5
 
 cerca_sup <- quantile(grupos$traslado, 0.75) + k * IQR(grupos$traslado)
 cerca_inf <- quantile(grupos$traslado, 0.25) - k * IQR(grupos$traslado)
 
 sum(grupos$traslado > cerca_sup | grupos$traslado < cerca_inf)"""),
-    ("md", """Una regla que midiera la distancia al centro en desviaciones estándar tendría un
-problema: el dato extremo infla la desviación estándar y termina escondiéndose a
-sí mismo. El rango intercuartil se calcula por posición y no se deja arrastrar.
+    ("md", """La regla mide la distancia en rangos intercuartiles, y esa elección tiene razón
+de ser. El rango, que es el máximo menos el mínimo, lo fija el propio dato
+extremo: una regla construida sobre él se ensancharía con el valor que busca. El
+rango intercuartil se calcula por posición y deja los cuartiles donde estaban.
 
 Corre la celda: el máximo se multiplica por cinco y solo una de las dos medidas
 se mueve."""),
@@ -110,8 +112,8 @@ extremo[which.max(extremo)] <- max(extremo) * 5
 IQR(grupos$traslado)
 IQR(extremo)
 
-sd(grupos$traslado)
-sd(extremo)"""),
+diff(range(grupos$traslado))
+diff(range(extremo))"""),
 
     ("md", """## 5 · Comparar grupos
 

@@ -84,7 +84,7 @@ Programa MAT1409 · 3.2.3 Diagrama de caja y bigotes
 
 # Los cinco números, dibujados {background-color="#24494C"}
 
-## Donde quedamos {.smaller}
+## Los cinco números y la caja {.smaller}
 
 ```{r}
 quantile(grupos$traslado, probs = seq(0, 1, by = 0.25))
@@ -124,7 +124,7 @@ El bigote termina en **`r bigote`** minutos y el máximo del grupo es
 
 ::: {.nota}
 La caja se dibuja con cuatro de los cinco números. El quinto, el máximo, puede
-quedar fuera del bigote. Explicar por qué es el trabajo de hoy.
+quedar fuera del bigote.
 :::
 
 # Primero a mano {background-color="#24494C"}
@@ -192,7 +192,7 @@ max(doce[doce <= q[2] + 1.5 * ric])
 ::: {.nota}
 Con estos doce datos: la cerca superior está en **`r cs_doce`**, el bigote se
 detiene en **`r max(dentro_doce)`** y el **`r fuera_doce[1]`** queda marcado. La
-cerca es un cálculo; el bigote es un dato.
+cerca sale de una cuenta; el bigote es uno de los datos de la lista.
 :::
 
 ## La misma caja, dibujada por R {.smaller}
@@ -216,7 +216,7 @@ La sesión pasada quedó abierto que hay más de una fórmula para el cuartil. C
 del cálculo a mano, el tipo 6, la cerca superior se recorre de `r cs_doce` a
 **`r cs6`** minutos.
 
-Los cuartiles cambian. La decisión sobre el `r fuera_doce[1]`, no.
+Los cuartiles cambian, y el `r fuera_doce[1]` queda marcado con las dos fórmulas.
 :::
 
 # Cómo se construye {background-color="#24494C"}
@@ -241,65 +241,45 @@ cat('<script src="caja-animada.js"></script>\n')
 
 # Por qué 1.5 {background-color="#24494C"}
 
-## La cerca, medida en desviaciones estándar {.smaller}
+## El factor es una decisión {.smaller}
 
 ```{r}
 #| echo: false
-z <- qnorm(c(0.25, 0.75))
-ric_z <- z[2] - z[1]
-tabla_normal <- tibble(
-  Factor = c("1.5 (la regla usual)", "3.0"),
-  `Cerca, en desviaciones estándar` = round(z[2] + c(1.5, 3) * ric_z, 2),
-  `Datos que quedan fuera` = c(
-    sprintf("%.2f %%", 2 * pnorm(-(z[2] + 1.5 * ric_z)) * 100),
-    sprintf("%.4f %%", 2 * pnorm(-(z[2] + 3 * ric_z)) * 100))
-)
-knitr::kable(tabla_normal, align = "lcc")
+inflacion_mexico <- paises$inflacion[paises$pais == "México" & !is.na(paises$inflacion)]
+factores <- c(0, 1, 1.5, 3)
+cuantos <- function(x) sapply(factores, \(k) length(marcados(x, k)))
+
+tibble(
+  `Factor k` = factores,
+  `Traslado del grupo` = cuantos(grupos$traslado),
+  `Estatura del grupo` = cuantos(grupos$estatura),
+  `Inflación de México` = cuantos(inflacion_mexico)
+) |>
+  knitr::kable(
+    align = "cccc",
+    caption = sprintf("Observaciones marcadas, de %d, %d y %d",
+                      nrow(grupos), nrow(grupos), length(inflacion_mexico)))
 ```
 
-Si los datos siguieran una distribución simétrica conocida, el rango
-intercuartil mediría `r round(ric_z, 3)` desviaciones estándar, y la cerca de
-1.5 caería a `r round(z[2] + 1.5 * ric_z, 3)` desviaciones del centro.
+```{r}
+#| echo: false
+marca_0   <- length(marcados(grupos$traslado, 0))
+marca_15  <- length(marcados(grupos$traslado, 1.5))
+marca_3   <- length(marcados(grupos$traslado, 3))
+```
+
+Con `k = 0` las cercas coinciden con los bordes de la caja y la regla marca
+`r marca_0` de las `r nrow(grupos)` respuestas. Con `k = 1.5` marca `r marca_15`,
+y con `k = 3`, `r marca_3`.
 
 ::: {.nota}
-El 1.5 es una **convención**, propuesta por John Tukey en 1977. Está calibrada
-para que, cuando no pasa nada raro, casi nada quede fuera. No es una prueba
-estadística y no tiene un valor de corte que se pueda consultar en una tabla.
-:::
+El 1.5 es una **convención**, propuesta por John Tukey en 1977, elegida para que
+una variable sin nada raro adentro deje muy poco fuera. La estatura del grupo es
+ese caso: con el factor usual no queda marcada ninguna de las
+`r nrow(grupos)` respuestas.
 
-## Lo que la regla marca cuando no pasa nada {.smaller}
-
-```{r}
-#| echo: false
-set.seed(2026)
-repeticiones <- 10000
-simulacion <- tibble(
-  n = c(15, 25, 50, 100),
-  porcentaje = sapply(c(15, 25, 50, 100), function(n) {
-    mean(replicate(repeticiones, {
-      x <- rnorm(n)
-      length(marcados(x)) > 0
-    })) * 100
-  })
-)
-simulacion |>
-  transmute(
-    `Tamaño de la muestra` = n,
-    `Muestras con al menos un punto marcado` = sprintf("%.1f %%", porcentaje)
-  ) |>
-  knitr::kable(align = "cc")
-```
-
-`r format(repeticiones, big.mark = " ")` muestras simuladas de una distribución
-sin ninguna observación anómala.
-
-::: {.no-dice}
-Con `r simulacion$n[3]` observaciones limpias, la regla marca algo en el
-**`r sprintf("%.0f %%", simulacion$porcentaje[3])`** de los casos.
-
-Un punto marcado no es un error, ni un dato malo, ni una prueba de nada. Es un
-**candidato a revisión**. Quien decide qué es, eres tú, y con el contexto de la
-variable, no con la gráfica.
+La cuenta exacta de cuánto deja fuera, sobre una distribución teórica, llega con
+la regla empírica de la sesión 17.
 :::
 
 ## Cuando el modelo pide limpiar {.smaller}
@@ -309,50 +289,50 @@ Pídele a un modelo de lenguaje que "limpie los valores atípicos" de tu base y 
 va a devolver una base más chica, casi siempre sin decir cuántas filas quitó, con
 qué regla ni cuáles eran.
 
-Tres preguntas para el modelo, y para ti, antes de aceptar el resultado:
+Antes de aceptar el resultado, el modelo contesta:
 
 1. ¿Qué regla usaste y con qué factor?
 2. ¿Cuántas observaciones quitaste, de cuántas?
 3. ¿Qué tenían esas observaciones en común?
 
-Si no puedes contestarlas, no puedes defender el número que salga después.
+Esas tres respuestas son las que defienden el número que salga después.
 :::
 
 # Por qué los cuartiles {background-color="#24494C"}
 
-## Un dato extremo se esconde a sí mismo {.smaller}
+## El dato extremo mueve la escala que lo mediría {.smaller}
 
 ```{r}
 #| echo: false
 extremo <- grupos$traslado
 extremo[which.max(extremo)] <- max(extremo) * 5
 
-n_por_cuartiles <- length(marcados(extremo))
-n_por_distancia <- sum(extremo > mean(extremo) + 2 * sd(extremo) |
-                       extremo < mean(extremo) - 2 * sd(extremo))
+cerca_con_ric   <- cerca_superior(extremo)
+cerca_con_rango <- unname(quantile(extremo, .75) + 1.5 * diff(range(extremo)))
 
 tibble(
-  Medida = c("Rango intercuartil", "Desviación estándar"),
-  `Datos reales` = c(IQR(grupos$traslado), sd(grupos$traslado)),
-  `Con el máximo multiplicado por cinco` = c(IQR(extremo), sd(extremo))
+  Medida = c("Rango intercuartil", "Rango: máximo menos mínimo"),
+  `Datos reales` = c(IQR(grupos$traslado), diff(range(grupos$traslado))),
+  `Con el máximo multiplicado por cinco` = c(IQR(extremo), diff(range(extremo)))
 ) |>
   knitr::kable(digits = 1, align = "lcc")
 ```
 
 ::: {.nota}
-El rango intercuartil no se mueve: se calcula por posición y el dato extremo
-sigue siendo el último de la lista.
+El rango intercuartil se calcula por posición: mientras el dato extremo siga
+siendo el último de la lista, su magnitud deja los cuartiles donde estaban. El
+rango lo fija ese mismo dato, porque se mide con el máximo y el mínimo.
 
-La desviación estándar sí se mueve, y se mueve **por culpa del dato que se
-quiere detectar**. Una regla que mida la distancia al centro en desviaciones
-estándar se ensancha justo cuando aparece el valor raro: con estos datos marca
-`r n_por_distancia` observaciones, contra las `r n_por_cuartiles` que marca la
-regla de los cuartiles.
+Una regla que midiera la distancia en rangos se ensancharía con el dato que
+busca: la cerca se iría hasta **`r round(cerca_con_rango, 1)`** minutos y dejaría
+sin marcar las `r nrow(grupos)` respuestas. Medida en rangos intercuartiles, la
+cerca se queda en `r round(cerca_con_ric, 1)` y marca
+`r length(marcados(extremo))`.
 :::
 
 ::: {style="font-size:0.6em; color:#6C7A7B;"}
-La desviación estándar llega formalmente en la sesión 15, y la regla empírica en
-la 17. Aquí importa solo que una se deja arrastrar y la otra no.
+La desviación estándar crece con el dato extremo por la misma razón que el
+rango. Aparece en la sesión 15.
 :::
 
 # Comparar grupos {background-color="#24494C"}
@@ -412,7 +392,7 @@ El compañero que tarda **`r valor_doble` minutos** estudia `r carrera_doble` y 
 propia caja no lo marca. Ese mismo valor quedaría marcado en **`r n_marca` de las
 cuatro** carreras.
 
-Ser atípico no es una propiedad del dato. Es una propiedad de la **comparación**.
+Ser atípico depende del **grupo con el que se compara**.
 :::
 
 ## La comparación cambia el veredicto {.smaller}
@@ -440,7 +420,7 @@ de un grupo**, y ese grupo se nombra: segmentar crea marcados donde no había y
 borra los que había.
 :::
 
-# Lo que la caja esconde {background-color="#24494C"}
+# La forma de los datos {background-color="#24494C"}
 
 ## Una caja sin nada marcado {.smaller}
 
@@ -483,12 +463,12 @@ juntos no marcaba nada raro y tampoco mostraba esto.
 
 Un diagrama de caja resume la posición y la dispersión. **No muestra la forma**:
 dos jorobas y una sola se dibujan igual. Por eso la caja se lee junto al
-histograma de la sesión 8, no en lugar de él.
+histograma de la sesión 8.
 :::
 
 # Decidir {background-color="#24494C"}
 
-## Cuatro preguntas ante un punto marcado {.smaller}
+## Qué hacer con un punto marcado {.smaller}
 
 | Pregunta | Si la respuesta es sí |
 |---|---|
@@ -498,11 +478,13 @@ histograma de la sesión 8, no en lugar de él.
 | ¿Es el fenómeno real? | **Se queda**, y muchas veces es el hallazgo |
 
 ::: {.nota}
-Ninguna de las cuatro respuestas es borrar el dato en silencio. Las tres primeras
-requieren evidencia externa a la gráfica: la caja marca, no diagnostica.
+Un punto marcado es un **candidato a revisión**: la gráfica lo señala y la
+revisión decide qué es. Las tres primeras respuestas se resuelven con evidencia
+de fuera de la gráfica, y las cuatro dejan registro de lo que se hizo con el
+dato.
 :::
 
-## Quitar no es borrar {.smaller}
+## Qué cambia al quitar las marcadas {.smaller}
 
 ```{r}
 cerca <- quantile(grupos$traslado, 0.75) + 1.5 * IQR(grupos$traslado)
@@ -523,16 +505,16 @@ knitr::kable(cambio, digits = 1, align = "lcc")
 ```
 
 ::: {.no-dice}
-Quitar las `r n_global` observaciones marcadas no arregla los datos: cambia la
-pregunta. Con todas, la respuesta describe a los `r nrow(grupos)` que
-contestaron; sin ellas, describe a los `r nrow(sin_marcados)` que tardan menos de
-`r round(unname(cerca), 1)` minutos.
+Quitar las `r n_global` observaciones marcadas cambia la pregunta que contesta el
+resumen. Con todas describe a los `r nrow(grupos)` que contestaron; sin ellas,
+a los `r nrow(sin_marcados)` que tardan menos de `r round(unname(cerca), 1)`
+minutos.
 
-Las dos respuestas son válidas. Lo que no es válido es entregar la segunda
-diciendo que describe a todo el grupo.
+Cada resumen contesta su pregunta, y el texto que acompaña a la cifra dice cuál
+de las dos contestó.
 :::
 
-# Llevarlo a otra base {background-color="#24494C"}
+# Otra base: inflación por país {background-color="#24494C"}
 
 ## Inflación anual, quince países {.smaller}
 
@@ -551,7 +533,7 @@ ggplot(paises_con_inflacion, aes(x = inflacion, y = pais)) +
 `r max(paises$anio)`. **¿Por qué no se ve nada?**
 :::
 
-## El eje lo manda un año {.smaller}
+## Un año fija la escala {.smaller}
 
 ```{r}
 #| echo: false
@@ -577,13 +559,13 @@ El máximo es **`r peor$pais[1]` en `r peor$anio[1]`**, con
 `r scales::comma(round(peor$inflacion[1]))` por ciento. Los
 `r nrow(paises_con_inflacion) - nrow(moderada)` años que salieron de esta gráfica
 siguen en la base: se sacaron **para poder ver el resto**, y por eso se reporta
-cuántos son. Las cajas van ordenadas por mediana, no por alfabeto.
+cuántos son. Las cajas van ordenadas por mediana.
 
-Argentina queda como una raya hasta arriba: de sus años con dato, aquí sobrevive
-`r sum(moderada$pais == "Argentina")`.
+Argentina aparece como una línea en el extremo superior: de sus años con dato,
+en esta gráfica queda `r sum(moderada$pais == "Argentina")`.
 :::
 
-## El punto marcado es el hallazgo {.smaller}
+## Los años que la regla marca en México {.smaller}
 
 ```{r}
 #| echo: false
@@ -603,12 +585,12 @@ México, `r min(mexico$anio)` a `r max(mexico$anio)`: la regla marca
 `r sprintf("%.1f", cerca_superior(mexico$inflacion))` por ciento.
 
 ::: {.nota}
-Nadie corrige esos años ni los quita. Son la crisis de 1994 y lo que vino
-después. En una serie de negocio, el año marcado suele ser el que pide
+Esos años se conservan y se explican: son la crisis de 1994 y lo que vino
+después. En una serie de negocio, el punto marcado suele ser el que pide
 explicación: el mes del desabasto, la tienda que abrió, el cliente que se fue.
 :::
 
-## Lo que estas cajas no dicen {.smaller}
+## Los límites de estas cajas {.smaller}
 
 ```{r}
 #| echo: false
@@ -621,10 +603,10 @@ sin_marcar <- paises_con_inflacion |>
 ```
 
 ::: {.no-dice}
-**La cobertura no es pareja.** `r cobertura$pais[1]` aparece con
+**La cobertura cambia entre países.** `r cobertura$pais[1]` aparece con
 `r cobertura$anios_con_dato[1]` años de dato y el resto con
-`r max(cobertura$anios_con_dato)`. Su caja se dibuja igual de bonita y no es
-comparable.
+`r max(cobertura$anios_con_dato)`. Su caja se dibuja con la misma forma y
+describe muchos menos años.
 
 **Juntar poblaciones distintas infla los marcados.** Sin separar por país, la
 regla marca `r length(marcados(paises_con_inflacion$inflacion))` de las
