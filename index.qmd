@@ -64,17 +64,17 @@ responder una pregunta estadística. Ver
 |:--:|:---|:---|:--:|
 | | **Unidad 1 · La pregunta y los datos** | | |
 | 1 | [Presentación del curso: ¿qué es la estadística?](slides/u1/s01_que_es_la_estadistica.qmd) | | 1.1 |
-| 2 | [Tu primer análisis: la encuesta del grupo en el cuaderno](slides/u1/s02_primer_analisis.qmd) | correr código, `read_csv` | 1.1 |
+| 2 | [Tu primer análisis: la encuesta del grupo en el cuaderno](slides/u1/s02_primer_analisis.qmd) | correr código, `read_csv`, `glimpse`, `count`, `ggplot`, `geom_bar`, `labs` | 1.1 |
 | 3 | Población y muestra | `nrow`, `slice_sample` | 1.2 |
-| 4 | [Ver los datos: tipos de variable y gráficas](slides/u1/s04_graficas.qmd) | `glimpse`, `factor` | 1.3 |
+| 4 | [Ver los datos: tipos de variable y gráficas](slides/u1/s04_graficas.qmd) | `glimpse`, `factor`, recorrido de geoms: `geom_histogram`, `geom_boxplot`, `geom_freqpoly`, `stat_ecdf` | 1.3 |
 | | **Unidad 2 · Ver los datos** | | |
 | 5 | Tablas de distribución de frecuencias | `count`, `prop.table` | 3.1 |
 | 6 | Variables categóricas: la gráfica de barras | `ggplot`, `geom_bar`, `labs` | 3.2.1 |
 | 7 | Datos faltantes: lo que falta también informa | `is.na`, `drop_na` | agregado |
-| 8 y 9 | [Histograma y frecuencia acumulada](slides/u2/s08_histograma-acumulada.qmd) | `geom_histogram`, `binwidth`, `geom_freqpoly`, `cumsum`, `stat_ecdf` | 3.2.2 |
+| 8 y 9 | [Histograma y frecuencia acumulada](slides/u2/s08_histograma-acumulada.qmd) | `range`, `diff`, `geom_histogram`, `binwidth`, `geom_freqpoly`, `cumsum`, `stat_ecdf` | 3.2.2 |
 | | **Unidad 3 · Resumir y comparar** | | |
 | 10 | [Cuantiles: cuartiles, deciles y percentiles](slides/u3/s10_cuantiles.qmd) | `quantile`, `seq`, `probs`, `IQR` | 2.1 |
-| 11 | [Diagrama de caja: detectar y decidir qué hacer](slides/u3/s11_diagrama-caja.qmd) | `geom_boxplot`, `filter` | 3.2.3 |
+| 11 | [Diagrama de caja: detectar y decidir qué hacer](slides/u3/s11_diagrama-caja.qmd) | `geom_boxplot`, `filter`, `median` | 3.2.3 |
 | 12 | Centro I: moda y mediana sobre el histograma | `median`, `table`, `geom_vline` | 2.2.1 |
 | 13 | Centro II: media aritmética y ponderada | `mean`, `weighted.mean` | 2.2.2 |
 | 14 | Centro III: media geométrica | `prod`, `exp`, `log` | 2.2.3 |
@@ -97,6 +97,13 @@ responder una pregunta estadística. Ver
 | 29 | Cierre: ¿tu variable se parece a alguna? | todo lo anterior | 5.4.2 |
 | 30 | Repaso e integración | todo lo anterior | integración |
 
+:::
+
+::: {style="font-size:0.85em; color:#6C7A7B;"}
+La columna de herramientas declara la primera sesión en la que escribes o corres
+cada una. Cuando una sesión posterior la trabaja a fondo, se repite ahí. El
+código que la sesión 1 proyecta, y la preparación que los cuadernos dan ya
+hecha, no cuentan como herramienta enseñada.
 :::
 
 Ver [Evaluación](curso/evaluacion.qmd) para el esquema completo.
