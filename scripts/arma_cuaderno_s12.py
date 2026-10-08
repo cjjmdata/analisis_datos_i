@@ -212,10 +212,26 @@ weighted.mean(hogares$ingreso, hogares$factor)"""),
 media simple describe a la muestra; la ponderada describe al país.
 
 Corre la celda y mira cómo cambia el factor promedio según el ingreso."""),
-    ("code", """hogares |>
-  mutate(decil = ntile(ingreso, 10)) |>
-  summarise(factor_promedio = round(mean(factor)), .by = decil) |>
-  arrange(decil)"""),
+    ("code", """deciles <- hogares |>
+  arrange(ingreso) |>
+  mutate(decil = pmin(ceiling(cumsum(factor) / sum(factor) * 10), 10)) |>
+  summarise(visitados = n(),
+            representa = sum(factor),
+            factor_promedio = round(mean(factor)), .by = decil)
+
+deciles"""),
+    ("md", """Un **decil de ingreso** parte al país en diez grupos con el mismo número de
+hogares: se ordenan por ingreso, se va acumulando a cuántos hogares representan,
+y se corta cada vez que se junta otro 10%.
+
+Los diez representan 3.88 millones de hogares cada uno, por definición. Lo que
+cambia es cuántos hogares hizo falta visitar para juntarlos, y cuánto representa
+cada uno de ellos."""),
+    ("code", """ggplot(deciles, aes(x = decil, y = visitados)) +
+  geom_col(fill = "#CCCCCC", width = 0.75) +
+  geom_text(aes(label = visitados), vjust = -0.5) +
+  scale_x_continuous(breaks = 1:10) +
+  labs(x = "Decil de ingreso, del más bajo al más alto", y = "Hogares visitados")"""),
 
     ("md", f"""### El mismo cálculo en otra base
 

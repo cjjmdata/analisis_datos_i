@@ -479,39 +479,53 @@ desde `r min(hogares$factor)` hasta `r pesos(max(hogares$factor))`. Ese número
 viene del diseño de la muestra, no del hogar.
 :::
 
-## Lo que pesa cada décimo {.smaller}
+## Diez grupos del mismo tamaño {.smaller}
+
+Un **decil de ingreso** parte al país en diez grupos con el mismo número de
+hogares. Se ordenan por ingreso, se va acumulando a cuántos hogares representan,
+y se corta cada vez que se junta otro 10%:
 
 ```{r}
-#| fig-height: 3
 deciles <- hogares |>
-  mutate(decimo = ntile(ingreso, 10)) |>
-  summarise(visitados = n(), representa = sum(factor), .by = decimo)
+  arrange(ingreso) |>
+  mutate(decil = pmin(ceiling(cumsum(factor) / sum(factor) * 10), 10)) |>
+  summarise(visitados = n(), representa = sum(factor), .by = decil)
 
-ggplot(deciles, aes(x = decimo, y = representa / 1e6)) +
-  geom_col(aes(fill = decimo == 10), width = 0.75) +
-  geom_text(aes(label = round(representa / 1e6, 1)), vjust = -0.5, size = 4) +
+deciles
+```
+
+## Cuántos hogares hizo falta visitar {.smaller}
+
+```{r}
+#| fig-height: 2.9
+ggplot(deciles, aes(x = decil, y = visitados)) +
+  geom_col(aes(fill = decil == 10), width = 0.75) +
+  geom_text(aes(label = scales::comma(visitados)), vjust = -0.5, size = 3.6) +
   scale_fill_manual(values = c(`FALSE` = col_datos, `TRUE` = col_destaca),
                     guide = "none") +
   scale_x_continuous(breaks = 1:10) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
-  labs(x = "Décimo de hogares, del ingreso más bajo al más alto",
-       y = "Hogares que representa,\nen millones")
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = "Decil de ingreso, del más bajo al más alto",
+       y = "Hogares visitados")
 ```
 
 ```{r}
 #| echo: false
-d1 <- deciles$representa[1]; d10 <- deciles$representa[10]
+factor_decil <- hogares |>
+  arrange(ingreso) |>
+  mutate(decil = pmin(ceiling(cumsum(factor) / sum(factor) * 10), 10)) |>
+  summarise(f = mean(factor), .by = decil) |> arrange(decil)
 ```
 
 ::: {.nota}
-Los diez décimos tienen el **mismo número de hogares visitados**,
-`r pesos(deciles$visitados[1])` cada uno. Lo que cambia es a cuántos hogares del
-país representan: el décimo de menor ingreso representa a
-`r sprintf("%.2f", d1/1e6)` millones y el de mayor ingreso a
-`r sprintf("%.2f", d10/1e6)`, un `r sprintf("%.0f", (d10/d1 - 1)*100)`% más.
+Los diez deciles representan **`r sprintf("%.2f", deciles$representa[1]/1e6)`
+millones de hogares cada uno**: así están definidos. Lo que cambia es cuántos
+hogares hizo falta visitar para juntarlos, de `r pesos(deciles$visitados[1])` en
+el decil más bajo a `r pesos(deciles$visitados[10])` en el más alto.
 
-El décimo que más gana es también el que más pesa, y por eso ponderar sube el
-promedio.
+En el decil más alto cada hogar visitado representa a más hogares del país,
+`r round(factor_decil$f[10])` contra `r round(factor_decil$f[1])` del más bajo.
+Contar todos igual le daría al decil más bajo un peso que no le corresponde.
 :::
 
 ## En la base completa {.smaller}
@@ -522,21 +536,13 @@ mean(hogares$ingreso)
 weighted.mean(hogares$ingreso, hogares$factor)
 ```
 
-```{r}
-#| echo: false
-factor_decil <- hogares |>
-  mutate(decil = ntile(ingreso, 10)) |>
-  summarise(f = mean(factor), .by = decil) |> arrange(decil)
-```
-
 ::: {.nota}
 La cifra ponderada, **`r pesos(pond_t)` pesos trimestrales**, es la que publica
 el INEGI, y queda `r sprintf("%.1f", (pond_t/media_t - 1)*100)`% arriba de la
 media simple.
 
-El factor promedio sube de **`r round(factor_decil$f[1])`** en el décimo de menor
-ingreso a **`r round(factor_decil$f[10])`** en el de mayor: cada hogar de ingreso
-alto representa a más hogares, y ponderar sube el resultado.
+La muestra entrevistó a más hogares de ingreso bajo que los que le tocan al país,
+y el factor lo corrige.
 :::
 
 ## El mismo cálculo, otra base {.smaller}
