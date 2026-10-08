@@ -9,9 +9,13 @@
 # Stooq bloquea las descargas por script con un reto JavaScript.
 #
 # EL PRECIO AJUSTADO ES EL QUE SIRVE PARA RENDIMIENTOS. TSLA partió su acción
-# en 2020 y en 2022; con el precio sin ajustar, esos días aparecen como caídas
-# de 66% y 80% que nunca ocurrieron. Por eso se guardan las dos columnas y la
-# validación de abajo rechaza el archivo si el ajuste falta.
+# en 2020 y en 2022; AAPL en 2020. Yahoo entrega el cierre ya ajustado por esos
+# splits, así que la caída aparente no viene en la descarga.
+#
+# La columna `sin_ajustar` la reconstruye este script a propósito, dividiendo
+# entre el factor acumulado de los splits posteriores a cada fecha. Es el precio
+# que marcaba la pantalla ese día, con su caída de 80%, y es material de la
+# sesión donde el grupo descubre el desplome, lo explica y lo corrige.
 #
 # Uso: Rscript scripts/04_mercado.R
 
@@ -24,15 +28,29 @@ DESDE    <- "2015-01-01"
 baja <- function(simbolo) {
   serie <- getSymbols(simbolo, src = "yahoo", from = DESDE,
                       auto.assign = FALSE, warnings = FALSE)
+  fechas <- as.Date(index(serie))
+  splits <- getSplits(simbolo, from = DESDE)
+
+  # Factor acumulado de los splits posteriores a cada fecha. Deshace el ajuste
+  # y devuelve el precio tal como se publicó ese día.
+  factor_acumulado <- rep(1, length(fechas))
+  if (!is.null(splits) && length(splits) > 0) {
+    for (i in seq_along(splits)) {
+      anteriores <- fechas < as.Date(index(splits)[i])
+      factor_acumulado[anteriores] <- factor_acumulado[anteriores] * as.numeric(splits[i])
+    }
+  }
+
   tibble(
-    clave    = simbolo,
-    fecha    = as.Date(index(serie)),
-    apertura = as.numeric(Op(serie)),
-    maximo   = as.numeric(Hi(serie)),
-    minimo   = as.numeric(Lo(serie)),
-    cierre   = as.numeric(Cl(serie)),
-    ajustado = as.numeric(Ad(serie)),
-    volumen  = as.numeric(Vo(serie))
+    clave       = simbolo,
+    fecha       = fechas,
+    apertura    = as.numeric(Op(serie)),
+    maximo      = as.numeric(Hi(serie)),
+    minimo      = as.numeric(Lo(serie)),
+    cierre      = as.numeric(Cl(serie)),
+    ajustado    = as.numeric(Ad(serie)),
+    sin_ajustar = as.numeric(Cl(serie)) / factor_acumulado,
+    volumen     = as.numeric(Vo(serie))
   )
 }
 
