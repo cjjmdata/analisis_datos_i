@@ -15,6 +15,8 @@ URL_HOGARES = ('https://raw.githubusercontent.com/cjjmdata/analisis_datos_i/main
                'datos/enigh2024_hogares.csv.gz')
 URL_PAISES = ('https://raw.githubusercontent.com/cjjmdata/analisis_datos_i/main/'
               'datos/banco_mundial.csv')
+URL_COLORES = ('https://raw.githubusercontent.com/cjjmdata/analisis_datos_i/main/'
+               'R/colores.R')
 URL_ENCUESTA = ('https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4'
                 'kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067'
                 '&single=true&output=csv')
@@ -33,6 +35,7 @@ Cada renglón es un hogar, sin importar cuántas personas vivan en él. Las colu
 
 El archivo está comprimido y `read_csv()` lo abre igual."""),
     ("code", f'''library(tidyverse)
+source("{URL_COLORES}")   # colores del curso: col_media, col_mediana, col_moda
 
 hogares <- read_csv("{URL_HOGARES}", show_col_types = FALSE)
 
@@ -55,7 +58,7 @@ jefas de hogar?"""),
 
 escolaridad"""),
     ("code", """ggplot(escolaridad, aes(x = n, y = fct_reorder(educa_jefe, n))) +
-  geom_col(fill = "#5A7B5A", alpha = 0.85) +
+  geom_col(fill = col_moda, alpha = 0.85) +
   geom_text(aes(label = n), hjust = -0.15) +
   scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
   labs(x = "Hogares visitados", y = NULL)"""),
@@ -107,6 +110,7 @@ estaturas <- read_csv(url_grupo, show_col_types = FALSE) |>
 
 ggplot(estaturas, aes(x = estatura, fill = genero)) +
   geom_histogram(binwidth = 0.02, boundary = 1.5, color = "white") +
+  scale_fill_manual(values = col_grupos) +
   labs(x = "Estatura del grupo, en metros", y = "Estudiantes", fill = NULL)'''),
     ("md", """Una distribución con un solo pico es **unimodal**; con dos, **bimodal**; con más,
 **multimodal**. Aquí cada grupo tiene su propio pico, y un solo número de centro
@@ -137,8 +141,8 @@ median(quitados$ingreso)"""),
 )
 
 ggplot(comparacion, aes(x = ingreso, y = base)) +
-  geom_boxplot(fill = "#CCCCCC", alpha = 0.5, outlier.alpha = 0.12) +
-  geom_vline(xintercept = median(hogares$ingreso), color = "#3A6B6F", linewidth = 1) +
+  geom_boxplot(fill = col_datos, alpha = 0.5, outlier.alpha = 0.12) +
+  geom_vline(xintercept = median(hogares$ingreso), color = col_mediana, linewidth = 1) +
   coord_cartesian(xlim = c(0, 300000)) +
   labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)"""),
     ("md", """La mediana se calcula por posición, y la posición de en medio apenas se recorre.
@@ -160,10 +164,10 @@ mean(quitados$ingreso)"""),
     ("md", """Las tres medidas sobre el mismo histograma. Verde la moda, azul la mediana, rojo
 la media: los tres colores se usan igual en todo el curso."""),
     ("code", """ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
-  geom_histogram(binwidth = 10000, fill = "#CCCCCC", color = "white", boundary = 0) +
-  geom_vline(xintercept = moda_clase, color = "#5A7B5A", linewidth = 1.2) +
-  geom_vline(xintercept = median(hogares$ingreso), color = "#3A6B6F", linewidth = 1.2) +
-  geom_vline(xintercept = mean(hogares$ingreso), color = "#A4503C", linewidth = 1.2) +
+  geom_histogram(binwidth = 10000, fill = col_datos, color = "white", boundary = 0) +
+  geom_vline(xintercept = moda_clase, color = col_moda, linewidth = 1.2) +
+  geom_vline(xintercept = median(hogares$ingreso), color = col_mediana, linewidth = 1.2) +
+  geom_vline(xintercept = mean(hogares$ingreso), color = col_media, linewidth = 1.2) +
   labs(x = "Ingreso trimestral del hogar, en pesos", y = "Hogares visitados")"""),
     ("md", """¿Por qué quedan en ese orden? Corre la celda: ¿qué porcentaje de los hogares
 visitados recibe menos que la media?"""),
@@ -233,7 +237,7 @@ corta cada vez que se junta otro 10%."""),
 
 deciles"""),
     ("code", """ggplot(deciles, aes(x = decil, y = visitados)) +
-  geom_col(fill = "#CCCCCC", width = 0.75) +
+  geom_col(fill = col_datos, width = 0.75) +
   geom_text(aes(label = visitados), vjust = -0.5) +
   scale_x_continuous(breaks = 1:10) +
   labs(x = "Decil de ingreso, del más bajo al más alto", y = "Hogares visitados")"""),
