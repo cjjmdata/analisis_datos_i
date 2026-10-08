@@ -91,10 +91,21 @@ equipos del caso de negocio no pueden mezclar carreras, y la discusión comparad
 entre series de distintas carreras ocurre dentro de un grupo solo si sus
 integrantes eligen fuentes de otras áreas.
 
-**Columna vertebral (todos, en clase).** Dos fuentes: la **encuesta del grupo**
-(sesión 1; los alumnos son la población; sostiene las unidades 1–3) y el **caso de
-negocio** de una empresa mexicana exportadora (desde la unidad 2; toca las cuatro
-carreras a la vez).
+**Columna vertebral (todos, en clase).** Tres fuentes, cada una con su turno:
+
+| Fuente | Objeto | Dónde vive | Para qué |
+|---|---|---|---|
+| Encuesta del grupo | `grupos` | hoja publicada, sesión 1 | Unidades 1–2: los alumnos son la población |
+| ENIGH 2024, hogares | `hogares` | `datos/enigh2024_hogares.csv.gz` | Unidad 3: centro, dispersión, forma, comparar grupos |
+| TSLA y AAPL, diario | `mercado` | `datos/mercado_diario.csv` | Unidades 3 y 5: dispersión, colas, curva normal |
+
+`paises` (Banco Mundial) acompaña a las tres desde la unidad 1.
+
+La encuesta se agota al terminar la unidad 2: son 89 respuestas, dos variables
+categóricas y ninguna observación marcada en estatura. La ENIGH entra con 91 414
+hogares, factor de expansión y seis variables categóricas, y permite la pregunta
+que ordena la unidad 3: **¿cuál es el perfil de los hogares de Oaxaca comparado
+con el nacional?**
 
 **Lente de carrera (portafolio).** Cada alumno adopta una serie del catálogo
 (`datos/catalogo.qmd`) según su carrera y le aplica cada técnica del curso. La
@@ -182,7 +193,25 @@ elimina) · **Protagonista** (el corazón; se construye línea por línea con
    que conserva la propiedad pedagógica (factores de expansión reales para enseñar
    media ponderada) y agrega relevancia para las cuatro carreras.
 
-6. **Sin datos personales de alumnos en el repositorio.** La encuesta del grupo se
+6. **El caso de negocio se sustituye por la ENIGH y por una serie de mercado.**
+   El diseño original pedía una empresa mexicana exportadora. En octubre de 2026
+   se probaron cuatro fuentes y ninguna entrega datos por script: el Consejo
+   Regulador del Tequila publica cifras solo en comunicados, AFAC publica PDF y
+   no cruza aerolínea con ruta, las exportaciones por entidad del INEGI son
+   microdato confidencial, y la liga de datos abiertos del SIAP devuelve HTML.
+   Una empresa con datos públicos, legibles por máquina y con dos categóricas
+   cruzadas no apareció.
+
+   En su lugar: **ENIGH 2024** para lo transversal y **TSLA y AAPL** para la
+   serie de tiempo. Las dos bajan por script y las dos se validan antes de
+   escribir. La ENIGH reproduce la cifra publicada por INEGI, 77,864 pesos de
+   ingreso trimestral promedio, y el script falla si deja de coincidir.
+
+   La lente de negocio no se pierde: vive en la interpretación. Sobre emisoras
+   mexicanas, se descartaron por varianza baja frente a TSLA, no por calidad del
+   dato: la serie de Bimbo tiene apenas 0.5% de días con rendimiento cero.
+
+7. **Sin datos personales de alumnos en el repositorio.** La encuesta del grupo se
    anonimiza en el momento de la captura. Antecedente: el repo del curso 2021
    (`cjjmdata/curso_analisis_de_datos_I`) sigue público con nombres de pila, edad
    y estatura de 27 alumnos reales.
@@ -231,10 +260,14 @@ el nombre de un objeto canónico rompe su trabajo.
 
 | Nombre | Significado | Estable en |
 |---|---|---|
-| `grupo` | Encuesta anonimizada del grupo | Unidades 1–3 |
-| `caso` | Datos del caso de negocio | Unidades 2–5 |
+| `grupos` | Encuesta anonimizada del grupo | Unidades 1–2 |
+| `hogares` | ENIGH 2024, concentrado por hogar | Unidades 3–5 |
+| `mercado` | Serie diaria de TSLA y AAPL | Unidades 3 y 5 |
 | `serie` | La serie que el alumno eligió para su portafolio | Todo el curso |
 | `paises` | Snapshot del Banco Mundial | Todo el curso |
+
+El objeto `caso`, que nombraba un caso de negocio de empresa exportadora, se
+retiró: ver la decisión 7.
 
 Auxiliares con sufijo inequívoco: `grupo_aux`, `caso_orig`. Nunca `grupo_full`,
 `caso_final`, `serie_v2` — suenan a canónicos y confunden.
