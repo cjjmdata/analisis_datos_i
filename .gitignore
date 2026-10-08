@@ -66,6 +66,15 @@ referencias/
 # cuadernos de referencia con salidas incrustadas (pesan MB y ensucian diffs)
 referencias/*.ipynb
 
+# Claves de API: nunca entran al repositorio.
+# El lugar recomendado es ~/.Renviron, fuera del proyecto, donde ni siquiera
+# existe el riesgo de un git add. Estas reglas son la red de seguridad por si
+# alguna se escribe aquí.
+.Renviron
+.env
+*.key
+*_secret*
+
 # Sistema
 .DS_Store
 Thumbs.db
