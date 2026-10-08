@@ -79,6 +79,19 @@ REGLAS = [
     ("remate", "error", r"(Eso es todo\.|Y ya\.|Es así de simple\.)", "quitar"),
     ("antitesis", "aviso", r"\bNo es .{3,40}: es\b", "la afirmación directa"),
     ("coloquial", "aviso", r"\b(entre manos|de golpe|a ojo|de corrido|se cae|te va a llenar de)\b", "registro adulto"),
+
+    # Promesas y anzuelos: anuncian que algo vendrá en lugar de decirlo.
+    # Apareció dos veces en la sesión 12: "y eso va a importar hoy".
+    ("promesa", "error", r"\b(va a importar|vas a ver|ya lo verás|ya verás|más adelante veremos|"
+                         r"como veremos|esto será útil|lo importante aquí|se ve más adelante)\b",
+     "decir el contenido ahora, o quitar"),
+    ("meta-pedagogico", "aviso", r"\b(la sesión explica|hoy veremos|vamos a ver|en esta lámina)\b",
+     "el andamiaje se siente, no se anuncia"),
+
+    # Verbos comodín de pensamiento, que sustituyen al verbo preciso.
+    # "Para pensarlos al mes, se dividen entre tres."
+    ("verbo-comodin", "aviso", r"\bpara (pensarlos|pensarlo|pensarla|pensarlas|entender mejor|que quede claro)\b",
+     "el verbo preciso: expresar, convertir, reportar"),
     ("termino-propio", "error", r"\bfricción cognitiva\b", "Bjork, Kapur, Sweller, ICAP"),
 ]
 
