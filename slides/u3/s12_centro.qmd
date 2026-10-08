@@ -482,32 +482,36 @@ viene del diseño de la muestra, no del hogar.
 ## Lo que pesa cada décimo {.smaller}
 
 ```{r}
-#| echo: false
-#| fig-height: 3.1
+#| fig-height: 3
 deciles <- hogares |>
-  mutate(decil = ntile(ingreso, 10)) |>
-  summarise(ingreso = mean(ingreso), representa = sum(factor), .by = decil) |>
-  arrange(decil) |>
-  mutate(fin = cumsum(representa), inicio = fin - representa)
+  mutate(decimo = ntile(ingreso, 10)) |>
+  summarise(visitados = n(), representa = sum(factor), .by = decimo)
 
-ggplot(deciles) +
-  geom_rect(aes(xmin = inicio, xmax = fin, ymin = 0, ymax = ingreso),
-            fill = col_datos, color = "white") +
-  geom_hline(yintercept = media_t, color = col_media, linewidth = 1.1) +
-  geom_hline(yintercept = pond_t, color = col_media, linewidth = 1.1, linetype = "dashed") +
-  scale_x_continuous(labels = \(x) scales::comma(x / 1e6), expand = c(0, 0)) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(x = "Hogares del país que representa cada décimo, en millones",
-       y = "Ingreso trimestral promedio")
+ggplot(deciles, aes(x = decimo, y = representa / 1e6)) +
+  geom_col(aes(fill = decimo == 10), width = 0.75) +
+  geom_text(aes(label = round(representa / 1e6, 1)), vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c(`FALSE` = col_datos, `TRUE` = col_destaca),
+                    guide = "none") +
+  scale_x_continuous(breaks = 1:10) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  labs(x = "Décimo de hogares, del ingreso más bajo al más alto",
+       y = "Hogares que representa,\nen millones")
+```
+
+```{r}
+#| echo: false
+d1 <- deciles$representa[1]; d10 <- deciles$representa[10]
 ```
 
 ::: {.nota}
-Cada rectángulo es un décimo de la **muestra**: todos tienen el mismo número de
-hogares visitados y **anchos distintos**, porque representan a cantidades
-distintas de hogares del país. El décimo de mayor ingreso es el más alto y
-también el más ancho, y por eso jala el promedio hacia arriba.
+Los diez décimos tienen el **mismo número de hogares visitados**,
+`r pesos(deciles$visitados[1])` cada uno. Lo que cambia es a cuántos hogares del
+país representan: el décimo de menor ingreso representa a
+`r sprintf("%.2f", d1/1e6)` millones y el de mayor ingreso a
+`r sprintf("%.2f", d10/1e6)`, un `r sprintf("%.0f", (d10/d1 - 1)*100)`% más.
 
-Línea continua: media simple. Línea punteada: media ponderada.
+El décimo que más gana es también el que más pesa, y por eso ponderar sube el
+promedio.
 :::
 
 ## En la base completa {.smaller}
