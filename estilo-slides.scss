@@ -92,6 +92,17 @@ $presentation-slide-text-align: left;
   line-height: 1.25;
 }
 
+// En Windows, cada bloque de código muestra una barra horizontal aunque el
+// código quepa: el bloque desborda por fracciones de píxel y `overflow: auto`
+// la dibuja. En una lámina proyectada nadie desplaza el código, así que la barra
+// solo estorba. Se oculta la barra; el desplazamiento sigue disponible.
+.reveal pre,
+.reveal pre code,
+.reveal div.sourceCode {
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
 .reveal code { color: $teal-900; }
 
 // Callouts pedagógicos (mismos nombres que el sitio)

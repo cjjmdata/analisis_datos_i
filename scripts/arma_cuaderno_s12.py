@@ -108,14 +108,22 @@ estaturas <- read_csv(url_grupo, show_col_types = FALSE) |>
   select(genero = `Género`, estatura = `Estatura, en metros`) |>
   filter(!is.na(estatura))
 
-ggplot(estaturas, aes(x = estatura, fill = genero)) +
-  geom_histogram(binwidth = 0.02, boundary = 1.5, color = "white") +
-  scale_fill_manual(values = col_grupos) +
-  labs(x = "Estatura del grupo, en metros", y = "Estudiantes", fill = NULL)'''),
-    ("md", """Una distribución con un solo pico es **unimodal**; con dos, **bimodal**; con más,
-**multimodal**. Aquí cada grupo tiene su propio pico, y un solo número de centro
-para todo el grupo cae entre los dos. Cuando una distribución tiene dos picos, la
-primera hipótesis es que mezcla dos poblaciones."""),
+ggplot(estaturas, aes(x = estatura)) +
+  geom_freqpoly(aes(color = "Todo el grupo"), binwidth = 0.02, boundary = 1.5,
+                linewidth = 1.4) +
+  geom_freqpoly(aes(color = genero), binwidth = 0.02, boundary = 1.5,
+                linewidth = 0.9) +
+  scale_color_manual(values = c(`Todo el grupo` = TINTA,
+                                Femenino  = col_grupos[1],
+                                Masculino = col_grupos[2]),
+                     name = NULL) +
+  labs(x = "Estatura, en metros", y = "Estudiantes")'''),
+    ("md", """¿Dónde estaría la moda de la estatura de todo el grupo?
+
+Una distribución con un solo pico es **unimodal**; con dos, **bimodal**; con más,
+**multimodal**. La línea oscura suma las otras dos en cada intervalo, y por eso
+tiene dos picos. Dos picos suelen señalar dos poblaciones mezcladas, y se separan
+antes de resumir."""),
 
     ("md", """## 3 · La mediana
 
@@ -259,21 +267,7 @@ Usa el mismo corte que los deciles, al 50%."""),
 mediana_pais
 median(hogares$ingreso)    # la de los hogares visitados"""),
     ("md", """Cualquier cifra que hable del país se calcula con el factor: la media, la
-mediana, los porcentajes y los conteos.
-
-### El mismo cálculo en otra base
-
-El PIB per cápita promedio de quince países, ¿se calcula sumándolos y dividiendo
-entre quince?"""),
-    ("code", f'''paises <- read_csv("{URL_PAISES}", show_col_types = FALSE)
-
-ultimo <- filter(paises, anio == max(anio), !is.na(pib_per_capita))
-
-mean(ultimo$pib_per_capita)
-
-weighted.mean(ultimo$pib_per_capita, ultimo$poblacion)'''),
-    ("md", """En la ENIGH ponderar subía el promedio; aquí lo baja. El peso corrige hacia lo
-que cada observación representa, en la dirección que toque."""),
+mediana, los porcentajes y los conteos."""),
 
     ("md", """## 6 · El perfil de Oaxaca
 
@@ -298,7 +292,88 @@ mediana_pais"""),
 mediana de Oaxaca contra la nacional. Escribe en tu cuaderno qué dice que sean
 parecidas.
 
-Cambia `"Oaxaca"` por otra entidad y vuelve a correr las celdas."""),
+Cambia `"Oaxaca"` por otra entidad y vuelve a correr las celdas.
+
+### Tu apuesta, revisada
+
+Las tres medidas de centro para los hogares del país, al trimestre y al mes. ¿A
+cuál se parece la cifra que anotaste al principio? ¿Qué pregunta estabas
+contestando?"""),
+    ("code", """cortes_p <- seq(0, 200000, by = 10000)
+clase_p  <- cut(hogares$ingreso, breaks = cortes_p, right = FALSE)
+k <- which.max(tapply(hogares$factor, clase_p, sum))   # clase modal con factor
+
+tibble(
+  medida    = c("Moda (clase modal)", "Mediana", "Media"),
+  trimestre = c((cortes_p[k] + cortes_p[k + 1]) / 2,
+                mediana_pais,
+                weighted.mean(hogares$ingreso, hogares$factor))
+) |>
+  mutate(mes = trimestre / 3)"""),
+
+    ("md", """## 7 · Otra base: el PIB de quince países
+
+El Banco Mundial publica el PIB per cápita, en dólares corrientes, y la población
+de cada país."""),
+    ("code", f'''paises <- read_csv("{URL_PAISES}", show_col_types = FALSE)
+
+ultimo <- paises |>
+  filter(anio == max(anio)) |>
+  select(pais, pib_per_capita, poblacion) |>
+  arrange(desc(pib_per_capita))
+
+ultimo |>
+  mutate(pib_per_capita = round(pib_per_capita),
+         millones_hab = round(poblacion / 1e6, 1),
+         .keep = "unused") |>
+  print(n = 15)'''),
+    ("md", """Los cálculos usan las cifras sin redondear; el redondeo es solo para leer la
+tabla.
+
+Antes de correr la celda: ¿cuál es el PIB per cápita promedio de estos países?"""),
+    ("code", """nrow(ultimo)
+
+mean(ultimo$pib_per_capita)"""),
+    ("md", """Ese promedio cuenta igual a cada país. ¿Describe a las personas que viven en
+ellos? En la gráfica, el área de cada círculo es la población; la línea punteada es
+la media simple y la continua, la media ponderada por población."""),
+    ("code", """simple_pib <- mean(ultimo$pib_per_capita)
+pond_pib   <- weighted.mean(ultimo$pib_per_capita, ultimo$poblacion)
+
+ggplot(ultimo, aes(x = pib_per_capita, y = fct_reorder(pais, pib_per_capita))) +
+  geom_vline(xintercept = simple_pib, color = col_media, linetype = "dashed") +
+  geom_vline(xintercept = pond_pib, color = col_media) +
+  geom_point(aes(size = poblacion), color = TEAL_500, alpha = 0.7) +
+  scale_size_area(max_size = 16, guide = "none") +
+  scale_x_continuous(labels = scales::comma,
+                     expand = expansion(mult = c(0.12, 0.05))) +
+  labs(x = "PIB per cápita, dólares", y = NULL)"""),
+    ("md", """Dos preguntas, dos promedios:
+
+| Pregunta | Unidad de observación | Cálculo |
+|---|---|---|
+| ¿Cuánto produce por habitante el país típico? | El país | `mean()` |
+| ¿Cuánto produce por habitante el conjunto? | La persona | `weighted.mean()` con la población |
+
+La media ponderada por población es el PIB total de los quince dividido entre su
+población total. Compruébalo:"""),
+    ("code", """sum(ultimo$pib_per_capita * ultimo$poblacion) /   # PIB total de los quince
+  sum(ultimo$poblacion)                             # entre su población total
+
+pond_pib"""),
+    ("md", """Los dos promedios están bien calculados y cada uno contesta su pregunta. La
+pregunta decide la unidad de observación, y la unidad decide el peso.
+
+### Lo que el PIB per cápita no dice
+
+El PIB per cápita reparte la producción total en partes iguales entre todos los
+habitantes. Leerlo como lo que recibe cada persona supone que todos reciben la
+misma parte, y nada en el número dice cómo se reparte dentro de cada país. Además
+mide producción, no el ingreso que llega a los hogares.
+
+¿Qué porcentaje de las personas vive en países por debajo del promedio ponderado?"""),
+    ("code", """sum(ultimo$poblacion[ultimo$pib_per_capita < pond_pib]) /
+  sum(ultimo$poblacion) * 100"""),
 
     ("md", """## Tarea
 

@@ -14,6 +14,7 @@ format:
     fig-width: 9
     fig-height: 4
     code-line-numbers: false
+    code-overflow: wrap
     highlight-style: github
     transition: fade
     background-transition: fade
@@ -37,7 +38,6 @@ source("../../R/colores.R")
 theme_set(theme_minimal(base_size = 15))
 pesos <- \(x) scales::comma(round(x))
 
-paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
 
 URL_GRUPO <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067&single=true&output=csv"
 estaturas <- read_csv(URL_GRUPO, show_col_types = FALSE) |>
@@ -133,6 +133,8 @@ repartió igual en sus tres meses.
 
 # La moda {background-color="#24494C"}
 
+El valor más frecuente
+
 ## La categoría más frecuente {.smaller}
 
 ::: {.friccion}
@@ -142,13 +144,20 @@ repartió igual en sus tres meses.
 . . .
 
 ```{r}
-#| fig-height: 2.8
-escolaridad <- count(hogares, educa_jefe, sort = TRUE)
+#| output-location: column
+#| fig-height: 4.2
+#| fig-width: 5.4
+escolaridad <- count(hogares, educa_jefe,
+                     sort = TRUE)
 
-ggplot(escolaridad, aes(x = n, y = fct_reorder(educa_jefe, n))) +
+ggplot(escolaridad,
+       aes(x = n,
+           y = fct_reorder(educa_jefe, n))) +
   geom_col(fill = col_moda, alpha = 0.85) +
-  geom_text(aes(label = scales::comma(n)), hjust = -0.15, size = 3.8) +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
+  geom_text(aes(label = scales::comma(n)),
+            hjust = -0.15, size = 3.6) +
+  scale_x_continuous(
+    expand = expansion(mult = c(0, 0.25))) +
   labs(x = "Hogares visitados", y = NULL)
 ```
 
@@ -257,13 +266,24 @@ del ancho del intervalo, igual que la forma del histograma depende de su
 ## Un pico o varios {.smaller}
 
 ```{r}
-#| fig-height: 2.6
-ggplot(estaturas, aes(x = estatura, fill = genero)) +
-  geom_histogram(binwidth = 0.02, boundary = 1.5, color = "white") +
-  scale_fill_manual(values = c(Femenino = col_grupos[1], Masculino = col_grupos[2]),
-                    name = NULL) +
-  scale_y_continuous(breaks = seq(0, 12, by = 2)) +
-  labs(x = "Estatura del grupo, en metros", y = "Estudiantes")
+#| output-location: column
+#| fig-height: 4
+#| fig-width: 5.4
+ggplot(estaturas, aes(x = estatura)) +
+  geom_freqpoly(aes(color = "Todo el grupo"),
+                binwidth = 0.02, boundary = 1.5,
+                linewidth = 1.4) +
+  geom_freqpoly(aes(color = genero),
+                binwidth = 0.02, boundary = 1.5,
+                linewidth = 0.9) +
+  scale_color_manual(
+    values = c(`Todo el grupo` = TINTA,
+               Femenino  = col_grupos[1],
+               Masculino = col_grupos[2]),
+    name = NULL) +
+  labs(x = "Estatura, en metros",
+       y = "Estudiantes") +
+  theme(legend.position = "bottom")
 ```
 
 ::: {.friccion}
@@ -273,16 +293,14 @@ ggplot(estaturas, aes(x = estatura, fill = genero)) +
 . . .
 
 ::: {.nota}
-Una distribución con un solo pico es **unimodal**; con dos, **bimodal**; con más,
-**multimodal**. Aquí hay dos grupos con centros distintos, y cada color tiene su
-propio pico. Un solo número de centro para todo el grupo cae entre los dos
-picos.
-
-Cuando una distribución tiene dos picos, la primera hipótesis es que mezcla dos
-poblaciones, y la respuesta es separarlas antes de resumir.
+Un pico: **unimodal**. Dos: **bimodal**. Más: **multimodal**. La línea oscura suma
+las otras dos en cada intervalo, y por eso tiene dos picos. Dos picos suelen
+señalar dos poblaciones mezcladas, y se separan antes de resumir.
 :::
 
 # La mediana {background-color="#24494C"}
+
+El hogar de en medio
 
 ## El hogar de en medio {.smaller}
 
@@ -322,33 +340,40 @@ el trimestre. Si sale de la base junto con el resto del 1% más alto,
 ## La misma mediana, otro máximo {.smaller}
 
 ```{r}
-#| fig-height: 2.4
+#| output-location: column
+#| fig-height: 3.4
+#| fig-width: 5.4
 comparacion <- bind_rows(
-  mutate(hogares,  base = "Todos los hogares"),
+  mutate(hogares,  base = "Todos"),
   mutate(quitados, base = "Sin el 1% más alto")
 )
 
-ggplot(comparacion, aes(x = ingreso, y = base)) +
-  geom_boxplot(fill = col_datos, alpha = 0.5, outlier.alpha = 0.12) +
-  geom_vline(xintercept = mediana_t, color = col_mediana, linewidth = 1) +
+ggplot(comparacion,
+       aes(x = ingreso, y = base)) +
+  geom_boxplot(fill = col_datos, alpha = 0.5,
+               outlier.alpha = 0.12) +
+  geom_vline(xintercept = mediana_t,
+             color = col_mediana) +
   coord_cartesian(xlim = c(0, 300000)) +
   scale_x_continuous(labels = scales::comma) +
-  labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)
+  labs(x = "Ingreso trimestral, en pesos",
+       y = NULL)
 ```
 
 ```{r}
-median(hogares$ingreso)
-median(quitados$ingreso)
+c(todos = median(hogares$ingreso), sin_el_1 = median(quitados$ingreso))
 ```
 
 ::: {.nota}
 Sin `r pesos(nrow(hogares) - nrow(quitados))` hogares, la mediana baja
-`r sprintf("%.1f", (1 - median(quitados$ingreso)/mediana_t)*100)`%. Se calcula por
-**posición**, y la posición de en medio apenas se recorre. El eje llega hasta
-300,000: `coord_cartesian()` recorta la vista, no los datos.
+`r sprintf("%.1f", (1 - median(quitados$ingreso)/mediana_t)*100)`%: se calcula por
+**posición**, y la posición de en medio apenas se recorre. `coord_cartesian()`
+recorta la vista, no los datos.
 :::
 
 # La media {background-color="#24494C"}
+
+El total repartido en partes iguales
 
 ## Primero a mano {.smaller}
 
@@ -371,7 +396,7 @@ mean(hogares$ingreso)
 ## Las tres, sobre la misma distribución {.smaller}
 
 ```{r}
-#| fig-height: 2.9
+#| fig-height: 2.5
 ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
   geom_histogram(binwidth = 10000, fill = col_datos, color = "white", boundary = 0) +
   geom_vline(xintercept = moda_clase, color = col_moda,    linewidth = 1.2) +
@@ -415,6 +440,8 @@ describe al hogar de en medio.
 
 # La media ponderada {background-color="#24494C"}
 
+Cuando cada observación representa a muchas
+
 ## Una calificación con pesos distintos {.smaller}
 
 ::: {.a-mano}
@@ -425,15 +452,18 @@ $$\bar{x}_w = \frac{\sum w_i \, x_i}{\sum w_i}$$
 :::
 
 ```{r}
+#| output-location: column
 curso <- tibble(
-  componente   = c("Primer parcial", "Segundo parcial", "Portafolio"),
+  componente   = c("Parcial 1", "Parcial 2",
+                   "Portafolio"),
   calificacion = c(70, 80, 100),
   peso         = c(0.20, 0.30, 0.50)
 )
 
 mean(curso$calificacion)
 
-sum(curso$peso * curso$calificacion) / sum(curso$peso)
+sum(curso$peso * curso$calificacion) /
+  sum(curso$peso)
 
 weighted.mean(curso$calificacion, curso$peso)
 ```
@@ -469,7 +499,7 @@ Cada hogar visitado representa a un número distinto de hogares del país, desde
 ## Cómo se eligió la muestra {.smaller}
 
 | Paso | Qué se hace |
-|---|---|
+|----------------|--------------------------------------------------------------|
 | Estratos | Las zonas del país se agrupan por entidad, tamaño de localidad y nivel socioeconómico: 1,175 estratos |
 | Primera etapa | En cada estrato se sortean conglomerados de 80 a 160 viviendas, las **unidades primarias de muestreo** |
 | Segunda etapa | En cada conglomerado sorteado se sortean las viviendas que se visitan |
@@ -542,7 +572,7 @@ deciles
 ## Cuántos hogares hizo falta visitar {.smaller}
 
 ```{r}
-#| fig-height: 2.7
+#| fig-height: 2.4
 ggplot(deciles, aes(x = decil, y = visitados)) +
   geom_col(aes(fill = decil == 10), width = 0.75) +
   geom_text(aes(label = scales::comma(visitados)), vjust = -0.5, size = 3.6) +
@@ -602,40 +632,11 @@ Cualquier cifra que hable del país se calcula con el factor: la media, la
 mediana, los porcentajes y los conteos.
 :::
 
-## El mismo cálculo, otra base {.smaller}
-
-```{r}
-#| echo: false
-ultimo <- paises |> filter(anio == max(anio), !is.na(pib_per_capita), !is.na(poblacion))
-simple_pib <- mean(ultimo$pib_per_capita)
-pond_pib   <- weighted.mean(ultimo$pib_per_capita, ultimo$poblacion)
-```
-
-::: {.friccion}
-El PIB per cápita promedio de estos `r nrow(ultimo)` países, ¿se calcula
-sumándolos y dividiendo entre `r nrow(ultimo)`?
-:::
-
-. . .
-
-```{r}
-mean(ultimo$pib_per_capita)
-
-weighted.mean(ultimo$pib_per_capita, ultimo$poblacion)
-```
-
-::: {.no-dice}
-La media simple trata igual a `r ultimo$pais[which.max(ultimo$poblacion)]` que a
-`r ultimo$pais[which.min(ultimo$poblacion)]`, y queda
-**`r sprintf("%.0f", (simple_pib/pond_pib - 1)*100)`% arriba** de la ponderada.
-
-En la ENIGH ponderar subía el promedio; aquí lo baja. El peso corrige hacia lo
-que cada observación representa, en la dirección que toque.
-:::
-
 # El perfil de Oaxaca {background-color="#24494C"}
 
-## Las treinta y dos {.smaller}
+El estado frente al país
+
+## ¿En qué lugar queda Oaxaca? {.smaller}
 
 ```{r}
 #| echo: false
@@ -647,37 +648,48 @@ lugar <- which(orden$entidad == "Oaxaca")
 
 ::: {.friccion}
 Ordenadas las 32 entidades de menor a mayor ingreso promedio por hogar, ¿en qué
-lugar queda Oaxaca?
+lugar queda Oaxaca? Anota un número del 1 al 32.
 :::
 
-. . .
+## Las treinta y dos {.smaller}
 
 ```{r}
-#| fig-height: 4.4
-#| fig-width: 8
+#| output-location: column
+#| fig-height: 5.1
+#| fig-width: 5.2
 por_entidad <- hogares |>
-  summarise(ingreso = weighted.mean(ingreso, factor), .by = entidad)
+  summarise(
+    ingreso = weighted.mean(ingreso, factor),
+    .by = entidad)
 
-ggplot(por_entidad, aes(x = ingreso, y = fct_reorder(entidad, ingreso))) +
-  geom_vline(xintercept = pond_t, color = col_media, linewidth = 1) +
-  geom_point(aes(color = entidad == "Oaxaca"), size = 2.4) +
-  scale_color_manual(values = c(`FALSE` = col_datos, `TRUE` = col_destaca),
-                     guide = "none") +
-  scale_x_continuous(labels = scales::comma,
-                     expand = expansion(mult = c(0.03, 0.10))) +
-  labs(x = "Ingreso trimestral promedio por hogar", y = NULL) +
+ggplot(por_entidad,
+       aes(x = ingreso,
+           y = fct_reorder(entidad, ingreso))) +
+  geom_vline(xintercept = pond_t,
+             color = col_media) +
+  geom_point(aes(color = entidad == "Oaxaca"),
+             size = 2.4) +
+  scale_color_manual(
+    values = c(col_datos, col_destaca),
+    guide = "none") +
+  scale_x_continuous(
+    labels = scales::comma,
+    expand = expansion(mult = c(0.03, 0.1))) +
+  labs(x = "Ingreso trimestral promedio",
+       y = NULL) +
   theme(axis.text.y = element_text(size = 9))
 ```
 
 ::: {style="font-size:0.7em;"}
 Oaxaca ocupa el lugar **`r lugar` de 32**. La línea es el promedio nacional, y
 `r sum(por_entidad$ingreso < pond_t)` entidades quedan debajo de él: unas pocas
-entidades de ingreso alto lo levantan.
+de ingreso alto lo levantan.
 :::
 
 ## Oaxaca y el país {.smaller}
 
 ```{r}
+#| output-location: column
 oaxaca <- filter(hogares, entidad == "Oaxaca")
 
 mediana_con_factor <- function(x, w) {
@@ -686,18 +698,21 @@ mediana_con_factor <- function(x, w) {
 }
 
 tibble(
-  medida   = c("Hogares visitados", "Hogares que representa",
-               "Ingreso promedio", "Ingreso mediano", "Integrantes por hogar"),
-  Oaxaca   = c(nrow(oaxaca), sum(oaxaca$factor),
-               weighted.mean(oaxaca$ingreso, oaxaca$factor),
-               mediana_con_factor(oaxaca$ingreso, oaxaca$factor),
-               weighted.mean(oaxaca$integrantes, oaxaca$factor)),
-  Nacional = c(nrow(hogares), sum(hogares$factor), pond_t, mediana_pais,
-               weighted.mean(hogares$integrantes, hogares$factor))
+  medida = c("Hogares visitados",
+             "Hogares que representa",
+             "Ingreso promedio",
+             "Ingreso mediano"),
+  Oaxaca = c(
+    nrow(oaxaca), sum(oaxaca$factor),
+    weighted.mean(oaxaca$ingreso, oaxaca$factor),
+    mediana_con_factor(oaxaca$ingreso,
+                       oaxaca$factor)),
+  Nacional = c(
+    nrow(hogares), sum(hogares$factor),
+    pond_t, mediana_pais)
 ) |>
   mutate(across(c(Oaxaca, Nacional),
-                \(x) if_else(medida == "Integrantes por hogar",
-                             sprintf("%.2f", x), scales::comma(round(x)))))
+                \(x) scales::comma(round(x))))
 ```
 
 ```{r}
@@ -707,17 +722,166 @@ oax_mediana <- mediana_con_factor(oaxaca$ingreso, oaxaca$factor)
 ```
 
 ::: {.friccion}
-El ingreso promedio de Oaxaca es el
-`r sprintf("%.0f", oax_media/pond_t*100)`% del nacional. ¿La mediana guarda la
-misma proporción?
+El ingreso promedio de Oaxaca es el `r sprintf("%.0f", oax_media/pond_t*100)`% del
+nacional. ¿La mediana guarda la misma proporción?
 :::
 
 . . .
 
 ::: {.nota}
-La mediana de Oaxaca es el `r sprintf("%.0f", oax_mediana/mediana_pais*100)`% de
-la nacional: casi la misma proporción. La diferencia con el país está en toda la
+La mediana de Oaxaca es el `r sprintf("%.0f", oax_mediana/mediana_pais*100)`% de la
+nacional: casi la misma proporción. La distancia con el país está en toda la
 distribución, no solo en los hogares de ingreso alto.
+:::
+
+## Tu apuesta, revisada {.smaller}
+
+```{r}
+#| echo: false
+cortes_p <- seq(0, 200000, by = 10000)
+clase_p  <- cut(hogares$ingreso, breaks = cortes_p, right = FALSE)
+k <- which.max(tapply(hogares$factor, clase_p, sum))
+moda_pais <- (cortes_p[k] + cortes_p[k + 1]) / 2
+```
+
+| Para los hogares del país | Al trimestre | Al mes |
+|------------------------------------------|-------------:|-------------:|
+| [El ingreso más frecuente, por clase modal]{style="color:#5A7B5A;"} | `r pesos(moda_pais)` | **`r pesos(moda_pais / 3)`** |
+| [El hogar de en medio]{style="color:#3A6B6F;"} | `r pesos(mediana_pais)` | **`r pesos(mediana_pais / 3)`** |
+| [El total repartido en partes iguales]{style="color:#A4503C;"} | `r pesos(pond_t)` | **`r pesos(pond_t / 3)`** |
+
+::: {.friccion}
+¿A cuál de las tres se parece la cifra que anotaste al principio? ¿Qué pregunta
+estabas contestando?
+:::
+
+# Otra base: el PIB de quince países {background-color="#24494C"}
+
+Qué pesa cuando se promedian países
+
+## Quince países {.smaller}
+
+```{r}
+#| output-location: column
+url_paises <- paste0(
+  "https://raw.githubusercontent.com/",
+  "cjjmdata/analisis_datos_i/main/",
+  "datos/banco_mundial.csv")
+
+paises <- read_csv(url_paises,
+                   show_col_types = FALSE)
+
+ultimo <- paises |>
+  filter(anio == max(anio)) |>
+  select(pais, pib_per_capita, poblacion) |>
+  arrange(desc(pib_per_capita))
+
+ultimo |>
+  mutate(pib_per_capita = round(pib_per_capita),
+         millones_hab = round(poblacion / 1e6, 1),
+         .keep = "unused") |>
+  print(n = 15)
+```
+
+::: {style="font-size:0.5em; color:#6C7A7B;"}
+Banco Mundial: PIB per cápita en dólares corrientes (`NY.GDP.PCAP.CD`) y población
+total (`SP.POP.TOTL`), `r max(paises$anio)`. Los cálculos usan las cifras sin
+redondear; el redondeo es solo para leer la tabla.
+:::
+
+## El promedio de los quince {.smaller}
+
+::: {.friccion}
+¿Cuál es el PIB per cápita promedio de estos `r nrow(ultimo)` países?
+:::
+
+. . .
+
+```{r}
+mean(ultimo$pib_per_capita)
+```
+
+. . .
+
+::: {.friccion}
+Ese promedio cuenta igual a cada país. ¿Describe a las personas que viven en
+ellos?
+:::
+
+## Cada país con su población {.smaller}
+
+```{r}
+#| output-location: column
+#| fig-height: 4.6
+#| fig-width: 5.2
+simple_pib <- mean(ultimo$pib_per_capita)
+pond_pib   <- weighted.mean(ultimo$pib_per_capita,
+                            ultimo$poblacion)
+
+ggplot(ultimo,
+       aes(x = pib_per_capita,
+           y = fct_reorder(pais, pib_per_capita))) +
+  geom_vline(xintercept = simple_pib,
+             color = col_media, linetype = "dashed") +
+  geom_vline(xintercept = pond_pib,
+             color = col_media) +
+  geom_point(aes(size = poblacion),
+             color = TEAL_500, alpha = 0.7) +
+  scale_size_area(max_size = 16, guide = "none") +
+  scale_x_continuous(labels = scales::comma,
+                     expand = expansion(mult = c(0.12, 0.05))) +
+  labs(x = "PIB per cápita, dólares", y = NULL)
+```
+
+```{r}
+#| echo: false
+china_india <- sum(ultimo$poblacion[ultimo$pais %in% c("China", "India")]) /
+  sum(ultimo$poblacion) * 100
+```
+
+::: {style="font-size:0.65em;"}
+El área de cada círculo es la población. **Punteada**: media simple, cada país
+cuenta uno. **Continua**: media ponderada por población. China e India suman el
+`r sprintf("%.1f", china_india)`% de los habitantes de los quince.
+:::
+
+## Dos preguntas, dos promedios {.smaller}
+
+| Pregunta | Unidad de observación | Cálculo | Resultado |
+|------------------------------------|----------------|------------------------------|----------:|
+| ¿Cuánto produce por habitante el país típico? | El país | `mean()` | `r pesos(simple_pib)` |
+| ¿Cuánto produce por habitante el conjunto? | La persona | `weighted.mean()` con la población | `r pesos(pond_pib)` |
+
+```{r}
+sum(ultimo$pib_per_capita * ultimo$poblacion) /   # PIB total de los quince
+  sum(ultimo$poblacion)                             # entre su población total
+```
+
+::: {.nota}
+La media ponderada por población **es** el PIB total de los quince dividido entre
+su población total: los dos caminos dan el mismo número. Los dos promedios están
+bien calculados y cada uno contesta su pregunta. La pregunta decide la unidad de
+observación, y la unidad decide el peso.
+:::
+
+## Lo que el PIB per cápita no dice {.smaller}
+
+```{r}
+#| echo: false
+debajo_pib <- sum(ultimo$poblacion[ultimo$pib_per_capita < pond_pib]) /
+  sum(ultimo$poblacion) * 100
+```
+
+::: {.no-dice}
+El PIB per cápita reparte la producción total en partes iguales entre todos los
+habitantes. Leerlo como lo que recibe cada persona supone que todos reciben la
+misma parte, y nada en el número dice cómo se reparte dentro de cada país. Además
+mide producción, no el ingreso que llega a los hogares.
+
+Entre los quince, el **`r sprintf("%.1f", debajo_pib)`%** de las personas vive en
+países por debajo de los `r pesos(pond_pib)` dólares por habitante. Dentro de
+México ocurre lo mismo a otra escala: el promedio por hogar es `r pesos(pond_t)`
+pesos al trimestre y el hogar de en medio recibe `r pesos(mediana_pais)`.
 :::
 
 ## Qué medida usar {.smaller}
