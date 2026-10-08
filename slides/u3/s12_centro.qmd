@@ -32,17 +32,12 @@ execute:
 #| echo: false
 
 library(tidyverse)
+source("../../R/colores.R")
 
 theme_set(theme_minimal(base_size = 15))
-AZUL  <- "#3A6B6F"
-GRIS  <- "#CCCCCC"
-ROJO  <- "#A4503C"
-TINTA <- "#34425A"
-
-hogares <- read_csv("../../datos/enigh2024_hogares.csv.gz", show_col_types = FALSE)
-paises  <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
-
 pesos <- \(x) scales::comma(round(x))
+
+paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
 ```
 
 ## El cuaderno de hoy {.smaller}
@@ -57,9 +52,11 @@ Archivo → Guardar una copia en Drive.
 Al terminar esta sesión vas a poder:
 
 1. **Calcular** la moda, la mediana y la media de una variable, a mano y con R.
-2. **Distinguir** cuál de las tres describe mejor un conjunto, según su forma.
-3. **Calcular** una media ponderada y **justificar** qué pesa cada observación.
-4. **Explicar** por qué el promedio de una encuesta no es el promedio del país.
+2. **Estimar** la moda de una variable continua y **explicar** de qué depende el
+   resultado.
+3. **Distinguir** cuál de las tres medidas describe mejor un conjunto, según su
+   forma.
+4. **Calcular** una media ponderada y **justificar** qué pesa cada observación.
 
 ::: {style="font-size:0.6em; color:#6C7A7B;"}
 Programa MAT1409 · 2.2.1 Moda y mediana · 2.2.2 Media aritmética simple y ponderada
@@ -70,13 +67,17 @@ Programa MAT1409 · 2.2.1 Moda y mediana · 2.2.2 Media aritmética simple y pon
 ## Los hogares de México {.smaller}
 
 ```{r}
-#| echo: false
-glimpse(hogares, width = 80)
+url <- paste0("https://raw.githubusercontent.com/cjjmdata/",
+              "analisis_datos_i/main/datos/enigh2024_hogares.csv.gz")
+
+hogares <- read_csv(url, show_col_types = FALSE)
+
+glimpse(hogares, width = 70)
 ```
 
-::: {style="font-size:0.6em; color:#6C7A7B;"}
-INEGI, Encuesta Nacional de Ingresos y Gastos de los Hogares 2024. El ingreso y
-el gasto son trimestrales, en pesos.
+::: {.nota}
+**El ingreso y el gasto son trimestrales**, en pesos: lo que entró al hogar en
+tres meses. Para pensarlos al mes, se dividen entre tres.
 :::
 
 ## Las cuatro preguntas {.smaller}
@@ -85,8 +86,8 @@ el gasto son trimestrales, en pesos.
 |---|---|
 | Unidad de observación | **El hogar**, no la persona |
 | Variables | Ingreso y gasto en pesos, integrantes y perceptores en personas, el resto categóricas |
-| ¿Hubo aleatorización? | Sí, es una muestra probabilística de hogares |
-| ¿Observacional o experimento? | Observacional: nadie asignó a nadie |
+| ¿Hubo aleatorización? | Sí: es una muestra probabilística de hogares |
+| ¿Observacional o experimento? | Observacional |
 
 ::: {.nota}
 Cada renglón es un hogar. Un hogar de cinco personas y uno de una persona pesan
@@ -95,14 +96,6 @@ igual en esta tabla, y eso va a importar hoy.
 
 ## Tu apuesta {.smaller}
 
-::: {.friccion}
-Un hogar típico en México, **¿cuánto recibe al mes**?
-
-Escríbelo antes de ver nada. Un solo número.
-:::
-
-. . .
-
 ```{r}
 #| echo: false
 media_t   <- mean(hogares$ingreso)
@@ -110,62 +103,199 @@ mediana_t <- median(hogares$ingreso)
 pond_t    <- weighted.mean(hogares$ingreso, hogares$factor)
 ```
 
-Hay tres respuestas correctas y distintas, y la sesión es sobre por qué:
+::: {.friccion}
+Un hogar típico en México, **¿cuánto recibe al mes?** Anota una cifra.
+:::
 
-| | Al mes |
-|---|---:|
-| El ingreso de en medio | **`r pesos(mediana_t / 3)`** |
-| El promedio de la muestra | **`r pesos(media_t / 3)`** |
-| El promedio del país | **`r pesos(pond_t / 3)`** |
+. . .
+
+Tres respuestas, las tres correctas:
+
+| | Al trimestre | Al mes |
+|---|---:|---:|
+| El ingreso de en medio | `r pesos(mediana_t)` | **`r pesos(mediana_t / 3)`** |
+| El promedio de la muestra | `r pesos(media_t)` | **`r pesos(media_t / 3)`** |
+| El promedio del país | `r pesos(pond_t)` | **`r pesos(pond_t / 3)`** |
+
+La sesión explica de dónde sale cada una y cuándo usar cuál.
 
 # La moda {background-color="#24494C"}
 
-## El valor que más se repite {.smaller}
+## La categoría más frecuente {.smaller}
 
 ```{r}
-count(hogares, educa_jefe, sort = TRUE)
+#| fig-height: 3
+escolaridad <- count(hogares, educa_jefe, sort = TRUE)
+
+ggplot(escolaridad, aes(x = n, y = fct_reorder(educa_jefe, n))) +
+  geom_col(fill = col_moda, alpha = 0.85) +
+  geom_text(aes(label = scales::comma(n)), hjust = -0.15, size = 4) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
+  labs(x = "Hogares", y = NULL)
 ```
 
 ::: {.nota}
-La moda es la única medida de centro que funciona con variables **categóricas**:
-"Secundaria completa" no se puede promediar ni ordenar en una recta numérica.
+La moda es la única medida de centro que funciona con variables categóricas:
+"Secundaria completa" no se puede sumar ni ordenar en una recta numérica.
 :::
 
-## La moda del ingreso {.smaller}
+## Variables con pocos valores {.smaller}
+
+```{r}
+count(hogares, integrantes, sort = TRUE) |> head(4)
+```
+
+. . .
+
+::: {.nota}
+Con el número de integrantes, la moda es un valor exacto y describe algo real:
+el tamaño de hogar más frecuente del país.
+
+El ingreso se comporta distinto, porque casi ningún hogar coincide con otro.
+:::
+
+## El ingreso casi no se repite {.smaller}
+
+```{r}
+length(unique(hogares$ingreso))
+
+sort(table(hogares$ingreso), decreasing = TRUE)[1:3]
+```
 
 ```{r}
 #| echo: false
 distintos <- length(unique(hogares$ingreso))
 tabla_ing <- sort(table(hogares$ingreso), decreasing = TRUE)
-moda_ing  <- as.numeric(names(tabla_ing)[1])
+```
+
+::: {.no-dice}
+`r pesos(distintos)` valores distintos en `r pesos(nrow(hogares))` hogares, y el
+más repetido lo comparten `r tabla_ing[1]`.
+
+Buscar el valor exacto que más se repite funciona con categorías y con conteos.
+Con una variable continua hace falta agrupar primero.
+:::
+
+## La clase modal {.smaller}
+
+```{r}
+cortes <- seq(0, 200000, by = 10000)
+conteo <- table(cut(hogares$ingreso, breaks = cortes, right = FALSE, dig.lab = 10))
+
+sort(conteo, decreasing = TRUE)[1:3]
+```
+
+```{r}
+i <- which.max(conteo)
+
+moda_clase <- (cortes[i] + cortes[i + 1]) / 2   # punto medio del intervalo
+moda_clase
+```
+
+```{r}
+#| echo: false
+modal <- tibble(clase = names(conteo)[i], n = as.integer(conteo[i]))
+```
+
+::: {.nota}
+La **clase modal** es el intervalo con más observaciones:
+**`r modal$clase`** pesos, con `r pesos(modal$n)` hogares. Es la barra más alta
+del histograma, y su ancho es una decisión de quien lo construye.
+
+Cuando hace falta un solo número, se usa el punto medio del intervalo:
+**`r pesos(moda_clase)`** pesos.
+:::
+
+## El pico de la curva {.smaller}
+
+```{r}
+#| fig-height: 2.8
+curva <- density(hogares$ingreso, adjust = 1)
+moda_ingreso <- curva$x[which.max(curva$y)]
+
+ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
+  geom_density(color = col_apoyo, fill = col_apoyo, alpha = 0.15, linewidth = 1) +
+  geom_vline(xintercept = moda_ingreso, color = col_moda, linewidth = 1.2) +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Ingreso trimestral del hogar, en pesos")
+```
+
+::: {.a-mano}
+`density()` suaviza el histograma: reparte cada observación en una campanita
+pequeña y suma todas. Donde se amontonan más hogares, la curva sube.
+
+La moda estimada es el punto más alto: **`r pesos(moda_ingreso)` pesos**.
+:::
+
+## Una joroba, o varias {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.6
+set.seed(2026)
+URL_GRUPO <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vTTKC57eWZVIQ9lwhoR5nVqYM4kgi5zA9yifa-YStdfdJwNe7ATs0p-TUCUwvjfcWmHmvsZDEK8VX4I/pub?gid=1326008067&single=true&output=csv"
+estaturas <- read_csv(URL_GRUPO, show_col_types = FALSE) |>
+  select(genero = `Género`, estatura = `Estatura, en metros`) |>
+  filter(!is.na(estatura))
+
+ggplot(estaturas, aes(x = estatura)) +
+  geom_density(color = TINTA, linewidth = 1.2) +
+  geom_density(aes(color = genero), linewidth = 0.9, linetype = "dashed") +
+  scale_color_manual(values = c(Femenino = col_grupos[1], Masculino = col_grupos[2]),
+                     name = NULL) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Estatura del grupo, en metros")
 ```
 
 ::: {.friccion}
-Con `r pesos(nrow(hogares))` hogares, ¿cuántos crees que coinciden exactamente en
-el mismo ingreso?
+La curva oscura, la del grupo completo, sube, baja un poco y vuelve a subir.
+**¿De dónde sale ese escalón?**
 :::
 
 . . .
 
+::: {.nota}
+Una distribución es **unimodal** con una joroba, **bimodal** con dos y
+**multimodal** con más. Dos jorobas casi siempre señalan **dos poblaciones
+mezcladas**, y aquí se ven las dos: las curvas punteadas tienen su propio centro
+y al juntarse producen el escalón.
+
+Con 89 estaturas el segundo bulto apenas se insinúa. Con más observaciones de
+cada grupo, se separan dos jorobas completas.
+:::
+
+## De qué depende la moda estimada {.smaller}
+
 ```{r}
-sort(table(hogares$ingreso), decreasing = TRUE)[1:3]
+#| echo: false
+tibble(
+  Método = c("Clase modal, intervalos de 10,000",
+             "Pico de la curva, suavizado 0.5",
+             "Pico de la curva, suavizado 1.0",
+             "Pico de la curva, suavizado 2.0"),
+  `Moda estimada` = c(
+    pesos(moda_clase),
+    map_chr(c(0.5, 1, 2), \(a) {
+      d <- density(hogares$ingreso, adjust = a); pesos(d$x[which.max(d$y)])
+    }))
+) |>
+  knitr::kable(align = "lr")
 ```
 
 ::: {.no-dice}
-El ingreso toma **`r pesos(distintos)` valores distintos** en
-`r pesos(nrow(hogares))` hogares. El más repetido lo comparten
-**`r tabla_ing[1]` hogares**, el `r sprintf("%.3f", tabla_ing[1]/nrow(hogares)*100)`% de la muestra.
+Cuatro valores distintos con los mismos datos, y ninguno está mal calculado.
 
-Con variables continuas la moda describe una coincidencia, no un centro. Para
-el ingreso sirven las otras dos.
+La moda de una variable continua no se cuenta: se **estima**. El resultado
+depende del ancho del intervalo o del suavizado, igual que el histograma depende
+de su `binwidth`. Una moda estimada se reporta junto con el método que la produjo.
 :::
 
 # La mediana {background-color="#24494C"}
 
-## Ya la calcularon {.smaller}
+## El valor de en medio {.smaller}
 
-La mediana parte los datos ordenados en dos mitades. Es el segundo cuartil de la
-sesión 10, con otro nombre:
+La mediana deja la mitad de los hogares debajo y la mitad arriba:
 
 ```{r}
 median(hogares$ingreso)
@@ -176,39 +306,66 @@ quantile(hogares$ingreso, 0.50)
 . . .
 
 ::: {.nota}
-Como cuantil, la mediana responde **dónde corta**. Como medida de centro,
-responde **cuánto recibe el hogar de en medio**. Es el mismo número con dos
-preguntas distintas detrás.
+Es el mismo número que calculamos como segundo cuartil. Cambia la pregunta: como
+cuantil responde dónde corta, como medida de centro responde cuánto recibe el
+hogar que está en medio.
 :::
 
-## Lo que la mediana ignora {.smaller}
-
-```{r}
-#| echo: false
-corte <- quantile(hogares$ingreso, 0.99)
-sin_top <- filter(hogares, ingreso <= corte)
-```
-
-::: {.friccion}
-Si el 1% de hogares con más ingreso saliera de la base, ¿qué le pasaría a la
-mediana?
-:::
-
-. . .
+## Lo que no mueve a la mediana {.smaller}
 
 ```{r}
 quitados <- filter(hogares, ingreso <= quantile(ingreso, 0.99))
 
-nrow(hogares) - nrow(quitados)      # hogares que salieron
+nrow(hogares) - nrow(quitados)   # hogares que salieron
 
+max(hogares$ingreso)
+max(quitados$ingreso)
+```
+
+```{r}
+#| echo: false
+sin_top <- quitados
+```
+
+::: {.friccion}
+El hogar más alto de la base recibe **`r pesos(max(hogares$ingreso))` pesos** al
+trimestre. Sale de la base junto con `r pesos(nrow(hogares) - nrow(sin_top))`
+hogares más. ¿Qué le pasa a la mediana?
+:::
+
+## La misma mediana, otro máximo {.smaller}
+
+```{r}
+#| fig-height: 2.6
+comparacion <- bind_rows(
+  mutate(hogares,  base = "Todos los hogares"),
+  mutate(quitados, base = "Sin el 1% más alto")
+)
+
+ggplot(comparacion, aes(x = ingreso, y = base)) +
+  geom_boxplot(fill = col_datos, alpha = 0.5, outlier.alpha = 0.12) +
+  geom_vline(xintercept = median(hogares$ingreso), color = col_mediana, linewidth = 1) +
+  coord_cartesian(xlim = c(0, 300000)) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)
+```
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+El eje llega hasta 300,000 para que se vean las cajas. Los hogares de ingreso
+mayor siguen en los datos; `coord_cartesian()` recorta la vista, no la base.
+:::
+
+```{r}
 median(hogares$ingreso)
 median(quitados$ingreso)
 ```
 
+::: {.nota}
 La mediana baja
-`r sprintf("%.1f", (1 - median(sin_top$ingreso)/median(hogares$ingreso))*100)`%
-después de quitar `r pesos(nrow(hogares) - nrow(sin_top))` hogares. Se calcula
-por posición, y la posición casi no se mueve.
+`r sprintf("%.1f", (1 - median(sin_top$ingreso)/median(hogares$ingreso))*100)`%.
+Se calcula por **posición**, y quitar los `r pesos(nrow(hogares) - nrow(sin_top))`
+hogares del extremo mueve esa posición apenas unos lugares.
+:::
 
 # La media {background-color="#24494C"}
 
@@ -220,8 +377,8 @@ observaciones:
 
 $$\bar{x} = \frac{\sum x_i}{n}$$
 
-Es el único de los tres centros que usa **todos** los datos. Por eso cada peso
-que entra o sale la mueve.
+Es la única de las tres que usa **todos** los datos, así que cada peso que entra
+o sale la mueve.
 :::
 
 ```{r}
@@ -230,75 +387,76 @@ sum(hogares$ingreso) / length(hogares$ingreso)
 mean(hogares$ingreso)
 ```
 
-## Media contra mediana {.smaller}
+## Las tres, sobre la misma distribución {.smaller}
 
 ```{r}
-#| echo: false
-#| fig-height: 3.2
-ggplot(filter(hogares, ingreso <= quantile(ingreso, 0.95)), aes(x = ingreso)) +
-  geom_histogram(binwidth = 5000, fill = GRIS, color = "white", boundary = 0) +
-  geom_vline(xintercept = mediana_t, color = AZUL, linewidth = 1.2) +
-  geom_vline(xintercept = media_t, color = ROJO, linewidth = 1.2) +
-  annotate("text", x = mediana_t, y = Inf, label = "mediana", color = AZUL,
-           hjust = 1.1, vjust = 1.5, size = 5) +
-  annotate("text", x = media_t, y = Inf, label = "media", color = ROJO,
-           hjust = -0.1, vjust = 1.5, size = 5) +
+#| fig-height: 3
+ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
+  geom_histogram(binwidth = 10000, fill = col_datos, color = "white", boundary = 0) +
+  geom_vline(xintercept = moda_clase, color = col_moda,    linewidth = 1.2) +
+  geom_vline(xintercept = mediana_t,  color = col_mediana, linewidth = 1.2) +
+  geom_vline(xintercept = media_t,    color = col_media,   linewidth = 1.2) +
   scale_x_continuous(labels = scales::comma) +
   labs(x = "Ingreso trimestral del hogar, en pesos", y = "Hogares")
 ```
 
-::: {style="font-size:0.6em; color:#6C7A7B;"}
-La gráfica recorta el 5% de ingresos más altos para que se vea la forma. Los
-`r pesos(round(nrow(hogares)*0.05))` hogares recortados sí entran en los cálculos.
+::: {style="font-size:0.7em;"}
+[Moda]{style="color:#5A7B5A; font-weight:700;"} `r pesos(moda_clase)` ·
+[Mediana]{style="color:#3A6B6F; font-weight:700;"} `r pesos(mediana_t)` ·
+[Media]{style="color:#A4503C; font-weight:700;"} `r pesos(media_t)` ·
+la gráfica recorta los ingresos arriba de 200,000 para que se vea la forma
 :::
+
+## Dos de cada tres {.smaller}
+
+```{r}
+mean(hogares$ingreso < mean(hogares$ingreso)) * 100
+```
 
 ```{r}
 #| echo: false
 debajo <- mean(hogares$ingreso < media_t) * 100
 ```
 
-::: {.nota}
-La media queda **`r pesos(media_t - mediana_t)` pesos** arriba de la mediana. La
-cola larga de la derecha jala el promedio, y la mediana se queda donde está la
-mayoría.
-:::
-
-## El dato que mueve el promedio {.smaller}
-
-```{r}
-mean(hogares$ingreso)
-mean(quitados$ingreso)
-```
-
-::: {.friccion}
-La mediana bajó
-`r sprintf("%.1f", (1 - median(sin_top$ingreso)/median(hogares$ingreso))*100)`%
-con los mismos hogares fuera. **¿Por qué la media baja
-`r sprintf("%.1f", (1 - mean(sin_top$ingreso)/mean(hogares$ingreso))*100)`%?**
-:::
-
-. . .
-
 ::: {.no-dice}
 **`r sprintf("%.1f", debajo)`% de los hogares recibe menos que la media.**
 
-Un promedio describe el reparto total entre el número de hogares. Cuando la
-distribución tiene cola larga, deja de describir al hogar que está en medio, y
-dos de cada tres quedan debajo de él.
+La media reparte el total entre todos los hogares, así que un ingreso muy alto
+sube el promedio sin cambiar la situación de nadie más. Con cola larga a la
+derecha, el promedio describe el reparto y la mediana describe al hogar de en
+medio.
 :::
 
 # La media ponderada {background-color="#24494C"}
 
-## Una encuesta no es el país {.smaller}
+## Tu calificación del semestre {.smaller}
+
+::: {.a-mano}
+Un curso con tres componentes que pesan distinto. El promedio simple trata igual
+a los tres; la media ponderada respeta el peso de cada uno:
+
+$$\bar{x}_w = \frac{\sum w_i \, x_i}{\sum w_i}$$
+:::
 
 ```{r}
-#| echo: false
-hogares_pais <- sum(hogares$factor)
+curso <- tibble(
+  componente   = c("Primer parcial", "Segundo parcial", "Portafolio"),
+  calificacion = c(70, 80, 100),
+  peso         = c(0.20, 0.30, 0.50)
+)
+
+mean(curso$calificacion)
+
+sum(curso$peso * curso$calificacion) / sum(curso$peso)
+
+weighted.mean(curso$calificacion, curso$peso)
 ```
 
-La ENIGH visitó `r pesos(nrow(hogares))` hogares para describir a los
-**`r pesos(hogares_pais)`** que hay en México. Cada hogar visitado representa a
-muchos otros, y el número de cuántos viene en la columna `factor`:
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Pesos de ejemplo, para ver la mecánica.
+:::
+
+## De la muestra a la población {.smaller}
 
 ```{r}
 range(hogares$factor)
@@ -306,40 +464,65 @@ range(hogares$factor)
 sum(hogares$factor)
 ```
 
+```{r}
+#| echo: false
+hogares_pais <- sum(hogares$factor)
+```
+
 ::: {.nota}
-Un hogar con factor `r max(hogares$factor)` representa a
-`r pesos(max(hogares$factor))` hogares del país. Contarlo igual que a uno con
-factor `r min(hogares$factor)` describe a la muestra, no a México.
+La ENIGH visitó `r pesos(nrow(hogares))` hogares, que son la **muestra**. Con
+ellos describe a los `r pesos(hogares_pais)` hogares que había en México en
+**2024**, que son la **población**.
+
+La columna `factor` dice a cuántos hogares representa cada uno de los visitados:
+desde `r min(hogares$factor)` hasta `r pesos(max(hogares$factor))`. Ese número
+viene del diseño de la muestra, no del hogar.
 :::
 
-## Primero a mano {.smaller}
-
-::: {.a-mano}
-La media ponderada multiplica cada valor por su peso, suma, y reparte entre la
-suma de los pesos:
-
-$$\bar{x}_w = \frac{\sum w_i \, x_i}{\sum w_i}$$
-
-Con todos los pesos iguales a 1, la fórmula se vuelve la media de siempre: el
-denominador es $n$.
-:::
+## Lo que pesa cada décimo {.smaller}
 
 ```{r}
-sum(hogares$factor * hogares$ingreso) / sum(hogares$factor)
+#| echo: false
+#| fig-height: 3.1
+deciles <- hogares |>
+  mutate(decil = ntile(ingreso, 10)) |>
+  summarise(ingreso = mean(ingreso), representa = sum(factor), .by = decil) |>
+  arrange(decil) |>
+  mutate(fin = cumsum(representa), inicio = fin - representa)
+
+ggplot(deciles) +
+  geom_rect(aes(xmin = inicio, xmax = fin, ymin = 0, ymax = ingreso),
+            fill = col_datos, color = "white") +
+  geom_hline(yintercept = media_t, color = col_media, linewidth = 1.1) +
+  geom_hline(yintercept = pond_t, color = col_media, linewidth = 1.1, linetype = "dashed") +
+  scale_x_continuous(labels = \(x) scales::comma(x / 1e6), expand = c(0, 0)) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Hogares del país que representa cada décimo, en millones",
+       y = "Ingreso trimestral promedio")
+```
+
+::: {.nota}
+Cada rectángulo es un décimo de la **muestra**: todos tienen el mismo número de
+hogares visitados y **anchos distintos**, porque representan a cantidades
+distintas de hogares del país. El décimo de mayor ingreso es el más alto y
+también el más ancho, y por eso jala el promedio hacia arriba.
+
+Línea continua: media simple. Línea punteada: media ponderada.
+:::
+
+## En la base completa {.smaller}
+
+```{r}
+mean(hogares$ingreso)
 
 weighted.mean(hogares$ingreso, hogares$factor)
 ```
 
-## La diferencia que hace {.smaller}
-
 ```{r}
 #| echo: false
-tibble(
-  `Cómo se calcula` = c("Media simple de la muestra", "Media ponderada por el factor"),
-  Trimestral = c(pesos(media_t), pesos(pond_t)),
-  Mensual    = c(pesos(media_t / 3), pesos(pond_t / 3))
-) |>
-  knitr::kable(align = "lrr")
+factor_decil <- hogares |>
+  mutate(decil = ntile(ingreso, 10)) |>
+  summarise(f = mean(factor), .by = decil) |> arrange(decil)
 ```
 
 ::: {.nota}
@@ -347,18 +530,9 @@ La cifra ponderada, **`r pesos(pond_t)` pesos trimestrales**, es la que publica
 el INEGI, y queda `r sprintf("%.1f", (pond_t/media_t - 1)*100)`% arriba de la
 media simple.
 
-```{r}
-#| echo: false
-deciles_factor <- hogares |>
-  mutate(decil = ntile(ingreso, 10)) |>
-  summarise(f = mean(factor), .by = decil) |>
-  arrange(decil)
-```
-
-El factor promedio sube de **`r round(deciles_factor$f[1])`** en el décimo de
-hogares con menor ingreso a **`r round(deciles_factor$f[10])`** en el de mayor.
-Cada hogar de ingreso alto representa a más hogares que uno de ingreso bajo, y
-ponderar sube el resultado.
+El factor promedio sube de **`r round(factor_decil$f[1])`** en el décimo de menor
+ingreso a **`r round(factor_decil$f[10])`** en el de mayor: cada hogar de ingreso
+alto representa a más hogares, y ponderar sube el resultado.
 :::
 
 ## El mismo cálculo, otra base {.smaller}
@@ -378,21 +552,18 @@ sumándolos y dividiendo entre `r nrow(ultimo)`?
 . . .
 
 ```{r}
-#| echo: false
-tibble(
-  `Cómo se calcula` = c("Media simple de los países", "Media ponderada por población"),
-  `Dólares por persona` = c(pesos(simple_pib), pesos(pond_pib))
-) |>
-  knitr::kable(align = "lr")
+mean(ultimo$pib_per_capita)
+
+weighted.mean(ultimo$pib_per_capita, ultimo$poblacion)
 ```
 
 ::: {.no-dice}
 La media simple trata igual a `r ultimo$pais[which.max(ultimo$poblacion)]` que a
-`r ultimo$pais[which.min(ultimo$poblacion)]`, y **sobreestima
-`r sprintf("%.0f", (simple_pib/pond_pib - 1)*100)`%**.
+`r ultimo$pais[which.min(ultimo$poblacion)]`, y queda
+**`r sprintf("%.0f", (simple_pib/pond_pib - 1)*100)`% arriba** de la ponderada.
 
-En la ENIGH la media simple subestimaba; aquí sobreestima. El peso no corrige
-siempre hacia el mismo lado: corrige hacia lo que cada observación representa.
+En la ENIGH la media simple quedaba abajo. El peso corrige hacia lo que cada
+observación representa, y eso va en cualquiera de las dos direcciones.
 :::
 
 # El perfil de Oaxaca {background-color="#24494C"}
@@ -400,42 +571,44 @@ siempre hacia el mismo lado: corrige hacia lo que cada observación representa.
 ## Oaxaca y el país {.smaller}
 
 ```{r}
-#| echo: false
-oax <- filter(hogares, entidad == "Oaxaca")
+oaxaca <- filter(hogares, entidad == "Oaxaca")
+
 tibble(
-  Medida = c("Hogares en la muestra", "Hogares que representa",
-             "Ingreso promedio ponderado", "Ingreso de en medio", "Integrantes por hogar"),
-  Oaxaca = c(pesos(nrow(oax)), pesos(sum(oax$factor)),
-             pesos(weighted.mean(oax$ingreso, oax$factor)), pesos(median(oax$ingreso)),
-             sprintf("%.2f", weighted.mean(oax$integrantes, oax$factor))),
-  Nacional = c(pesos(nrow(hogares)), pesos(hogares_pais),
-               pesos(pond_t), pesos(mediana_t),
-               sprintf("%.2f", weighted.mean(hogares$integrantes, hogares$factor)))
-) |>
-  knitr::kable(align = "lrr")
+  medida   = c("Hogares en la muestra", "Hogares que representa",
+               "Ingreso promedio ponderado", "Ingreso de en medio",
+               "Integrantes por hogar"),
+  Oaxaca   = c(nrow(oaxaca), sum(oaxaca$factor),
+               weighted.mean(oaxaca$ingreso, oaxaca$factor), median(oaxaca$ingreso),
+               weighted.mean(oaxaca$integrantes, oaxaca$factor)),
+  Nacional = c(nrow(hogares), sum(hogares$factor),
+               weighted.mean(hogares$ingreso, hogares$factor), median(hogares$ingreso),
+               weighted.mean(hogares$integrantes, hogares$factor))
+)
 ```
 
 ::: {.friccion}
-El ingreso promedio de Oaxaca es el
-`r sprintf("%.0f", weighted.mean(oax$ingreso, oax$factor)/pond_t*100)`% del
+El promedio de Oaxaca es el
+`r sprintf("%.0f", weighted.mean(oaxaca$ingreso, oaxaca$factor)/pond_t*100)`% del
 nacional. **¿La mediana guarda la misma proporción?**
 :::
 
 ## Las treinta y dos {.smaller}
 
 ```{r}
-#| echo: false
-#| fig-height: 3.6
+#| fig-height: 4.6
+#| fig-width: 8
 por_entidad <- hogares |>
-  summarise(ingreso = weighted.mean(ingreso, factor), .by = entidad) |>
-  mutate(destaca = entidad == "Oaxaca")
+  summarise(ingreso = weighted.mean(ingreso, factor), .by = entidad)
 
-ggplot(por_entidad, aes(x = ingreso, y = fct_reorder(entidad, ingreso), color = destaca)) +
-  geom_point(size = 2.6) +
-  geom_vline(xintercept = pond_t, linetype = "dashed", color = TINTA) +
-  scale_color_manual(values = c(`FALSE` = GRIS, `TRUE` = ROJO), guide = "none") +
-  scale_x_continuous(labels = scales::comma) +
-  labs(x = "Ingreso trimestral promedio por hogar, en pesos", y = NULL)
+ggplot(por_entidad, aes(x = ingreso, y = fct_reorder(entidad, ingreso))) +
+  geom_vline(xintercept = pond_t, color = col_media, linewidth = 1) +
+  geom_point(aes(color = entidad == "Oaxaca"), size = 2.4) +
+  scale_color_manual(values = c(`FALSE` = col_datos, `TRUE` = col_destaca),
+                     guide = "none") +
+  scale_x_continuous(labels = scales::comma,
+                     expand = expansion(mult = c(0.03, 0.10))) +
+  labs(x = "Ingreso trimestral promedio por hogar", y = NULL) +
+  theme(axis.text.y = element_text(size = 9))
 ```
 
 ```{r}
@@ -445,27 +618,25 @@ lugar <- which(orden$entidad == "Oaxaca")
 ```
 
 ::: {.nota}
-Oaxaca ocupa el lugar **`r lugar` de 32** contando de menor a mayor. La línea
-punteada es el promedio nacional, que queda arriba de
-`r sum(por_entidad$ingreso < pond_t)` de las 32 entidades: el promedio del país
-lo sostienen unas pocas.
+Oaxaca ocupa el lugar **`r lugar` de 32**, de menor a mayor. La línea es el
+promedio nacional, que queda arriba de `r sum(por_entidad$ingreso < pond_t)` de
+las 32 entidades: lo sostienen unas pocas.
 :::
 
 ## Qué medida usar {.smaller}
 
 | Si la variable es | Y la distribución | La medida que la describe |
 |---|---|---|
-| Categórica | cualquiera | **Moda** |
-| Numérica | simétrica | **Media** |
-| Numérica | con cola larga | **Mediana**, y la media al lado |
+| Categórica | cualquiera | [**Moda**]{style="color:#5A7B5A;"} |
+| Numérica | simétrica | [**Media**]{style="color:#A4503C;"} |
+| Numérica | con cola larga | [**Mediana**]{style="color:#3A6B6F;"}, y la media al lado |
 | Numérica | de una muestra con factores | **Media ponderada** |
+| Numérica | con dos jorobas | Ninguna sola: se separan los grupos |
 
 ::: {.no-dice}
-Ninguna de las tres describe a un hogar en particular. El hogar de en medio
-recibe `r pesos(mediana_t)` pesos al trimestre, y eso no dice cuántas personas
-viven de ese ingreso ni qué cuestan las cosas donde viven.
-
-Esa comparación, ingreso del hogar contra ingreso por persona, es la sesión 18.
+Ninguna describe a un hogar en particular. El hogar de en medio recibe
+`r pesos(mediana_t)` pesos al trimestre, y ese número no dice cuántas personas
+viven de él ni qué cuestan las cosas donde viven.
 :::
 
 ## Tarea {.smaller}

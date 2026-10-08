@@ -24,8 +24,10 @@ S12 = [
     ("md", f"""## 1 · Una base nueva
 
 La Encuesta Nacional de Ingresos y Gastos de los Hogares (ENIGH) 2024, del
-INEGI. Cada renglón es un hogar; el ingreso y el gasto son trimestrales, en
-pesos.
+INEGI. Cada renglón es un hogar.
+
+**El ingreso y el gasto son trimestrales**, en pesos: lo que entró al hogar en
+tres meses. Para pensarlos al mes, se dividen entre tres.
 
 El archivo está comprimido y `read_csv()` lo abre igual."""),
     ("code", f'''library(tidyverse)
@@ -48,14 +50,63 @@ México, ¿cuánto recibe al mes?"""),
 
 El valor que más se repite. Es la única medida de centro que funciona con
 variables categóricas."""),
-    ("code", """count(hogares, educa_jefe, sort = TRUE)"""),
-    ("code", """# ¿Y con una variable continua?
-sort(table(hogares$ingreso), decreasing = TRUE)[1:3]
+    ("code", """escolaridad <- count(hogares, educa_jefe, sort = TRUE)
 
-length(unique(hogares$ingreso))"""),
-    ("md", """El ingreso toma decenas de miles de valores distintos y el más repetido lo
-comparten unas cuantas decenas de hogares. Con variables continuas la moda
-describe una coincidencia, no un centro."""),
+escolaridad"""),
+    ("code", """ggplot(escolaridad, aes(x = n, y = fct_reorder(educa_jefe, n))) +
+  geom_col(fill = "#5A7B5A", alpha = 0.85) +
+  geom_text(aes(label = n), hjust = -0.15) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.18))) +
+  labs(x = "Hogares", y = NULL)"""),
+    ("md", """Con el número de integrantes pasa lo mismo: son pocos valores y se repiten."""),
+    ("code", """count(hogares, integrantes, sort = TRUE)"""),
+
+    ("md", """### Con una variable continua
+
+Antes de correr la celda: de 91,414 hogares, ¿cuántos crees que coinciden en el
+mismo ingreso exacto?"""),
+    ("code", """length(unique(hogares$ingreso))
+
+sort(table(hogares$ingreso), decreasing = TRUE)[1:3]"""),
+    ("md", """Casi ningún hogar coincide con otro. Para una variable continua, la moda se
+busca agrupando: el intervalo con más observaciones es la **clase modal**."""),
+    ("code", """cortes <- seq(0, 200000, by = 10000)
+conteo <- table(cut(hogares$ingreso, breaks = cortes, right = FALSE, dig.lab = 10))
+
+sort(conteo, decreasing = TRUE)[1:3]"""),
+    ("code", """i <- which.max(conteo)
+
+moda_clase <- (cortes[i] + cortes[i + 1]) / 2   # punto medio del intervalo
+moda_clase"""),
+    ("md", """La otra forma es suavizar el histograma. `density()` reparte cada observación en
+una campanita pequeña y las suma: donde se amontonan más hogares, la curva sube.
+La moda estimada es el punto más alto de esa curva."""),
+    ("code", """curva <- density(hogares$ingreso)
+
+moda_ingreso <- curva$x[which.max(curva$y)]
+moda_ingreso"""),
+    ("code", """ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
+  geom_density(color = "#3A6B6F", fill = "#3A6B6F", alpha = 0.15, linewidth = 1) +
+  geom_vline(xintercept = moda_ingreso, color = "#5A7B5A", linewidth = 1.2) +
+  labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)"""),
+    ("md", """### De qué depende el resultado
+
+Cambia el valor de `adjust` y corre la celda otra vez. Con 0.5 la curva sigue
+cada bulto; con 2 la aplana."""),
+    ("code", """adjust <- 1
+
+d <- density(hogares$ingreso, adjust = adjust)
+d$x[which.max(d$y)]"""),
+    ("md", """La clase modal y el pico de la curva dan números distintos, y ninguno está mal
+calculado. La moda de una variable continua se **estima**, y el resultado depende
+del ancho del intervalo o del suavizado, igual que el histograma depende de su
+`binwidth`. Por eso se reporta junto con el método que la produjo.
+
+### Una joroba, o varias
+
+Una distribución es **unimodal** con una joroba, **bimodal** con dos y
+**multimodal** con más. Dos jorobas casi siempre señalan dos poblaciones
+mezcladas."""),
 
     ("md", """## 3 · La mediana
 
@@ -70,8 +121,24 @@ base, ¿qué le pasaría a la mediana?"""),
 
 nrow(hogares) - nrow(quitados)     # hogares que salieron
 
-median(hogares$ingreso)
+max(hogares$ingreso)
+max(quitados$ingreso)"""),
+    ("md", """El hogar más alto de la base recibe más de 17 millones de pesos al trimestre, y
+sale junto con otros 914. Mira qué le pasa a la mediana."""),
+    ("code", """median(hogares$ingreso)
 median(quitados$ingreso)"""),
+    ("code", """comparacion <- bind_rows(
+  mutate(hogares,  base = "Todos los hogares"),
+  mutate(quitados, base = "Sin el 1% más alto")
+)
+
+ggplot(comparacion, aes(x = ingreso, y = base)) +
+  geom_boxplot(fill = "#CCCCCC", alpha = 0.5, outlier.alpha = 0.12) +
+  geom_vline(xintercept = median(hogares$ingreso), color = "#3A6B6F", linewidth = 1) +
+  coord_cartesian(xlim = c(0, 300000)) +
+  labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)"""),
+    ("md", """El eje llega hasta 300,000 para que se vean las cajas. Los hogares de ingreso
+mayor siguen en los datos: `coord_cartesian()` recorta la vista, no la base."""),
 
     ("md", """## 4 · La media
 
@@ -92,11 +159,14 @@ total, así que cada peso que sale la mueve.
 Dibuja las dos sobre el histograma. La gráfica recorta el 5% de ingresos más
 altos para que se vea la forma; los hogares recortados siguen en los
 cálculos."""),
-    ("code", """ggplot(filter(hogares, ingreso <= quantile(ingreso, 0.95)), aes(x = ingreso)) +
-  geom_histogram(binwidth = 5000, fill = "#CCCCCC", color = "white", boundary = 0) +
+    ("code", """ggplot(filter(hogares, ingreso <= 200000), aes(x = ingreso)) +
+  geom_histogram(binwidth = 10000, fill = "#CCCCCC", color = "white", boundary = 0) +
+  geom_vline(xintercept = moda_clase, color = "#5A7B5A", linewidth = 1.2) +
   geom_vline(xintercept = median(hogares$ingreso), color = "#3A6B6F", linewidth = 1.2) +
   geom_vline(xintercept = mean(hogares$ingreso), color = "#A4503C", linewidth = 1.2) +
   labs(x = "Ingreso trimestral del hogar, en pesos", y = "Hogares")"""),
+    ("md", """Verde la moda, azul la mediana, rojo la media. Los tres colores se usan igual en
+todo el curso."""),
     ("code", """# ¿Qué porcentaje de hogares recibe menos que la media?
 mean(hogares$ingreso < mean(hogares$ingreso)) * 100"""),
     ("md", """Dos de cada tres hogares quedan debajo del promedio. Cuando la distribución
@@ -104,9 +174,27 @@ tiene cola larga, la media deja de describir al hogar que está en medio."""),
 
     ("md", """## 5 · La media ponderada
 
-La ENIGH visitó 91,414 hogares para describir a los casi 39 millones que hay en
-México. Cada hogar visitado representa a muchos otros, y cuántos viene en la
-columna `factor`."""),
+Empieza por algo conocido: un curso con tres componentes que pesan distinto. El
+promedio simple trata igual a los tres; la media ponderada respeta el peso de
+cada uno."""),
+    ("code", """curso <- tibble(
+  componente   = c("Primer parcial", "Segundo parcial", "Portafolio"),
+  calificacion = c(70, 80, 100),
+  peso         = c(0.20, 0.30, 0.50)
+)
+
+mean(curso$calificacion)
+
+sum(curso$peso * curso$calificacion) / sum(curso$peso)
+
+weighted.mean(curso$calificacion, curso$peso)"""),
+    ("md", """Son pesos de ejemplo, para ver la mecánica.
+
+### De la muestra a la población
+
+La ENIGH visitó 91,414 hogares, que son la **muestra**. Con ellos describe a los
+hogares que había en México en 2024, que son la **población**. La columna
+`factor` dice a cuántos hogares representa cada uno de los visitados."""),
     ("code", """range(hogares$factor)
 
 sum(hogares$factor)"""),
