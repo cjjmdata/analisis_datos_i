@@ -237,3 +237,30 @@ $presentation-slide-text-align: left;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.65);
   }
 }
+
+// Simulador de la sesión 14 (slides/u3/simulador-geometrica.js)
+.simulador-geometrica {
+  font-size: 0.62em;
+  .sim-controles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3em 1.5em;
+    label { display: flex; flex-direction: column; gap: 0.15em; }
+    input[type="range"] { width: 100%; accent-color: #3A6B6F; }
+  }
+  .sim-casos {
+    grid-column: 1 / -1;
+    button {
+      margin-left: 0.4em; padding: 0.1em 0.7em; font: inherit; cursor: pointer;
+      border: 1px solid #3A6B6F; border-radius: 4px; background: #FFFFFF; color: #24494C;
+    }
+    button:hover { background: #D9E3E4; }
+  }
+  .sim-cuerpo { display: flex; gap: 1em; align-items: center; margin-top: 0.4em; }
+  .sim-grafica { flex: 1.6; width: 100%; max-height: 330px; }
+  .sim-tabla {
+    flex: 1; font-size: 0.95em; border-collapse: collapse;
+    td { padding: 0.25em 0.5em; border-bottom: 1px solid #E3E8E8; }
+    td:last-child { text-align: right; font-weight: 700; }
+  }
+}
