@@ -1,0 +1,741 @@
+---
+title: "Dispersión: qué tan separados están los datos"
+subtitle: "Sesiones 15 y 16 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+resources:
+  - simulador-dispersion.js
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    html-math-method:
+      method: mathjax
+      url: "../../libs/mathjax-2.7.9/MathJax.js"   # copia local: funciona sin internet
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesiones 15 y 16 · Programa 2.3.1 a 2.3.4"
+    incremental: false
+    fig-align: center
+    fig-width: 9
+    fig-height: 4
+    code-line-numbers: false
+    code-overflow: wrap
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+    title-slide-attributes:
+      data-background-image: ../img/portada-graficas.png
+      data-background-size: cover
+      data-background-opacity: "0.9"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+source("../../R/colores.R")
+
+theme_set(theme_minimal(base_size = 15))
+pesos <- \(x) scales::comma(round(x))
+f1    <- \(x) formatC(x, format = "f", digits = 1, big.mark = ",")
+pct   <- \(x, d = 1) sprintf(paste0("%.", d, "f%%"), x)
+
+# Las mismas lecturas que se muestran con su URL, desde la copia local
+hogares <- read_csv("../../datos/enigh2024_hogares.csv.gz", show_col_types = FALSE)
+mercado <- read_csv("../../datos/mercado_diario.csv", show_col_types = FALSE)
+```
+
+## El cuaderno de hoy {.smaller}
+
+**[Abrir en Colab](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s15_dispersion.ipynb)**
+
+Entorno de ejecución → Cambiar tipo de entorno de ejecución → **R**, y después
+Archivo → Guardar una copia en Drive.
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar estas dos sesiones vas a poder:
+
+1. **Calcular** el rango y el rango intercuartil, y **distinguir** qué parte de
+   los datos describe cada uno.
+2. **Calcular** la varianza y la desviación estándar a mano y con R, y
+   **explicar** por qué R divide entre $n - 1$.
+3. **Calcular** el coeficiente de variación y **justificar** cuándo permite
+   comparar la dispersión de dos variables.
+4. **Obtener** estas medidas por grupo con `group_by()` y `summarize()`, y con
+   las funciones equivalentes de Excel.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 2.3.1 Rango y rango intercuartil · 2.3.2 Varianza y
+desviación estándar · 2.3.3 Coeficiente de variación · 2.3.4 Práctica manual y
+aplicaciones con Excel
+:::
+
+# El mismo centro, otra dispersión {background-color="#24494C"}
+
+## Durango y Michoacán {.smaller}
+
+```{r}
+dos <- filter(hogares, entidad %in% c("Durango", "Michoacán"))
+```
+
+```{r}
+#| echo: false
+centro_dos <- dos |>
+  group_by(entidad) |>
+  summarize(n = n(), media = mean(ingreso), mediana = median(ingreso))
+cd <- \(e, v) centro_dos[[v]][centro_dos$entidad == e]
+```
+
+| Entidad | Hogares visitados | Ingreso medio | Ingreso mediano |
+|---|--:|--:|--:|
+| Durango | `r pesos(cd("Durango", "n"))` | `r pesos(cd("Durango", "media"))` | `r pesos(cd("Durango", "mediana"))` |
+| Michoacán | `r pesos(cd("Michoacán", "n"))` | `r pesos(cd("Michoacán", "media"))` | `r pesos(cd("Michoacán", "mediana"))` |
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Ingreso trimestral del hogar, en pesos. ENIGH 2024, hogares visitados.
+:::
+
+::: {.friccion}
+El ingreso medio casi coincide. ¿En cuál de los dos estados los ingresos de los
+hogares están más separados entre sí? Anota tu respuesta y por qué.
+:::
+
+## Los ingresos de los dos estados {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.8
+tope <- 300000
+fuera <- dos |> group_by(entidad) |> summarize(k = sum(ingreso > tope))
+ggplot(dos, aes(x = ingreso, y = entidad)) +
+  geom_boxplot(fill = TEAL_100, color = TEAL_700, outlier.color = col_destaca, outlier.alpha = 0.5) +
+  coord_cartesian(xlim = c(0, tope)) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(x = "Ingreso trimestral del hogar, en pesos", y = NULL)
+```
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+El eje llega a `r pesos(tope)` pesos para que se vean las cajas. Quedan fuera
+`r fuera$k[fuera$entidad == "Durango"]` hogares de Durango y
+`r fuera$k[fuera$entidad == "Michoacán"]` de Michoacán.
+:::
+
+::: {.friccion}
+Con lo que ves en la gráfica, ¿cambiarías tu respuesta? Al final de la
+desviación estándar volvemos a estos dos estados con números.
+:::
+
+# Rango y rango intercuartil {background-color="#24494C"}
+
+Dos medidas que ya conoces, calculadas por posición
+
+## Dos medidas por posición {.smaller}
+
+El **rango** lo viste con el histograma y el **rango intercuartil** con los
+cuantiles:
+
+```{r}
+diff(range(hogares$ingreso))     # máximo menos mínimo
+
+IQR(hogares$ingreso)             # tercer cuartil menos primer cuartil
+```
+
+| Medida | Qué valores usa | Qué describe |
+|---|---|---|
+| Rango | el mínimo y el máximo | la distancia entre los dos extremos |
+| Rango intercuartil | los cuartiles 1 y 3 | el ancho de la mitad central de los datos |
+
+## Un hogar menos {.smaller}
+
+```{r}
+#| echo: false
+sin_mayor <- filter(hogares, ingreso < max(ingreso))
+mayor <- slice_max(hogares, ingreso, n = 1)
+```
+
+El hogar de mayor ingreso, en `r mayor$entidad`, reportó `r pesos(mayor$ingreso)`
+pesos en el trimestre.
+
+::: {.friccion}
+Si lo quitas de la base, ¿cuál de las dos medidas cambia más?
+:::
+
+. . .
+
+| | Rango | Rango intercuartil |
+|---|--:|--:|
+| Con los `r pesos(nrow(hogares))` hogares | `r pesos(diff(range(hogares$ingreso)))` | `r pesos(IQR(hogares$ingreso))` |
+| Sin el hogar de mayor ingreso | `r pesos(diff(range(sin_mayor$ingreso)))` | `r pesos(IQR(sin_mayor$ingreso))` |
+
+::: {.nota}
+El rango depende de dos valores y el rango intercuartil de dos posiciones.
+Ninguno usa todos los datos. La varianza y la desviación estándar sí: miden la
+distancia de **cada** valor a la media.
+:::
+
+# Varianza y desviación estándar {background-color="#24494C"}
+
+La distancia de cada valor a la media
+
+## Cinco hogares {.smaller}
+
+```{r}
+edades <- hogares$edad_jefe[1:5]      # los cinco primeros hogares de la base
+edades
+```
+
+```{r}
+#| echo: false
+media_e <- mean(edades)
+desv_e  <- edades - media_e
+```
+
+::: {.friccion}
+Con tu calculadora: la media de las cinco edades, y la distancia de cada edad a
+esa media. ¿Cuánto suman las cinco distancias?
+:::
+
+. . .
+
+| Hogar | 1 | 2 | 3 | 4 | 5 | Suma |
+|---|--:|--:|--:|--:|--:|--:|
+| Edad, $x$ | `r paste(edades, collapse = " | ")` | |
+| Desviación, $x - \bar{x}$ | `r paste(f1(desv_e), collapse = " | ")` | **`r f1(sum(desv_e))`** |
+
+::: {.nota}
+La media es `r f1(media_e)` años. Las desviaciones **siempre suman cero**: lo
+que queda arriba de la media compensa lo que queda abajo. Su promedio no mide la
+separación.
+:::
+
+## Varianza: primero a mano {.smaller}
+
+::: {.a-mano}
+La **varianza** eleva cada desviación al cuadrado, para que todas cuenten como
+positivas, y promedia los cuadrados dividiendo entre $n - 1$:
+
+$$
+s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}
+$$
+:::
+
+```{r}
+desv <- edades - mean(edades)
+
+sum(desv^2) / (length(edades) - 1)    # la fórmula, traducida literalmente
+
+var(edades)                           # la función de R
+
+sum(desv^2) / length(edades)          # dividiendo entre n
+```
+
+::: {.friccion}
+Las dos primeras coinciden y la tercera no. ¿Por qué R divide entre $n - 1$?
+:::
+
+## Por qué R divide entre n − 1 {.smaller}
+
+```{r}
+#| echo: false
+# Los 91,414 hogares hacen de población; se extraen muestras de cinco hogares
+set.seed(1415)
+poblacion <- hogares$edad_jefe
+n_muestra <- 5
+veces <- 10000
+var_pob <- mean((poblacion - mean(poblacion))^2)
+muestras <- replicate(veces, {
+  m <- sample(poblacion, n_muestra)
+  c(n1 = var(m), n = mean((m - mean(m))^2))
+})
+prom_n1 <- mean(muestras["n1", ])
+prom_n  <- mean(muestras["n", ])
+```
+
+Tomemos los `r pesos(length(poblacion))` hogares como si fueran toda la
+población, saquemos `r pesos(veces)` muestras de `r n_muestra` hogares y
+calculemos la varianza de la edad en cada una:
+
+| | Varianza de la edad |
+|---|--:|
+| De los `r pesos(length(poblacion))` hogares | **`r f1(var_pob)`** |
+| Promedio de las muestras, dividiendo entre $n$ | `r f1(prom_n)` |
+| Promedio de las muestras, dividiendo entre $n - 1$ | **`r f1(prom_n1)`** |
+
+::: {.nota}
+En cada muestra las desviaciones se miden contra la media **de esa muestra**,
+que queda más cerca de sus cinco datos que la media de la población. Por eso
+dividir entre $n$ se queda corto, en promedio, en $1/n$ de la varianza. Dividir entre
+$n - 1$ compensa ese faltante. Con miles de datos la diferencia se vuelve
+despreciable; con cinco es de `r pct(100 / n_muestra, 0)`.
+:::
+
+## Desviación estándar: primero a mano {.smaller}
+
+::: {.a-mano}
+La varianza de las edades está en **años al cuadrado**, una unidad sin
+interpretación directa. La **desviación estándar** es su raíz cuadrada y regresa
+a la unidad original:
+
+$$
+s = \sqrt{s^2} = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}}
+$$
+:::
+
+```{r}
+sqrt(var(edades))       # la raíz de la varianza
+
+sd(edades)              # la función de R
+```
+
+::: {.nota}
+En estos cinco hogares, la edad del jefe se separa de la media
+`r f1(media_e)` en una distancia típica de `r f1(sd(edades))` años.
+:::
+
+## Simulador de desviaciones {.smaller}
+
+<div class="simulador-dispersion" data-prevent-swipe></div>
+
+```{r}
+#| echo: false
+#| results: asis
+# Valores, límites y casos van del cómputo al simulador; ningún valor se teclea en el JS
+extremo <- edades; extremo[which.max(extremo)] <- 90
+casos_sim <- list(
+  list(nombre = "Los cinco hogares", valores = edades),
+  list(nombre = "Más parecidos",     valores = round(media_e + (edades - media_e) / 2)),
+  list(nombre = "Todos de la misma edad", valores = rep(round(media_e), 5)),
+  list(nombre = "Un jefe de 90 años", valores = extremo)
+)
+js_casos <- paste(sapply(casos_sim, \(k) sprintf('{nombre: "%s", valores: [%s]}', k$nombre,
+                                                  paste(k$valores, collapse = ", "))), collapse = ", ")
+cat(sprintf(paste0('<script>window.PARAMS_DISPERSION = {valores: [%s], min: %s, max: %s, ',
+                   'unidad: "años", casos: [%s]};</script>\n'),
+            paste(edades, collapse = ", "), 15, 95, js_casos))
+cat('<script src="simulador-dispersion.js"></script>\n')
+```
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Cada cuadrado tiene de lado la distancia de un valor a la media. La varianza es
+la suma de sus áreas entre $n - 1$, y el cuadrado punteado tiene esa área: su
+lado es la desviación estándar.
+:::
+
+## Los mismos casos, calculados {.smaller}
+
+```{r}
+#| echo: false
+tabla_sim <- map_dfr(casos_sim, \(k) tibble(
+  caso = k$nombre, edades = paste(k$valores, collapse = ", "),
+  media = mean(k$valores), varianza = var(k$valores), de = sd(k$valores)))
+```
+
+| Caso | Edades | Media | Varianza | Desviación estándar |
+|---|---|--:|--:|--:|
+`r paste(sprintf("| %s | %s | %s | %s | **%s** |", tabla_sim$caso, tabla_sim$edades, f1(tabla_sim$media), f1(tabla_sim$varianza), f1(tabla_sim$de)), collapse = "\n")`
+
+::: {.nota}
+Al cambiar una sola edad a 90 años, la desviación estándar pasa de
+`r f1(tabla_sim$de[1])` a `r f1(tabla_sim$de[4])` años. El cuadrado de una
+distancia del doble tiene cuatro veces el área, así que un valor alejado pesa
+mucho más que varios cercanos.
+:::
+
+## La desviación estándar del ingreso {.smaller}
+
+```{r}
+mean(hogares$ingreso)
+
+sd(hogares$ingreso)
+```
+
+```{r}
+#| echo: false
+de_ing <- sd(hogares$ingreso)
+de_sin <- sd(sin_mayor$ingreso)
+```
+
+::: {.friccion}
+Si quitas el hogar de `r pesos(mayor$ingreso)` pesos, ¿cuánto crees que cambia la
+desviación estándar de los `r pesos(nrow(hogares))` hogares?
+:::
+
+. . .
+
+| | Media | Desviación estándar | Rango intercuartil |
+|---|--:|--:|--:|
+| Con todos los hogares | `r pesos(mean(hogares$ingreso))` | `r pesos(de_ing)` | `r pesos(IQR(hogares$ingreso))` |
+| Sin el hogar de mayor ingreso | `r pesos(mean(sin_mayor$ingreso))` | `r pesos(de_sin)` | `r pesos(IQR(sin_mayor$ingreso))` |
+
+::: {.nota}
+Un hogar entre `r pesos(nrow(hogares))` cambia la desviación estándar en
+`r pct(100 * (de_ing / de_sin - 1), 0)`, y el rango intercuartil casi no se
+mueve.
+:::
+
+## Durango y Michoacán, con dos medidas {.smaller}
+
+```{r}
+dos |>
+  group_by(entidad) |>
+  summarize(media = mean(ingreso), de = sd(ingreso), ric = IQR(ingreso))
+```
+
+```{r}
+#| echo: false
+disp_dos <- dos |> group_by(entidad) |>
+  summarize(de = sd(ingreso), ric = IQR(ingreso), maximo = max(ingreso))
+dd <- \(e, v) disp_dos[[v]][disp_dos$entidad == e]
+mich_sin <- dos |> filter(entidad == "Michoacán", ingreso < max(ingreso))
+```
+
+::: {.friccion}
+Con la desviación estándar, Michoacán es el más disperso. Con el rango
+intercuartil, Durango. ¿Cuál de las dos respuestas es la correcta?
+:::
+
+. . .
+
+::: {.nota}
+Las dos, porque describen cosas distintas. El hogar de mayor ingreso de
+Michoacán reportó `r pesos(dd("Michoacán", "maximo"))` pesos; sin él, la
+desviación estándar de Michoacán baja a `r pesos(sd(mich_sin$ingreso))`. En la
+mitad central de los hogares, los de Durango están más separados entre sí. Al
+reportar la dispersión, di qué medida usaste y qué parte de los datos describe.
+:::
+
+# Coeficiente de variación {background-color="#24494C"}
+
+Sesión 16 · Dispersión en relación con la media
+
+## Ingreso e integrantes {.smaller}
+
+```{r}
+sd(hogares$ingreso)        # en pesos
+
+sd(hogares$integrantes)    # en personas
+```
+
+::: {.friccion}
+¿Qué varía más entre los hogares, el ingreso o el número de integrantes?
+:::
+
+. . .
+
+::: {.nota}
+Las dos cifras no se pueden comparar: una está en pesos y la otra en personas.
+Además, una desviación de mil pesos es mucha para un ingreso de cinco mil y poca
+para uno de un millón. Para comparar, la dispersión se mide en relación con la
+media.
+:::
+
+## Coeficiente de variación: primero a mano {.smaller}
+
+::: {.a-mano}
+El **coeficiente de variación** expresa la desviación estándar como porcentaje
+de la media. No tiene unidades:
+
+$$
+CV = \frac{s}{\bar{x}} \times 100
+$$
+:::
+
+```{r}
+sd(hogares$ingreso) / mean(hogares$ingreso) * 100
+
+sd(hogares$integrantes) / mean(hogares$integrantes) * 100
+```
+
+R no trae una función para el coeficiente de variación: se calcula con la
+fórmula.
+
+## Cinco variables de los hogares {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.7
+vars_cv <- c(ingreso = "Ingreso", gasto = "Gasto", alimentos = "Gasto en alimentos",
+             integrantes = "Integrantes", edad_jefe = "Edad del jefe")
+cv_vars <- tibble(variable = names(vars_cv), nombre = vars_cv) |>
+  mutate(cv = map_dbl(variable, \(v) sd(hogares[[v]]) / mean(hogares[[v]]) * 100))
+ggplot(cv_vars, aes(x = cv, y = fct_reorder(nombre, cv))) +
+  geom_col(fill = TEAL_500, width = 0.7) +
+  geom_text(aes(label = pct(cv, 0)), hjust = -0.15, size = 4.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(x = "Coeficiente de variación, %", y = NULL)
+```
+
+::: {.nota}
+Ya en la misma escala, el ingreso es la variable más dispersa en relación con su
+media y la edad del jefe la menos dispersa.
+:::
+
+::: {.friccion}
+El gasto de los hogares varía menos que su ingreso. ¿Qué explicación propones?
+:::
+
+## Precios de dos acciones en 2025 {.smaller}
+
+```{r}
+#| eval: false
+url <- paste0("https://raw.githubusercontent.com/cjjmdata/",
+              "analisis_datos_i/main/datos/mercado_diario.csv")
+
+mercado <- read_csv(url, show_col_types = FALSE)
+```
+
+```{r}
+precios <- mercado |>
+  filter(year(fecha) == 2025) |>
+  group_by(clave) |>
+  summarize(media = mean(cierre), de = sd(cierre), cv = de / media * 100)
+```
+
+```{r}
+#| echo: false
+pr <- \(k, v) precios[[v]][precios$clave == k]
+```
+
+::: {.friccion}
+La desviación estándar del precio de TSLA es `r f1(pr("TSLA", "de") / pr("AAPL", "de"))`
+veces la de AAPL. ¿Su precio fue esas veces más disperso?
+:::
+
+. . .
+
+| Acción | Precio medio, dólares | Desviación estándar | Coeficiente de variación |
+|---|--:|--:|--:|
+| AAPL | `r f1(pr("AAPL", "media"))` | `r f1(pr("AAPL", "de"))` | `r pct(pr("AAPL", "cv"))` |
+| TSLA | `r f1(pr("TSLA", "media"))` | `r f1(pr("TSLA", "de"))` | `r pct(pr("TSLA", "cv"))` |
+
+::: {.nota}
+TSLA también cuesta más. En relación con su precio medio, su dispersión es
+`r f1(pr("TSLA", "cv") / pr("AAPL", "cv"))` veces la de AAPL.
+:::
+
+## Rendimientos diarios {.smaller}
+
+```{r}
+rendimientos <- mercado |>
+  arrange(clave, fecha) |>
+  group_by(clave) |>
+  mutate(rend = (ajustado / lag(ajustado) - 1) * 100) |>
+  filter(year(fecha) == 2025) |>
+  summarize(media = mean(rend), de = sd(rend), cv = de / media * 100)
+```
+
+```{r}
+#| echo: false
+rd <- \(k, v) rendimientos[[v]][rendimientos$clave == k]
+mas_cv <- rendimientos$clave[which.max(rendimientos$cv)]
+mas_de <- rendimientos$clave[which.max(rendimientos$de)]
+otra   <- setdiff(rendimientos$clave, mas_de)
+```
+
+| Acción | Rendimiento diario medio | Desviación estándar | Coeficiente de variación |
+|---|--:|--:|--:|
+| AAPL | `r pct(rd("AAPL", "media"), 3)` | `r pct(rd("AAPL", "de"), 2)` | `r pct(rd("AAPL", "cv"), 0)` |
+| TSLA | `r pct(rd("TSLA", "media"), 3)` | `r pct(rd("TSLA", "de"), 2)` | `r pct(rd("TSLA", "cv"), 0)` |
+
+::: {.friccion}
+Según el coeficiente de variación, ¿cuál acción fue más arriesgada en 2025?
+¿Coincide con la desviación estándar?
+:::
+
+## Cuándo no usar el coeficiente de variación {.smaller}
+
+::: {.no-dice}
+Con los rendimientos, el coeficiente de variación señala a `r mas_cv` como la
+más variable, y la desviación estándar de `r mas_de` es
+`r f1(rd(mas_de, "de") / rd(otra, "de"))` veces la de `r otra`. La media de un rendimiento diario está muy cerca de cero, y
+dividir entre un número cercano a cero produce cocientes enormes que cambian con
+cualquier día.
+
+- **Solo tiene sentido con variables positivas cuyo cero significa ausencia**:
+  ingreso, precio, número de integrantes.
+- **No sirve para variables que pueden ser negativas o tener media cercana a
+  cero**: rendimientos, tasas de cambio, temperaturas.
+- Para comparar el riesgo de dos acciones se usa la desviación estándar de sus
+  rendimientos, que ya están en la misma unidad, porcentaje diario.
+:::
+
+## Qué medida usar {.smaller}
+
+| Situación | Medida |
+|---|---|
+| Datos con valores extremos o cola larga | rango intercuartil, junto con la mediana |
+| Datos sin extremos y con forma de campana | desviación estándar, junto con la media |
+| Comparar variables con unidades o medias distintas | coeficiente de variación, si las variables son positivas |
+| Rendimientos y tasas | desviación estándar |
+| Una idea rápida del recorrido | rango |
+
+# Dispersión por grupos {background-color="#24494C"}
+
+## Tamaño de la localidad {.smaller}
+
+```{r}
+hogares |>
+  group_by(tam_loc) |>
+  summarize(
+    hogares = n(),
+    media   = mean(ingreso),
+    de      = sd(ingreso),
+    cv      = de / media * 100,
+    ric     = IQR(ingreso)
+  )
+```
+
+::: {.nota}
+`group_by()` separa la base en grupos y `summarize()` calcula un renglón por
+grupo. Cada medida nueva se agrega como una línea más dentro de `summarize()`.
+:::
+
+## Oaxaca y el país {.smaller}
+
+::: {.friccion}
+Los ingresos de los hogares de Oaxaca, ¿están más o menos dispersos que los del
+país?
+:::
+
+. . .
+
+```{r}
+hogares |>
+  mutate(region = if_else(entidad == "Oaxaca", "Oaxaca", "Resto del país")) |>
+  group_by(region) |>
+  summarize(media = mean(ingreso), de = sd(ingreso),
+            cv = de / media * 100, ric = IQR(ingreso))
+```
+
+```{r}
+#| echo: false
+oax <- hogares |>
+  mutate(region = if_else(entidad == "Oaxaca", "Oaxaca", "Resto del país")) |>
+  group_by(region) |>
+  summarize(media = mean(ingreso), de = sd(ingreso), cv = de / media * 100, ric = IQR(ingreso))
+ox <- \(r, v) oax[[v]][oax$region == r]
+```
+
+::: {.nota}
+Los hogares de Oaxaca tienen menos ingreso y también menos dispersión, en pesos
+y en relación con su media: un coeficiente de variación de
+`r pct(ox("Oaxaca", "cv"), 0)` frente a `r pct(ox("Resto del país", "cv"), 0)`.
+:::
+
+## Las treinta y dos entidades {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 3.6
+cv_ent <- hogares |>
+  group_by(entidad) |>
+  summarize(cv = sd(ingreso) / mean(ingreso) * 100, maximo = max(ingreso)) |>
+  mutate(destaca = entidad == "Oaxaca")
+ggplot(cv_ent, aes(x = cv, y = fct_reorder(entidad, cv), fill = destaca)) +
+  geom_col(width = 0.75) +
+  scale_fill_manual(values = c(`TRUE` = col_destaca, `FALSE` = TEAL_500), guide = "none") +
+  labs(x = "Coeficiente de variación del ingreso, %", y = NULL) +
+  theme(axis.text.y = element_text(size = 8))
+```
+
+```{r}
+#| echo: false
+cv_max <- slice_max(cv_ent, cv, n = 1)
+```
+
+::: {.friccion}
+¿Por qué `r cv_max$entidad` queda tan arriba de las demás?
+:::
+
+## Lo que mueve el primer lugar {.smaller}
+
+```{r}
+#| echo: false
+ent_max <- filter(hogares, entidad == cv_max$entidad)
+ent_sin <- filter(ent_max, ingreso < max(ingreso))
+cv_sin  <- sd(ent_sin$ingreso) / mean(ent_sin$ingreso) * 100
+pos_sin <- sum(cv_ent$cv > cv_sin & cv_ent$entidad != cv_max$entidad) + 1
+```
+
+`r cv_max$entidad` contiene al hogar de `r pesos(cv_max$maximo)` pesos, el de
+mayor ingreso del país.
+
+| `r cv_max$entidad` | Coeficiente de variación |
+|---|--:|
+| Con sus `r pesos(nrow(ent_max))` hogares | `r pct(cv_max$cv, 0)` |
+| Sin el hogar de mayor ingreso | `r pct(cv_sin, 0)` |
+
+::: {.nota}
+Sin ese hogar, `r cv_max$entidad` pasaría al lugar `r pos_sin` de 32. El
+coeficiente de variación hereda la sensibilidad de la desviación estándar a los
+valores extremos.
+:::
+
+# Las mismas medidas en Excel {background-color="#24494C"}
+
+## Equivalencias entre R y Excel {.smaller}
+
+| Medida | R | Excel en español |
+|---|---|---|
+| Rango | `diff(range(x))` | `=MAX(A2:A6)-MIN(A2:A6)` |
+| Rango intercuartil | `IQR(x)` | `=CUARTIL.INC(A2:A6,3)-CUARTIL.INC(A2:A6,1)` |
+| Varianza, entre $n - 1$ | `var(x)` | `=VAR.S(A2:A6)` |
+| Desviación estándar, entre $n - 1$ | `sd(x)` | `=DESVEST.M(A2:A6)` |
+| Varianza y desviación, entre $n$ | `mean((x - mean(x))^2)` | `=VAR.P(A2:A6)` y `=DESVEST.P(A2:A6)` |
+| Coeficiente de variación | `sd(x) / mean(x) * 100` | `=DESVEST.M(A2:A6)/PROMEDIO(A2:A6)*100` |
+
+::: {.nota}
+**Práctica:** copia las cinco edades a una hoja de Excel y comprueba que obtienes
+la misma varianza, `r f1(var(edades))`, y la misma desviación estándar,
+`r f1(sd(edades))`. `CUARTIL.INC` calcula los cuartiles con el mismo método que
+`quantile()` de R por omisión.
+:::
+
+# Límites, IA y portafolio {background-color="#24494C"}
+
+## Los límites de estas medidas {.smaller}
+
+::: {.no-dice}
+- **Describen a los hogares visitados.** Ninguna cifra de hoy usa el factor de
+  expansión; para describir a los hogares del país hacen falta las versiones
+  ponderadas.
+- **La desviación estándar y el coeficiente de variación dependen de los
+  extremos.** Un hogar cambió la dispersión de todo un estado. Con datos de cola
+  larga, acompáñalos del rango intercuartil.
+- **No dicen hacia dónde se separan los datos.** La misma desviación estándar
+  puede venir de una cola larga a la derecha o de valores repartidos a los dos
+  lados. La forma de la distribución es el tema de la sesión 17.
+:::
+
+## Desviación estándar calculada con IA {.smaller}
+
+::: {.ia-nota}
+Si un asistente de IA te da código para la desviación estándar, revisa entre qué
+divide. En Python, `numpy.std()` divide entre $n$ por omisión y `pandas` divide
+entre $n - 1$; en Excel, `DESVEST.P` divide entre $n$ y `DESVEST.M` entre
+$n - 1$. Con pocos datos, la diferencia cambia el resultado.
+
+Para verificarlo, calcula a mano la desviación estándar de tres o cuatro valores
+y compárala con lo que da el código.
+:::
+
+## Ejercicio para el portafolio {.smaller}
+
+Sobre la variable numérica de **tu serie**:
+
+1. El rango, el rango intercuartil, la desviación estándar y el coeficiente de
+   variación, con sus unidades.
+2. Cuál medida de dispersión describe mejor tu serie, con una razón que salga de
+   su histograma o de su diagrama de caja.
+3. Si tu base tiene una variable categórica, las mismas medidas por grupo con
+   `group_by()` y `summarize()`.
+4. Si tu serie es un índice o un precio que sigue una tendencia, como el INPC o
+   el tipo de cambio, calcula la dispersión de sus **variaciones** de un periodo
+   al siguiente, no de sus niveles.
+5. Una línea sobre lo que tu medida de dispersión no muestra.

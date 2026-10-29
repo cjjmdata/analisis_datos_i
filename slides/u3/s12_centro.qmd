@@ -653,10 +653,11 @@ lugar queda Oaxaca? Anota un número del 1 al 32.
 
 ## Las treinta y dos {.smaller}
 
+:::: {.columns}
+::: {.column width="50%"}
 ```{r}
-#| output-location: column
-#| fig-height: 5.1
-#| fig-width: 5.2
+#| label: treinta-y-dos
+#| eval: false
 por_entidad <- hogares |>
   summarise(
     ingreso = weighted.mean(ingreso, factor),
@@ -679,6 +680,26 @@ ggplot(por_entidad,
        y = NULL) +
   theme(axis.text.y = element_text(size = 9))
 ```
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| output: asis
+# La misma gráfica del código de la izquierda, con el valor de cada punto al
+# pasar el cursor (ver R/puntos-info.R)
+source("../../R/puntos-info.R")
+g32 <- eval(parse(text = knitr::knit_code$get("treinta-y-dos")))
+puntos_info(
+  g32, capa = 2,
+  textos = paste0(por_entidad$entidad, ": ", pesos(por_entidad$ingreso), " pesos"),
+  clave_x = por_entidad$ingreso,
+  ancho = 5.2, alto = 5.1,
+  lineas_x = pond_t,
+  textos_lineas = paste0("Promedio nacional: ", pesos(pond_t), " pesos"),
+  alt = "Ingreso trimestral promedio por hogar de las 32 entidades, de menor a mayor, con Oaxaca resaltada y una línea en el promedio nacional")
+```
+:::
+::::
 
 ::: {style="font-size:0.7em;"}
 Oaxaca ocupa el lugar **`r lugar` de 32**. La línea es el promedio nacional, y
