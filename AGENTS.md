@@ -265,6 +265,12 @@ el nombre de un objeto canónico rompe su trabajo.
 | `mercado` | Serie diaria de TSLA y AAPL | Unidades 3 y 5 |
 | `serie` | La serie que el alumno eligió para su portafolio | Todo el curso |
 | `paises` | Snapshot del Banco Mundial | Todo el curso |
+| `economias` | Banco Mundial, todas las economías en un año: esperanza de vida y acceso a electricidad | Unidad 3 (S17) en adelante |
+
+`economias` sale de `scripts/06_banco-mundial_economias.R`, aparte de
+`00_descarga_datos.R` a propósito: volver a correr `00` re-descarga `paises`, y el
+Banco Mundial revisa cifras hacia atrás. Son las dos únicas variables del curso
+con sesgo a la izquierda.
 
 El objeto `caso`, que nombraba un caso de negocio de empresa exportadora, se
 retiró: ver la decisión 7.

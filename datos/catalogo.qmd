@@ -149,6 +149,9 @@ PIB, comercio, inversión extranjera, población, para todos los países.
   años sin avisar.
 - **Para qué sirve aquí**: es la fuente más confiable del catálogo para trabajar
   sin fricción técnica. Comparaciones entre países para coeficiente de variación.
+- **En clase**: la sesión 17 usa la esperanza de vida y el acceso a electricidad
+  de las 217 economías del catálogo del Banco Mundial, ya sin agregados
+  regionales, en `datos/banco_mundial_economias.csv`.
 
 ## Mercadotecnia Estratégica
 

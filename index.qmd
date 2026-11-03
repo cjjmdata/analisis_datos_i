@@ -78,7 +78,7 @@ responder una pregunta estadística. Ver
 | 12 y 13 | [Centro: moda, mediana y media](slides/u3/s12_centro.qmd) | `table`, `median`, `mean`, `weighted.mean`, `geom_vline` | 2.2.1, 2.2.2 |
 | 14 | [Media geométrica: cuando el promedio se multiplica](slides/u3/s14_media-geometrica.qmd) | `prod`, `exp`, `log` | 2.2.3 |
 | 15 y 16 | [Dispersión: varianza, desviación estándar y coeficiente de variación](slides/u3/s15_dispersion.qmd) | `var`, `sd`, `group_by`, `summarize` | 2.3.1 a 2.3.4 |
-| 17 | Forma: sesgo, curtosis, Chebyshev y regla empírica | funciones propias, `replicate` | 2.4, 2.5 |
+| 17 | [Forma: sesgo, curtosis, Chebyshev y regla empírica](slides/u3/s17_forma.qmd) | funciones propias, `replicate` | 2.4, 2.5 |
 | 18 | Comparar grupos y la paradoja de Simpson | `facet_wrap`, `group_by` | 2.6, 3.3 |
 | | **Unidad 4 · Anticipar** | | |
 | 19 y 20 | Aleatoriedad, probabilidad y ley de los grandes números | `sample`, `set.seed`, `cumsum`, `replicate` | 4.1 |

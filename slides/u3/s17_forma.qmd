@@ -1,0 +1,767 @@
+---
+title: "Forma: hacia dónde se cargan los datos"
+subtitle: "Sesión 17 · Análisis de Datos I"
+author: "CJJM"
+lang: es
+format:
+  revealjs:
+    theme: [default, ../../estilo-slides.scss]
+    slide-number: c/t
+    html-math-method:
+      method: mathjax
+      url: "../../libs/mathjax-2.7.9/MathJax.js"   # copia local: funciona sin internet
+    chalkboard: true
+    footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 17 · Programa 2.4 y 2.5"
+    incremental: false
+    fig-align: center
+    fig-width: 9
+    fig-height: 4
+    code-line-numbers: false
+    code-overflow: wrap
+    highlight-style: github
+    transition: fade
+    background-transition: fade
+    title-slide-attributes:
+      data-background-image: ../img/portada-graficas.png
+      data-background-size: cover
+      data-background-opacity: "0.9"
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+source("../../R/colores.R")
+
+theme_set(theme_minimal(base_size = 15))
+pesos <- \(x) scales::comma(round(x))
+f1    <- \(x) formatC(x, format = "f", digits = 1, big.mark = ",")
+f2    <- \(x) formatC(x, format = "f", digits = 2, big.mark = ",")
+f3    <- \(x) formatC(x, format = "f", digits = 3, big.mark = ",")
+pct   <- \(x, d = 1) sprintf(paste0("%.", d, "f%%"), x)
+
+# Las mismas lecturas que se muestran con su URL, desde la copia local
+hogares   <- read_csv("../../datos/enigh2024_hogares.csv.gz", show_col_types = FALSE)
+mercado   <- read_csv("../../datos/mercado_diario.csv", show_col_types = FALSE)
+economias <- read_csv("../../datos/banco_mundial_economias.csv", show_col_types = FALSE)
+
+# Las dos funciones que se construyen en clase; aquí, para usarlas antes de mostrarlas
+asimetria <- function(x) { d <- x - mean(x); mean(d^3) / mean(d^2)^(3/2) }
+curtosis  <- function(x) { d <- x - mean(x); mean(d^4) / mean(d^2)^2 - 3 }
+dentro    <- function(x, k) 100 * mean(abs(x - mean(x)) <= k * sd(x))
+
+# Histograma con la media (línea continua) y la mediana (línea discontinua)
+hist_forma <- function(x, ancho, etiqueta, lims = NULL, lineas = FALSE, base = 15) {
+  p <- ggplot(tibble(x = x), aes(x)) +
+    geom_histogram(binwidth = ancho, boundary = 0, fill = TEAL_500, color = "white") +
+    labs(x = etiqueta, y = "Frecuencia") +
+    theme_minimal(base_size = base)
+  if (lineas) {
+    p <- p +
+      geom_vline(xintercept = mean(x), color = col_media, linewidth = 1.3) +
+      geom_vline(xintercept = median(x), color = col_mediana, linewidth = 1.3, linetype = "dashed")
+  }
+  if (!is.null(lims)) p <- p + coord_cartesian(xlim = lims)
+  p
+}
+
+# Variables de la sesión. El porcentaje en alimentos excluye hogares sin gasto
+con_gasto  <- filter(hogares, gasto > 0)
+alimentos  <- 100 * con_gasto$alimentos / con_gasto$gasto
+sin_gasto  <- nrow(hogares) - nrow(con_gasto)
+vida       <- economias$esperanza_vida
+luz        <- economias$acceso_electricidad[!is.na(economias$acceso_electricidad)]
+sin_luz    <- economias$pais[is.na(economias$acceso_electricidad)]
+anio_bm    <- unique(economias$anio)
+tope_gasto <- 200000
+```
+
+## El cuaderno de hoy {.smaller}
+
+**[Abrir en Colab](https://colab.research.google.com/github/cjjmdata/analisis_datos_i/blob/main/cuadernos/s17_forma.ipynb)**
+
+Entorno de ejecución → Cambiar tipo de entorno de ejecución → **R**, y después
+Archivo → Guardar una copia en Drive.
+
+## Objetivos de la sesión {.smaller}
+
+Al terminar esta sesión vas a poder:
+
+1. **Clasificar** una distribución como simétrica, sesgada a la derecha o sesgada
+   a la izquierda, con su histograma y con la posición de la media y la mediana.
+2. **Calcular** el coeficiente de asimetría y el de curtosis a mano y con una
+   función propia de R, e **interpretar** su signo y su tamaño.
+3. **Aplicar** el teorema de Chebyshev y la regla empírica para acotar qué
+   proporción de los datos cae a cierta distancia de la media.
+4. **Justificar** cuál de las dos reglas aplica a una variable, a partir de su
+   forma.
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Programa MAT1409 · 2.4 Medidas de forma: sesgo y curtosis · 2.5 Teorema de
+Chebyshev y regla empírica
+:::
+
+# Tres formas {background-color="#24494C"}
+
+La media y la desviación estándar no dicen hacia dónde se cargan los datos
+
+## Tres variables {.smaller}
+
+:::: {.columns}
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 3
+hist_forma(alimentos, 2.5, "% del gasto en alimentos", base = 12)
+```
+:::
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 3
+hist_forma(hogares$gasto, 5000, "Gasto trimestral, pesos", lims = c(0, tope_gasto), base = 12) +
+  scale_x_continuous(labels = \(x) paste0(x / 1000, " mil"))
+```
+:::
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 3
+hist_forma(vida, 2, "Esperanza de vida, años", base = 12)
+```
+:::
+
+::::
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Hogares de la ENIGH 2024 y `r nrow(economias)` economías del Banco Mundial en
+`r anio_bm`. En el gasto, el eje llega a `r pesos(tope_gasto)` pesos; quedan
+fuera `r pesos(sum(hogares$gasto > tope_gasto))` hogares.
+:::
+
+::: {.friccion}
+¿Cuál de las tres tiene una cola larga, y hacia qué lado? En cada una, ¿dónde
+crees que cae la media respecto de la mediana?
+:::
+
+## La media sigue a la cola {.smaller}
+
+:::: {.columns}
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 2.6
+hist_forma(alimentos, 2.5, "% del gasto en alimentos", lineas = TRUE, base = 12)
+```
+:::
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 2.6
+hist_forma(hogares$gasto, 5000, "Gasto trimestral, pesos", lims = c(0, tope_gasto),
+           lineas = TRUE, base = 12) +
+  scale_x_continuous(labels = \(x) paste0(x / 1000, " mil"))
+```
+:::
+
+::: {.column width="33%"}
+```{r}
+#| echo: false
+#| fig-width: 3.4
+#| fig-height: 2.6
+hist_forma(vida, 2, "Esperanza de vida, años", lineas = TRUE, base = 12)
+```
+:::
+
+::::
+
+| | % en alimentos | Gasto, pesos | Esperanza de vida, años |
+|---|--:|--:|--:|
+| Media | `r f1(mean(alimentos))` | `r pesos(mean(hogares$gasto))` | `r f1(mean(vida))` |
+| Mediana | `r f1(median(alimentos))` | `r pesos(median(hogares$gasto))` | `r f1(median(vida))` |
+| Forma | simétrica | sesgada a la derecha | sesgada a la izquierda |
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Línea continua: media. Línea discontinua: mediana.
+:::
+
+## Los nombres de la forma {.smaller}
+
+| Forma | La cola larga va hacia | Media y mediana | Ejemplos de hoy |
+|---|---|---|---|
+| Simétrica | ningún lado: las dos mitades se reflejan | casi iguales | % del gasto en alimentos |
+| Sesgada a la derecha, o positiva | los valores altos | la media queda arriba | gasto, ingreso, integrantes |
+| Sesgada a la izquierda, o negativa | los valores bajos | la media queda abajo | esperanza de vida |
+
+::: {.nota}
+El nombre del sesgo es el lado de **la cola**, no el lado donde se amontonan los
+datos. En la esperanza de vida, `r sum(vida >= 70)` de las `r length(vida)`
+economías están en 70 años o más, y unas cuantas, con valores mucho más bajos,
+alargan la cola a la izquierda.
+:::
+
+## La media que no representa a nadie {.smaller}
+
+```{r}
+#| echo: false
+media_luz  <- mean(luz)
+cerca_luz  <- sum(abs(luz - media_luz) <= 5)
+cien_luz   <- sum(luz == 100)
+min_luz    <- economias |> filter(acceso_electricidad == min(luz))
+```
+
+El acceso a electricidad, como porcentaje de la población, en
+`r length(luz)` economías. La media es `r f1(media_luz)`%.
+
+::: {.friccion}
+¿Cuántas de las `r length(luz)` economías crees que tienen un acceso cercano a la
+media, entre `r f1(media_luz - 5)`% y `r f1(media_luz + 5)`%?
+:::
+
+. . .
+
+```{r}
+#| echo: false
+#| fig-height: 2.4
+hist_forma(luz, 2.5, "Población con acceso a electricidad, %", lineas = TRUE)
+```
+
+::: {.nota}
+Solo `r cerca_luz`. Hay `r cien_luz` economías con el 100% y una cola larga que
+baja hasta `r f1(min_luz$acceso_electricidad)`%, en `r min_luz$pais`. La mediana
+es `r f1(median(luz))`%. Con una cola así, **promedio y típico no son
+sinónimos**.
+:::
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+Banco Mundial, `r anio_bm`. Sin dato: `r paste(sin_luz, collapse = " y ")`.
+:::
+
+# Coeficiente de asimetría {background-color="#24494C"}
+
+Un número para el sesgo
+
+## Cinco hogares {.smaller}
+
+```{r}
+cinco <- hogares$integrantes[1:5]      # los cinco primeros hogares de la base
+cinco
+```
+
+```{r}
+#| echo: false
+d5 <- cinco - mean(cinco)
+```
+
+::: {.friccion}
+Hay un hogar más chico que los demás. ¿Hacia qué lado va la cola de estos cinco
+datos?
+:::
+
+. . .
+
+| Hogar | 1 | 2 | 3 | 4 | 5 | Promedio |
+|---|--:|--:|--:|--:|--:|--:|
+| Integrantes, $x$ | `r paste(cinco, collapse = " | ")` | `r f1(mean(cinco))` |
+| Desviación, $x - \bar{x}$ | `r paste(f1(d5), collapse = " | ")` | `r f1(zapsmall(c(mean(d5), 1))[1] + 0)` |
+| Al cuadrado | `r paste(f2(d5^2), collapse = " | ")` | `r f2(mean(d5^2))` |
+| Al cubo | `r paste(f3(d5^3), collapse = " | ")` | **`r f3(mean(d5^3))`** |
+
+::: {.nota}
+Al cuadrado todo se vuelve positivo. Al cubo, cada desviación **conserva su
+signo** y las grandes pesan mucho más que las chicas: la del hogar de
+`r min(cinco)` integrantes domina el promedio y lo vuelve negativo.
+:::
+
+## Asimetría: primero a mano {.smaller}
+
+::: {.a-mano}
+El **coeficiente de asimetría** divide el promedio de los cubos entre la
+desviación estándar, calculada entre $n$, elevada al cubo. Así el resultado no
+tiene unidades:
+
+$$
+g_1 = \frac{\frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^3}{\left(\frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2\right)^{3/2}}
+$$
+:::
+
+```{r}
+d <- cinco - mean(cinco)
+
+mean(d^3) / mean(d^2)^(3/2)     # la fórmula, traducida literalmente
+```
+
+| $g_1$ | Forma |
+|---|---|
+| cercano a 0 | simétrica |
+| positivo | sesgada a la derecha |
+| negativo | sesgada a la izquierda |
+
+## Una función propia {.smaller}
+
+R no trae una función para la asimetría. Se escribe una, y desde ese momento se
+usa como `mean()` o `sd()`:
+
+```{r}
+#| code-line-numbers: "|1|2|3|4|6"
+asimetria <- function(x) {
+  d <- x - mean(x)                  # las desviaciones
+  mean(d^3) / mean(d^2)^(3/2)       # la última línea es el resultado
+}
+
+asimetria(cinco)
+```
+
+::: {.nota}
+`function(x)` dice que la función recibe un dato, que adentro se llama `x`. Lo
+que va entre llaves se ejecuta cada vez que la usas, con el vector que le pases.
+La función se guarda con un nombre, igual que cualquier objeto.
+:::
+
+## El coeficiente en las bases del curso {.smaller}
+
+```{r}
+asimetria(alimentos)
+asimetria(hogares$gasto)
+asimetria(economias$esperanza_vida)
+```
+
+::: {.friccion}
+¿Coinciden los signos con lo que viste en los histogramas? En el acceso a
+electricidad, `r length(sin_luz)` de las `r nrow(economias)` economías no tienen
+dato. ¿Qué devolvería `asimetria(economias$acceso_electricidad)`?
+:::
+
+. . .
+
+::: {.nota}
+Devuelve `NA`: `mean()` no puede promediar un valor que falta. Sin esas
+`r length(sin_luz)` economías, la asimetría es `r f2(asimetria(luz))`: un sesgo a
+la izquierda mucho más fuerte que el de la esperanza de vida.
+:::
+
+## Cinco hogares contra `r pesos(nrow(hogares))` {.smaller}
+
+```{r}
+asimetria(hogares$integrantes)
+```
+
+::: {.friccion}
+En los `r pesos(nrow(hogares))` hogares el sesgo es positivo, y en los cinco
+primeros es `r f1(asimetria(cinco))`. ¿Cuántas muestras de cinco hogares crees
+que darían un sesgo negativo o cero?
+:::
+
+. . .
+
+```{r}
+#| echo: false
+set.seed(1717)
+tamanos <- c(5, 30, 300)
+sim <- map_dfr(tamanos, \(m) {
+  g <- replicate(5000, asimetria(sample(hogares$integrantes, m)))
+  tibble(m = m, sin_calculo = sum(is.nan(g)), negativas = 100 * mean(g[!is.nan(g)] <= 0))
+})
+```
+
+```{r}
+#| eval: false
+muestras <- replicate(5000, asimetria(sample(hogares$integrantes, 5)))
+```
+
+| Hogares por muestra | `r paste(tamanos, collapse = " | ")` |
+|---|--:|--:|--:|
+| Muestras con sesgo negativo o cero | `r paste(pct(sim$negativas), collapse = " | ")` |
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+5,000 muestras de cada tamaño. En `r sim$sin_calculo[1]` muestras de cinco, los
+cinco hogares tenían los mismos integrantes: todas las desviaciones son cero y el
+coeficiente no se puede calcular. Se descartaron.
+:::
+
+::: {.nota}
+`replicate()` repite una instrucción las veces que le pidas. Con pocos datos, el
+signo del coeficiente es casi un volado; con cientos, ya describe la forma.
+:::
+
+## Un hogar mueve el coeficiente {.smaller}
+
+```{r}
+#| echo: false
+ingreso   <- hogares$ingreso
+sin_mayor <- ingreso[ingreso < max(ingreso)]
+pearson   <- \(x) 3 * (mean(x) - median(x)) / sd(x)
+mayor     <- slice_max(hogares, ingreso, n = 1)
+```
+
+El hogar de mayor ingreso, en `r mayor$entidad`, reportó `r pesos(mayor$ingreso)`
+pesos en el trimestre.
+
+::: {.friccion}
+¿Cuánto cambia la asimetría del ingreso si quitas ese hogar?
+:::
+
+. . .
+
+| | $g_1$ | $\frac{3(\bar{x} - \text{mediana})}{s}$ |
+|---|--:|--:|
+| Con los `r pesos(length(ingreso))` hogares | `r f1(asimetria(ingreso))` | `r f2(pearson(ingreso))` |
+| Sin el hogar de mayor ingreso | `r f1(asimetria(sin_mayor))` | `r f2(pearson(sin_mayor))` |
+
+::: {.nota}
+El cubo hace que un solo valor extremo domine $g_1$. La segunda columna es el
+**coeficiente de Pearson**: compara la media con la mediana, en desviaciones
+estándar, y cambia mucho menos. Con colas muy largas, reporta $g_1$ junto con la
+media y la mediana.
+:::
+
+# Curtosis {background-color="#24494C"}
+
+Qué tanto pesan las colas
+
+## AAPL contra la curva normal {.smaller}
+
+```{r}
+#| echo: false
+rend <- mercado |>
+  arrange(clave, fecha) |>
+  group_by(clave) |>
+  mutate(rend = (ajustado / lag(ajustado) - 1) * 100) |>
+  ungroup() |>
+  filter(!is.na(rend))
+aapl <- rend$rend[rend$clave == "AAPL"]
+periodo <- format(range(rend$fecha), "%d/%m/%Y")
+lim_r <- c(-8, 8)
+```
+
+```{r}
+#| echo: false
+#| fig-height: 3
+ggplot(tibble(x = aapl), aes(x)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.25, fill = TEAL_500, color = "white") +
+  stat_function(fun = dnorm, args = list(mean = mean(aapl), sd = sd(aapl)),
+                color = col_destaca, linewidth = 1.2) +
+  coord_cartesian(xlim = lim_r) +
+  labs(x = "Rendimiento diario de AAPL, %", y = "Densidad")
+```
+
+::: {style="font-size:0.6em; color:#6C7A7B;"}
+`r pesos(length(aapl))` días, del `r periodo[1]` al `r periodo[2]`. La curva es
+una normal con la misma media y la misma desviación estándar. Fuera del eje
+quedan `r sum(aapl < lim_r[1] | aapl > lim_r[2])` días.
+:::
+
+::: {.friccion}
+¿En qué zonas hay más días de los que predice la curva, y en cuáles menos?
+:::
+
+## Más días en el centro y en las colas {.smaller}
+
+```{r}
+#| echo: false
+z <- (aapl - mean(aapl)) / sd(aapl)
+zonas <- tibble(
+  zona   = c("A menos de 0.5 desviaciones de la media",
+             "Entre 0.5 y 3 desviaciones",
+             "A más de 3 desviaciones"),
+  aapl   = 100 * c(mean(abs(z) <= 0.5), mean(abs(z) > 0.5 & abs(z) <= 3), mean(abs(z) > 3)),
+  normal = 100 * c(2 * pnorm(0.5) - 1, 2 * (pnorm(3) - pnorm(0.5)), 2 * pnorm(-3))
+)
+```
+
+| Zona | Días de AAPL | Curva normal |
+|---|--:|--:|
+`r paste(sprintf("| %s | %s | %s |", zonas$zona, pct(zonas$aapl, 2), pct(zonas$normal, 2)), collapse = "\n")`
+
+::: {.nota}
+Los rendimientos tienen más días tranquilos y más días extremos que una normal, y
+menos días intermedios. Más allá de 3 desviaciones hay
+`r f1(zonas$aapl[3] / zonas$normal[3])` veces los días que predice la curva:
+`r sum(abs(z) > 3)` caídas o subidas que la normal trataría como casi imposibles.
+:::
+
+## Curtosis: primero a mano {.smaller}
+
+::: {.a-mano}
+La **curtosis** promedia las desviaciones a la **cuarta** potencia y divide entre
+la desviación estándar, calculada entre $n$, a la cuarta. Una normal da 3; por
+eso se resta 3, y el resultado se llama **exceso de curtosis**:
+
+$$
+g_2 = \frac{\frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^4}{\left(\frac{1}{n}\sum_{i=1}^{n} (x_i - \bar{x})^2\right)^{2}} - 3
+$$
+:::
+
+```{r}
+#| code-line-numbers: "|1|2|3|4|6"
+curtosis <- function(x) {
+  d <- x - mean(x)
+  mean(d^4) / mean(d^2)^2 - 3       # 0 para una normal
+}
+
+curtosis(cinco)
+```
+
+| $g_2$ | Nombre | Colas |
+|---|---|---|
+| cercano a 0 | mesocúrtica | como las de una normal |
+| positivo | leptocúrtica | más pesadas: más valores extremos |
+| negativo | platicúrtica | más ligeras |
+
+## Lo que mide la curtosis {.smaller}
+
+```{r}
+curtosis(aapl)
+```
+
+```{r}
+#| echo: false
+# La parte de la suma de cuartas potencias no depende de la escala de z
+z4 <- z^4
+en_cola <- abs(z) > 3
+```
+
+::: {.friccion}
+La cuarta potencia hace que una desviación del doble pese 16 veces más. ¿Qué
+parte de la curtosis de AAPL crees que viene de los `r sum(en_cola)` días más
+allá de 3 desviaciones?
+:::
+
+. . .
+
+::: {.nota}
+El `r pct(100 * sum(z4[en_cola]) / sum(z4), 0)`. Esos días son el
+`r pct(100 * mean(en_cola), 1)` del total. La curtosis es, casi por completo,
+una medida de **las colas**: de qué tan frecuentes y qué tan lejanos son los
+valores extremos.
+:::
+
+```{r}
+#| echo: false
+formas <- tibble(
+  variable = c("% del gasto en alimentos", "Edad del jefe del hogar", "Integrantes del hogar",
+               "Esperanza de vida", "Acceso a electricidad", "Rendimiento diario de AAPL",
+               "Rendimiento diario de TSLA"),
+  x = list(alimentos, hogares$edad_jefe, hogares$integrantes, vida, luz, aapl,
+           rend$rend[rend$clave == "TSLA"])
+) |>
+  mutate(g1 = map_dbl(x, asimetria), g2 = map_dbl(x, curtosis))
+```
+
+## La forma de siete variables {.smaller}
+
+| Variable | Asimetría, $g_1$ | Exceso de curtosis, $g_2$ |
+|---|--:|--:|
+`r paste(sprintf("| %s | %s | %s |", formas$variable, f2(formas$g1), f2(formas$g2)), collapse = "\n")`
+
+::: {.nota}
+Los rendimientos son casi simétricos y tienen colas pesadas: la forma no se
+resume con un solo número. La edad del jefe del hogar es platicúrtica: va de
+`r min(hogares$edad_jefe)` a `r max(hogares$edad_jefe)` años, sin valores muy
+alejados, y sus colas son más ligeras que las de una normal.
+:::
+
+## La curtosis no es picudez {.smaller}
+
+::: {.ia-nota}
+Si le pides a un asistente de IA que explique la curtosis, lo más probable es que
+la describa como qué tan "picuda" o "apuntada" es la distribución. Es la
+definición de medio internet y de muchos libros, y es incorrecta: acabas de ver
+que el `r pct(100 * sum(z4[en_cola]) / sum(z4), 0)` de la curtosis de AAPL sale
+de las colas.
+
+Peter Westfall lo documentó en *The American Statistician* (2014), en un artículo
+titulado "Kurtosis as Peakedness, 1905–2014. R.I.P."
+
+Para verificar lo que te diga la IA, calcula qué parte de la suma de las cuartas
+potencias aportan los valores más alejados.
+:::
+
+# Chebyshev y la regla empírica {background-color="#24494C"}
+
+Qué proporción de los datos queda cerca de la media
+
+## Teorema de Chebyshev {.smaller}
+
+Para **cualquier** conjunto de datos y cualquier $k > 1$, al menos una
+proporción
+
+$$
+1 - \frac{1}{k^2}
+$$
+
+de los datos está a menos de $k$ desviaciones estándar de la media.
+
+```{r}
+k <- c(1.5, 2, 3)
+1 - 1 / k^2
+```
+
+::: {.nota}
+No pide nada sobre la forma: vale para datos simétricos, sesgados o con colas
+pesadas. Es un **mínimo garantizado**, no una estimación. Con $k = 1$ la cota es
+cero: no dice nada.
+:::
+
+## El gasto de los hogares {.smaller}
+
+```{r}
+#| echo: false
+g  <- hogares$gasto
+mg <- mean(g); sg <- sd(g)
+```
+
+El gasto trimestral medio de los hogares es `r pesos(mg)` pesos, con una
+desviación estándar de `r pesos(sg)`.
+
+::: {.friccion}
+Sin ver los datos: ¿qué porcentaje de hogares, **como mínimo**, gasta entre
+$\bar{x} - 2s$ y $\bar{x} + 2s$? ¿Y cuál es ese intervalo en pesos?
+:::
+
+. . .
+
+| | |
+|---|--:|
+| Intervalo $\bar{x} \pm 2s$ | de `r pesos(mg - 2 * sg)` a `r pesos(mg + 2 * sg)` pesos |
+| Mínimo según Chebyshev | `r pct(100 * (1 - 1 / 2^2), 0)` |
+| Lo que se observa | `r pct(dentro(g, 2))` |
+
+```{r}
+mean(abs(hogares$gasto - mean(hogares$gasto)) <= 2 * sd(hogares$gasto))
+```
+
+## La regla empírica {.smaller}
+
+Si los datos tienen forma **aproximadamente normal**, de campana:
+
+| A menos de | 1 desviación | 2 desviaciones | 3 desviaciones |
+|---|--:|--:|--:|
+| Proporción de los datos | `r paste(pct(100 * (2 * pnorm(1:3) - 1)), collapse = " | ")` |
+
+::: {.friccion}
+Aplica la regla al gasto de los hogares. ¿Qué dice del intervalo
+$\bar{x} \pm 2s$?
+:::
+
+. . .
+
+::: {.no-dice}
+El intervalo empieza en `r pesos(mg - 2 * sg)` pesos: un gasto **negativo**. Y a
+menos de una desviación no está el `r pct(100 * (2 * pnorm(1) - 1), 0)` de los
+hogares, sino el `r pct(dentro(g, 1), 0)`. La regla empírica sobre una variable
+sesgada da resultados absurdos con toda la apariencia de un cálculo correcto.
+:::
+
+## Las dos reglas contra los datos {.smaller}
+
+```{r}
+#| echo: false
+reglas <- tibble(
+  variable = c("% del gasto en alimentos", "Esperanza de vida", "Rendimiento diario de AAPL",
+               "Gasto de los hogares", "Acceso a electricidad"),
+  x = list(alimentos, vida, aapl, hogares$gasto, luz)
+) |>
+  mutate(k1 = map_dbl(x, dentro, k = 1), k2 = map_dbl(x, dentro, k = 2), k3 = map_dbl(x, dentro, k = 3))
+```
+
+| A menos de $k$ desviaciones | $k = 1$ | $k = 2$ | $k = 3$ |
+|---|--:|--:|--:|
+`r paste(sprintf("| %s | %s | %s | %s |", reglas$variable, pct(reglas$k1), pct(reglas$k2), pct(reglas$k3)), collapse = "\n")`
+| **Regla empírica** | `r paste(pct(100 * (2 * pnorm(1:3) - 1)), collapse = " | ")` |
+| **Mínimo de Chebyshev** | cero | `r pct(100 * (1 - 1 / 4), 1)` | `r pct(100 * (1 - 1 / 9), 1)` |
+
+::: {.nota}
+Chebyshev se cumple en las cinco. La regla empírica acierta en el porcentaje en
+alimentos, la única variable simétrica y sin colas pesadas; en las demás falla,
+sobre todo a una desviación.
+:::
+
+## Qué regla usar {.smaller}
+
+| Si la variable es | Usa | Por qué |
+|---|---|---|
+| Simétrica, de campana y sin colas pesadas | regla empírica | da porcentajes cercanos a los observados |
+| Sesgada, con colas pesadas o de forma desconocida | Chebyshev | su mínimo vale siempre |
+| Cualquiera, con los datos a la mano | la proporción observada | `mean(abs(x - mean(x)) <= k * sd(x))` |
+
+::: {.nota}
+Para decidir, primero el histograma y después $g_1$ y $g_2$. Es el orden del
+curso: ver antes de resumir.
+:::
+
+# Las mismas medidas en Excel {background-color="#24494C"}
+
+## Equivalencias entre R y Excel {.smaller}
+
+```{r}
+#| echo: false
+n5 <- length(cinco)
+skew_excel <- asimetria(cinco) * sqrt(n5 * (n5 - 1)) / (n5 - 2)
+kurt_excel <- ((n5 + 1) * curtosis(cinco) + 6) * (n5 - 1) / ((n5 - 2) * (n5 - 3))
+```
+
+| Medida | R, con las funciones de hoy | Excel en español | Con los cinco hogares |
+|---|---|---|--:|
+| Asimetría, fórmula de hoy | `asimetria(x)` | `=COEFICIENTE.ASIMETRIA.P(A2:A6)` | `r f2(asimetria(cinco))` |
+| Asimetría, corregida para muestras | no tiene | `=COEFICIENTE.ASIMETRIA(A2:A6)` | `r f2(skew_excel)` |
+| Exceso de curtosis, fórmula de hoy | `curtosis(x)` | no tiene | `r f2(curtosis(cinco))` |
+| Exceso de curtosis, corregido para muestras | no tiene | `=CURTOSIS(A2:A6)` | `r f2(kurt_excel)` |
+
+::: {.nota}
+**Práctica:** copia los cinco valores, `r paste(cinco, collapse = ", ")`, a una
+hoja de Excel y comprueba la última columna. Las versiones corregidas ajustan por
+el tamaño de la muestra; con cinco datos la diferencia es enorme y con miles
+desaparece. Al reportar el coeficiente, di cuál usaste.
+:::
+
+# Límites y portafolio {background-color="#24494C"}
+
+## Los límites de estas medidas {.smaller}
+
+::: {.no-dice}
+- **Con pocos datos, el signo no es confiable.** En muestras de cinco hogares, el
+  `r pct(sim$negativas[1], 0)` dio un sesgo negativo o cero, aunque los
+  integrantes de los `r pesos(nrow(hogares))` hogares están sesgados a la
+  derecha.
+- **Un valor extremo domina los dos coeficientes.** El cubo y la cuarta potencia
+  amplifican los extremos; un hogar llevó la asimetría del ingreso de
+  `r f1(asimetria(sin_mayor))` a `r f1(asimetria(ingreso))`.
+- **"Media mayor que mediana, sesgo a la derecha" es una regla práctica, no un
+  teorema.** Puede fallar en variables discretas, con pocos valores posibles, y
+  en distribuciones con dos modas (von Hippel, 2005, *Journal of Statistics
+  Education*).
+- **Un número no sustituye al histograma.** Dos distribuciones con el mismo
+  $g_1$ y el mismo $g_2$ pueden verse muy distintas.
+- **Las cifras de hogares describen a los hogares visitados**, sin factor de
+  expansión.
+:::
+
+## Ejercicio para el portafolio {.smaller}
+
+Sobre la variable numérica de **tu serie**:
+
+1. Su histograma con la media y la mediana, y la forma que ves: simétrica,
+   sesgada a la derecha o sesgada a la izquierda.
+2. `asimetria()` y `curtosis()`, con una línea que diga si coinciden con lo que
+   ves en el histograma.
+3. La proporción de datos a menos de 1, 2 y 3 desviaciones estándar de la media,
+   comparada con la regla empírica y con el mínimo de Chebyshev.
+4. Cuál de las dos reglas describe mejor tu serie, con una razón.
+5. Si tu serie es un precio o un índice con tendencia, haz todo lo anterior con
+   sus **variaciones** de un periodo al siguiente, no con sus niveles.
