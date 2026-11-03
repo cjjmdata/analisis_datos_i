@@ -705,36 +705,23 @@ Para decidir, primero el histograma y después $g_1$ y $g_2$. Es el orden del
 curso: ver antes de resumir.
 :::
 
-# Las mismas medidas en Excel {background-color="#24494C"}
-
-## Equivalencias entre R y Excel {.smaller}
-
-```{r}
-#| echo: false
-n5 <- length(cinco)
-skew_excel <- asimetria(cinco) * sqrt(n5 * (n5 - 1)) / (n5 - 2)
-kurt_excel <- ((n5 + 1) * curtosis(cinco) + 6) * (n5 - 1) / ((n5 - 2) * (n5 - 3))
-```
-
-| Medida | R, con las funciones de hoy | Excel en español | Con los cinco hogares |
-|---|---|---|--:|
-| Asimetría, fórmula de hoy | `asimetria(x)` | `=COEFICIENTE.ASIMETRIA.P(A2:A6)` | `r f2(asimetria(cinco))` |
-| Asimetría, corregida para muestras | no tiene | `=COEFICIENTE.ASIMETRIA(A2:A6)` | `r f2(skew_excel)` |
-| Exceso de curtosis, fórmula de hoy | `curtosis(x)` | no tiene | `r f2(curtosis(cinco))` |
-| Exceso de curtosis, corregido para muestras | no tiene | `=CURTOSIS(A2:A6)` | `r f2(kurt_excel)` |
-
-::: {.nota}
-**Práctica:** copia los cinco valores, `r paste(cinco, collapse = ", ")`, a una
-hoja de Excel y comprueba la última columna. Las versiones corregidas ajustan por
-el tamaño de la muestra; con cinco datos la diferencia es enorme y con miles
-desaparece. Al reportar el coeficiente, di cuál usaste.
-:::
-
 # Límites y portafolio {background-color="#24494C"}
 
 ## Los límites de estas medidas {.smaller}
 
+```{r}
+#| echo: false
+# Versión ajustada por tamaño de muestra, la que usan otros programas
+n5 <- length(cinco)
+asimetria_ajustada <- asimetria(cinco) * sqrt(n5 * (n5 - 1)) / (n5 - 2)
+```
+
 ::: {.no-dice}
+- **Hay más de una fórmula.** La de hoy es la más simple. Otros programas, y el
+  código que te escriba una IA, pueden usar una versión ajustada por el tamaño de
+  la muestra: con los cinco hogares da `r f2(asimetria_ajustada)` en vez de
+  `r f2(asimetria(cinco))`; con miles de datos la diferencia desaparece. Al
+  reportar el coeficiente, di cuál usaste.
 - **Con pocos datos, el signo no es confiable.** En muestras de cinco hogares, el
   `r pct(sim$negativas[1], 0)` dio un sesgo negativo o cero, aunque los
   integrantes de los `r pesos(nrow(hogares))` hogares están sesgados a la
