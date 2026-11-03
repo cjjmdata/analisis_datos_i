@@ -322,9 +322,11 @@ cat('<script src="simulador-dispersion.js"></script>\n')
 ```
 
 ::: {style="font-size:0.6em; color:#6C7A7B;"}
-Cada cuadrado tiene de lado la distancia de un valor a la media. La varianza es
-la suma de sus áreas entre $n - 1$, y el cuadrado punteado tiene esa área: su
-lado es la desviación estándar.
+Abajo, cada renglón es la desviación de un hogar: de la media a su valor. Arriba,
+cada cuadrado tiene esa desviación de lado. La varianza es la suma de las áreas
+entre $n - 1$; el cuadrado punteado tiene esa área y su lado es la desviación
+estándar, medida desde la media. La franja va de una desviación estándar abajo
+de la media a una arriba.
 :::
 
 ## Los mismos casos, calculados {.smaller}
@@ -345,6 +347,45 @@ Al cambiar una sola edad a 90 años, la desviación estándar pasa de
 `r f1(tabla_sim$de[1])` a `r f1(tabla_sim$de[4])` años. El cuadrado de una
 distancia del doble tiene cuatro veces el área, así que un valor alejado pesa
 mucho más que varios cercanos.
+:::
+
+## La edad de los `r pesos(nrow(hogares))` jefes de hogar {.smaller}
+
+```{r}
+#| echo: false
+#| fig-height: 2.9
+media_edad <- mean(hogares$edad_jefe)
+de_edad    <- sd(hogares$edad_jefe)
+limites    <- media_edad + c(-1, 1) * de_edad
+dentro_1   <- mean(abs(hogares$edad_jefe - media_edad) <= de_edad)
+dist_prom  <- mean(abs(hogares$edad_jefe - media_edad))   # distancia promedio, sin signo
+
+ggplot(hogares, aes(x = edad_jefe)) +
+  annotate("rect", xmin = limites[1], xmax = limites[2], ymin = -Inf, ymax = Inf,
+           fill = TEAL_100, alpha = 0.6) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = TEAL_500, color = "white") +
+  geom_vline(xintercept = media_edad, color = col_media, linewidth = 1.2) +
+  geom_vline(xintercept = limites, color = col_media, linetype = "dashed") +
+  annotate("label", x = c(limites[1], media_edad, limites[2]), y = Inf, vjust = 1.2,
+           label = c(paste("media − s\n", f1(limites[1])), paste("media\n", f1(media_edad)),
+                     paste("media + s\n", f1(limites[2]))),
+           size = 3.6, color = col_media, fill = "white", label.size = 0) +
+  scale_y_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.25))) +
+  labs(x = "Edad del jefe del hogar, años", y = "Hogares")
+```
+
+::: {.friccion}
+Las líneas punteadas están a una desviación estándar, `r f1(de_edad)` años, de
+la media. ¿Qué parte de los hogares queda entre ellas?
+:::
+
+. . .
+
+::: {.nota}
+El `r pct(100 * dentro_1, 0)`. La desviación estándar no es la distancia
+promedio a la media: esa distancia, sin signo, es de `r f1(dist_prom)` años. Al
+elevar al cuadrado antes de promediar, las distancias grandes pesan más y la
+desviación estándar queda por encima.
 :::
 
 ## La desviación estándar del ingreso {.smaller}
