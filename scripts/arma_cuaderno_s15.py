@@ -102,6 +102,30 @@ otras[3] <- 90
 sd(edades)
 sd(otras)"""),
 
+    ("md", """### La edad de todos los jefes de hogar
+
+Las líneas punteadas van a una desviación estándar de la media, una abajo y otra
+arriba. Antes de correr la segunda celda: ¿qué parte de los hogares crees que
+queda entre ellas?"""),
+    ("code", """media_edad <- mean(hogares$edad_jefe)
+de_edad    <- sd(hogares$edad_jefe)
+limites    <- media_edad + c(-1, 1) * de_edad     # media − s y media + s
+limites
+
+ggplot(hogares, aes(x = edad_jefe)) +
+  geom_histogram(binwidth = 2, boundary = 0, fill = TEAL_500, color = "white") +
+  geom_vline(xintercept = media_edad, color = col_media, linewidth = 1.2) +
+  geom_vline(xintercept = limites, color = col_media, linetype = "dashed") +
+  labs(x = "Edad del jefe del hogar, años", y = "Hogares")"""),
+    ("code", """# Proporción de hogares a menos de una desviación estándar de la media
+mean(abs(hogares$edad_jefe - media_edad) <= de_edad)
+
+# La distancia promedio a la media, sin signo, no es la desviación estándar
+mean(abs(hogares$edad_jefe - media_edad))
+de_edad"""),
+    ("md", """¿Por qué la desviación estándar queda por encima de la distancia promedio?
+Piensa en qué hace el cuadrado con las distancias grandes."""),
+
     ("md", """### La desviación estándar del ingreso
 
 ¿Cuánto crees que cambia la desviación estándar de los hogares del país si quitas
