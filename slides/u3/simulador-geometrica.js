@@ -61,14 +61,14 @@
         <div class="sim-casos">Casos: ${P.casos.map(c => `<button type="button" data-var="${c}">±${c}</button>`).join("")}</div>
       </div>
       <div class="sim-cuerpo">
-        <svg class="sim-grafica" viewBox="0 0 560 300" preserveAspectRatio="xMidYMid meet"></svg>
+        <svg class="sim-grafica" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet"></svg>
         <table class="sim-tabla">
           <tr><td>Tasas de cada año</td><td class="sim-t-tasas"></td></tr>
           <tr><td style="color:${COL.arit}">Media aritmética</td><td class="sim-t-arit"></td></tr>
           <tr><td style="color:${COL.geo}">Media geométrica</td><td class="sim-t-geo"></td></tr>
           <tr><td style="color:${COL.real}">Monto real a ${P.anios} años</td><td class="sim-t-real"></td></tr>
-          <tr><td style="color:${COL.arit}">Con la media aritmética</td><td class="sim-t-farit"></td></tr>
-          <tr><td style="color:${COL.geo}">Con la media geométrica</td><td class="sim-t-fgeo"></td></tr>
+          <tr><td style="color:${COL.arit}">Repitiendo la media aritmética</td><td class="sim-t-farit"></td></tr>
+          <tr><td style="color:${COL.geo}">Repitiendo la media geométrica</td><td class="sim-t-fgeo"></td></tr>
         </table>
       </div>`;
     const q = s => cont.querySelector(s);
@@ -98,7 +98,8 @@
       // escala no salte al mover los controles
       const svg = q(".sim-grafica");
       while (svg.firstChild) svg.removeChild(svg.firstChild);
-      const izq = 62, der = 545, arr = 15, aba = 265;
+      // Margen derecho para el rótulo al final de cada línea
+      const izq = 62, der = 470, arr = 15, aba = 265;
       const peor = calcula(0, P.maxVariacion, P.anios, P.inicial), mejor = calcula(P.maxMedia, 0, P.anios, P.inicial);
       // Límites redondeados a miles, con marcas en múltiplos redondos
       const paso = 5000;
@@ -121,6 +122,16 @@
       linea(R.conGeometrica, COL.geo, "2 4", 2.5);
       linea(R.real, COL.real, null, 3);
       R.real.forEach((v, t) => el("circle", { cx: X(t), cy: Y(v), r: 3.2, fill: COL.real }, svg));
+
+      // Rótulos al final de cada línea; si coinciden, se apilan para que se lean los tres
+      const rotulos = [
+        { y: Y(R.finalReal), texto: "Monto real", color: COL.real },
+        { y: Y(R.finalAritmetica), texto: "Con la aritmética", color: COL.arit },
+        { y: Y(R.finalGeometrica), texto: "Con la geométrica", color: COL.geo },
+      ].sort((a, b) => a.y - b.y);
+      for (let i = 1; i < rotulos.length; i++) rotulos[i].y = Math.max(rotulos[i].y, rotulos[i - 1].y + 15);
+      rotulos.forEach(r => el("text", { x: der + 7, y: r.y + 4, "font-size": 13, "font-weight": 700,
+                                        fill: r.color }, svg).textContent = r.texto);
     }
 
     for (const ctrl of [media, vari]) ctrl.addEventListener("input", dibuja);

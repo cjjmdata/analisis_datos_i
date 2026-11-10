@@ -43,6 +43,7 @@ source("../../R/colores.R")
 theme_set(theme_minimal(base_size = 15))
 pesos <- \(x) scales::comma(round(x))
 pct   <- \(x, d = 1) sprintf(paste0("%.", d, "f%%"), x)
+menos <- \(s) sub("^-", "−", s)   # signo menos tipográfico en cifras negativas
 
 # Las mismas lecturas que se muestran con su URL, desde la copia local
 paises <- read_csv("../../datos/banco_mundial.csv", show_col_types = FALSE)
@@ -306,15 +307,20 @@ final_fondo <- function(media, variacion) sim$inicial * prod(1 + tasas_fondo(med
 estable  <- final_fondo(sim$media, 0)
 variable <- final_fondo(sim$media, sim$variacion)
 geo_variable <- (exp(mean(log(1 + tasas_fondo(sim$media, sim$variacion)))) - 1) * 100
+# Lo que multiplica cada fondo en dos años: ahí se ve el mecanismo
+f_sube <- 1 + (sim$media + sim$variacion) / 100
+f_baja <- 1 + (sim$media - sim$variacion) / 100
+f_est  <- 1 + sim$media / 100
+f2 <- \(x) sprintf("%.2f", x)
+f3 <- \(x) sprintf("%.3f", x)
 ```
 
-Inviertes `r pesos(sim$inicial)` pesos durante `r sim$anios` años.
+Inviertes `r pesos(sim$inicial)` pesos durante `r sim$anios` años en uno de dos
+fondos, los dos con una media simple de `r sim$media`% por año:
 
 - **Fondo estable:** rinde `r sim$media`% todos los años.
 - **Fondo variable:** gana `r sim$media + sim$variacion`% un año y pierde
   `r sim$variacion - sim$media`% el siguiente, y así alternado.
-
-Los dos tienen una media simple de `r sim$media`% por año.
 
 ::: {.friccion}
 ¿Con cuál terminas con más dinero? ¿O terminan igual?
@@ -328,12 +334,17 @@ Los dos tienen una media simple de `r sim$media`% por año.
 | Variable | `r sim$media`% | **`r pesos(variable)`** |
 
 ::: {.nota}
-La misma media simple deja `r pesos(estable - variable)` pesos de diferencia. La
-media geométrica del fondo variable es `r pct(geo_variable, 2)` por año: es la
-que refleja el efecto de la variación sobre el monto.
+Cada dos años, el estable multiplica su dinero por `r f2(f_est)` × `r f2(f_est)`
+= `r f3(f_est^2)` y el variable por `r f2(f_sube)` × `r f2(f_baja)` =
+`r f3(f_sube * f_baja)`: la pérdida se aplica a un monto que ya creció. La media
+simple no ve esa diferencia; la geométrica sí: `r pct(geo_variable, 2)` por año,
+repetido `r sim$anios` años, da los `r pesos(variable)` pesos.
 :::
 
 ## Simulador: variación y monto final {.smaller}
+
+**La pregunta:** si resumes el fondo en una sola tasa y la repites cada año, ¿con
+cuál de las dos medias llegas al dinero que de verdad tienes al final?
 
 <div class="simulador-geometrica" data-prevent-swipe></div>
 
@@ -343,14 +354,16 @@ que refleja el efecto de la variación sobre el monto.
 # Los parámetros van del cómputo al simulador; ningún valor se teclea en el JS
 cat(sprintf(paste0('<script>window.PARAMS_SIMULADOR = {media: %s, variacion: %s, anios: %s, ',
                    'inicial: %s, maxMedia: %s, maxVariacion: %s, casos: [%s]};</script>\n'),
-            sim$media, 0, sim$anios, sim$inicial, sim$maxMedia, sim$maxVariacion,
+            sim$media, sim$variacion, sim$anios, sim$inicial, sim$maxMedia, sim$maxVariacion,
             paste(sim$casos, collapse = ", ")))
 cat('<script src="simulador-geometrica.js"></script>\n')
 ```
 
 ::: {style="font-size:0.6em; color:#6C7A7B;"}
-Línea sólida: el monto año por año. Rayas: la misma tasa cada año, con la media
-aritmética. Puntos: la misma tasa cada año, con la media geométrica.
+Arranca en el fondo variable de la lámina anterior. Línea sólida: el dinero que
+de verdad tienes cada año. Rayas: lo que proyectas si repites la media aritmética
+como tasa fija. Puntos: lo mismo con la media geométrica. Con ±0 las tres
+coinciden; con cualquier variación, solo los puntos llegan al monto real.
 :::
 
 ## Variación y monto final: los mismos casos, calculados {.smaller}
@@ -363,20 +376,26 @@ casos <- tibble(variacion = sim$casos) |>
     aritmetica = map_dbl(tasas, mean) * 100,
     geometrica = map_dbl(tasas, \(r) exp(mean(log(1 + r))) - 1) * 100,
     final = map_dbl(tasas, \(r) sim$inicial * prod(1 + r)),
-    con_aritmetica = sim$inicial * (1 + aritmetica / 100)^sim$anios
+    con_aritmetica = sim$inicial * (1 + aritmetica / 100)^sim$anios,
+    con_geometrica = sim$inicial * (1 + geometrica / 100)^sim$anios
   )
+peor <- slice_max(casos, variacion)
 ```
 
-Tasa promedio de `r sim$media`% y `r sim$anios` años, partiendo de `r pesos(sim$inicial)` pesos:
+Media simple de `r sim$media`% y `r sim$anios` años, partiendo de
+`r pesos(sim$inicial)` pesos. Las dos últimas columnas repiten cada media como
+tasa fija los `r sim$anios` años:
 
-| Variación | Tasas alternadas | Media aritmética | Media geométrica | Monto real | Con la media aritmética |
-|---|---|--:|--:|--:|--:|
-`r paste(sprintf("| ±%d | %s%% y %s%% | %s | %s | **%s** | %s |", casos$variacion, sim$media + casos$variacion, sim$media - casos$variacion, pct(casos$aritmetica, 2), pct(casos$geometrica, 2), pesos(casos$final), pesos(casos$con_aritmetica)), collapse = "\n")`
+| Variación | Tasas alternadas | Media aritmética | Media geométrica | Monto real | Con la media aritmética | Con la media geométrica |
+|---|---|--:|--:|--:|--:|--:|
+`r paste(sprintf("| ±%d | %s%% y %s%% | %s | %s | **%s** | %s | **%s** |", casos$variacion, sim$media + casos$variacion, menos(sim$media - casos$variacion), pct(casos$aritmetica, 2), menos(pct(casos$geometrica, 2)), pesos(casos$final), pesos(casos$con_aritmetica), pesos(casos$con_geometrica)), collapse = "\n")`
 
 ::: {.nota}
-Con la misma media aritmética, cada aumento en la variación baja la media
-geométrica y el monto real. La media aritmética da siempre el mismo monto, sin
-importar la variación.
+La media aritmética no se mueve, y su proyección se queda en
+`r pesos(peor$con_aritmetica)` pesos aunque con ±`r peor$variacion` el dinero
+real termine en `r pesos(peor$final)`, menos de lo invertido. La geométrica baja
+con la variación y su proyección coincide siempre con el monto real: por eso es
+la tasa promedio por año de una inversión.
 :::
 
 ## Criterio para elegir la media {.smaller}
