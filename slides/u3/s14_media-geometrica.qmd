@@ -12,6 +12,7 @@ format:
     html-math-method:
       method: mathjax
       url: "../../libs/mathjax-2.7.9/MathJax.js"   # copia local: funciona sin internet
+    include-in-header: ../../libs/mathjax-2.7.9/salida-svg.html   # fórmulas en SVG, sin depender de fuentes
     chalkboard: true
     footer: "[⌂ Inicio](../../index.html) · Análisis de Datos I · Sesión 14 · Programa 2.2.3"
     incremental: false

@@ -1,0 +1,11 @@
+<!-- Fórmulas en SVG: cada símbolo se dibuja como trazo, sin depender de fuentes.
+     Con la salida HTML-CSS por omisión, un navegador que no carga las fuentes web
+     de MathJax, o que encuentra las fuentes STIX del sistema (macOS + Firefox),
+     dibuja con otra fuente y la barra de x̄ queda despegada. Quarto fija la
+     configuración TeX-AMS_HTML-full en su plantilla de revealjs, así que el cambio
+     de salida se hace aquí, con el método documentado de MathJax 2. -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Register.StartupHook("End Jax", function () {
+  return MathJax.Hub.setRenderer("SVG");
+});
+</script>
