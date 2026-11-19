@@ -92,6 +92,19 @@ $presentation-slide-text-align: left;
   line-height: 1.25;
 }
 
+// Pasos de resaltado (code-line-numbers: "|1|2|3"): Quarto clona el <code> y pone
+// cada copia encima del original con position: absolute; top: 0; left: 0. Con el
+// relleno en <pre>, la copia quedaba corrida, y con fondo transparente se veían
+// dos textos encimados. El relleno va en <code> y el fondo es opaco (el mismo tono
+// que da el fondo translúcido de <pre> sobre blanco), así la copia tapa al original.
+.reveal div.sourceCode pre {
+  padding: 0;
+}
+.reveal div.sourceCode pre code {
+  padding: 0.5em 0.9em;
+  background-color: #EEF2F3;
+}
+
 // En Windows, cada bloque de código muestra una barra horizontal aunque el
 // código quepa: el bloque desborda por fracciones de píxel y `overflow: auto`
 // la dibuja. En una lámina proyectada nadie desplaza el código, así que la barra
